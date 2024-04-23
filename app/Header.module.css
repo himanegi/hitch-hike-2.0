@@ -1,0 +1,21 @@
+/* Header.module.css */
+.headerItem {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    transition: transform 0.3s ease, color 0.3s ease;
+   }
+   
+   .headerItem:hover {
+    transform: scale(1.1);
+    color:#4264fb; 
+   }
+   
+   .headerItem img {
+    transition: transform 0.3s ease;
+   }
+   
+   .headerItem:hover img {
+    transform: scale(1.1);
+   }
+   
