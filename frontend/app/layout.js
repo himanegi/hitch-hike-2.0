@@ -3,6 +3,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "./components/Header";
+import Footer from "./components/Footer"; // Make sure to import the Footer component
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800", "900"],
@@ -18,9 +19,15 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <link rel="icon" href="/carpool.ico" />
+        </head>
         <body className={poppins.className}>
-          <Header />
-          {children}
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </div>
         </body>
       </html>
     </ClerkProvider>
