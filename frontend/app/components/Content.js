@@ -66,7 +66,7 @@ export function Content() {
       <div
         className="col-span-3 border-2 border-black rounded-xl overflow-hidden"
         ref={mapContainerRef}
-        style={{ height: "650px" }}
+        style={{ height: "600px" }}
       />
     </div>
   );

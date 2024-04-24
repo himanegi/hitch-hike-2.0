@@ -4,10 +4,8 @@ import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 import styles from "../Header.module.css"; // Import the CSS module
-import { useRouter } from "next/navigation";
 
 function Header() {
-  const router = useRouter();
   const headerMenu = [
     {
       id: 1,
@@ -28,9 +26,6 @@ function Header() {
       path: "/trips",
     },
   ];
-  const handleSignOut = () => {
-    router.push();
-  };
 
   return (
     <div className="p-0.5 pb-0.5 pl-10 pr-10 border-b-[2px] border-black flex items-center justify-between">
@@ -47,7 +42,7 @@ function Header() {
           ))}
         </div>
       </div>
-      <UserButton onSignOut={handleSignOut} />
+      <UserButton />
     </div>
   );
 }
