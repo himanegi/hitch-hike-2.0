@@ -15,10 +15,12 @@ A project that aims to provide users with a platform to track their workout rout
 - Git and Github
 
 <!-- Getting Started -->
-### Getting Started
+## Getting Started
 
 <!-- Prerequisites -->
 ### Prerequisites
+
+This project uses MongoDB as database. please install mongodb server in local environment.
 
 <!-- Run Locally -->
 ### Run Locally
@@ -38,5 +40,24 @@ Go to the project directory
 Install dependencies
 
 ```bash
-  npm i
+  cd backend
+  npm install
+  cd ../frontend
+  npm install
+  cd ../
+  npm install
+```
+
+Start the backend server
+
+```bash
+  cd backend
+  npm start
+```
+
+Start the frontend client
+
+```bash
+  cd frontend
+  npm run dev
 ```
