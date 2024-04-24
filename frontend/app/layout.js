@@ -10,7 +10,7 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Pool Party",
+  title: "Hitch Hike 2.0",
   description: "Skip the Traffic, Share the Gas (and Gossip)",
 };
 
