@@ -1,6 +1,12 @@
 # hitch-hike-2.0
 
-A project that aims to provide users with a platform to track their workout routines.
+ Hitch Hike 2.0 is a web application designed to connect drivers and passengers looking for rides. It aims to reduce the environmental impact of individual car travel by encouraging carpooling and sharing rides.
+
+# Features
+
+- Search for Rides: Users can search for rides based on their source and destination. The app will find the most suitable rides for them, considering factors like date, time, and route.
+- Share Rides: Drivers can share their travel details, including the route they're taking, date, time, and a message for passengers. This allows passengers to join the ride if it fits their schedule and route.
+- Manage Trips: Users can manage their trips, categorizing them into "Riding" and "Driving". The "Riding" section lists rides they've joined, while the "Driving" section includes rides they've created and any requests they've received from other users.
 
 # Built with
 
@@ -8,6 +14,7 @@ A project that aims to provide users with a platform to track their workout rout
 
 - Next.js
 - Node.js
+- MongoDB
 
 ## Tools
 
