@@ -95,7 +95,7 @@ function InputItem({ type, map, onCoordinatesChange }) {
             }
 
             .Results {
-              background-color: #c8d1f9;
+              background-color: white;
               border: 2px solid black;
             }
           `,
