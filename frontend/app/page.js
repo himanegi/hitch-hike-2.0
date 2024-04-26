@@ -8,6 +8,7 @@ export default function Home() {
   return (
     <div className="p-6 grid gird-cols-1 md:grid-cols-3 gap-5">
       <div>
+        <p className="text-[25px] font-thin">Search for Rides</p>
         <SearchSection map={map} />
         <button className="bg-[#4264fb] text-white w-full p-3 rounded-lg mt-3 border-2 border-black ">
           Search
