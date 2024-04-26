@@ -1,7 +1,7 @@
 // routes/trips.js
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const Trip = require("../models/tripModel");
+import Trip from "../models/tripModel.js";
 
 router.post("/create", async (req, res) => {
   // Implement trip creation logic
@@ -11,4 +11,4 @@ router.get("/", async (req, res) => {
   // Implement logic to fetch user's trips
 });
 
-module.exports = router;
+export default router;
