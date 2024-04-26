@@ -11,7 +11,7 @@ function Header() {
       id: 1,
       name: "Search",
       icon: "/magnifier.svg",
-      path: "/search",
+      path: "/",
     },
     {
       id: 2,
@@ -30,13 +30,15 @@ function Header() {
   return (
     <div className="p-0.5 pb-0.5 pl-10 pr-10 border-b-[2px] border-black flex items-center justify-between">
       <div className="flex gap-20 items-center">
-        <Image src={"/carpool.svg"} height={70} width={70} alt="Logo" />
-        <div className="flex gap-6 items-center">
+        <Link href={"/"}>
+          <Image src={"/carpool.svg"} height={70} width={70} alt="Logo" />
+        </Link>
+        <div className="flex gap-10 items-center">
           {headerMenu.map((item) => (
             <Link href={item.path} key={item.id}>
               <div className={styles.headerItem}>
                 <Image src={item.icon} height={20} width={20} alt={item.name} />
-                <h2 className="text-[14px] font-medium">{item.name}</h2>
+                <h2 className="text-[14px] font-thin ml-1">{item.name}</h2>
               </div>
             </Link>
           ))}

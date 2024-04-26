@@ -43,7 +43,7 @@ function MapboxRoute({ map, sourceCoordinates, destinationCoordinates }) {
 
           // Adjust map view to fit bounds
           map.fitBounds(bounds, {
-            padding: 80, // Add some padding around the bounds
+            padding: 120, // Add some padding around the bounds
           });
 
           // Reset the error state if a route is successfully fetched
