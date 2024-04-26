@@ -10,8 +10,12 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.12",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@mapbox/mapbox-gl-directions": "^4.3.1",
     "@mapbox/search-js-react": "^1.0.0-beta.19",
+    "@mui/icons-material": "^5.15.15",
+    "@mui/material": "^5.15.15",
     "next": "^14.2.2",
     "react": "^18",
     "react-dom": "^18",
