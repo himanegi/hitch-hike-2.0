@@ -1,9 +1,8 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
-import SearchSection from "./Home/SearchSection";
 
-export function Content() {
+export function MapSection({ onMapChange }) {
   const [map, setMap] = useState(null);
   const mapContainerRef = useRef(null);
 
@@ -17,6 +16,9 @@ export function Content() {
           (position) => {
             const { latitude, longitude } = position.coords;
             if (mapContainerRef.current) {
+              // Clear the container element before rendering the map
+              mapContainerRef.current.innerHTML = "";
+
               const map = new mapboxgl.Map({
                 container: mapContainerRef.current,
                 style: "mapbox://styles/himanegi/clv9llq4j00q901ocgx2a6new",
@@ -24,12 +26,16 @@ export function Content() {
                 zoom: 14,
               });
               setMap(map);
+              onMapChange(map);
             }
           },
           (error) => {
             console.error("Error getting user's location:", error);
             // Fallback to default location if user's location is not available
             if (mapContainerRef.current) {
+              // Clear the container element before rendering the map
+              mapContainerRef.current.innerHTML = "";
+
               const map = new mapboxgl.Map({
                 container: mapContainerRef.current,
                 style: "mapbox://styles/himanegi/clv9llq4j00q901ocgx2a6new",
@@ -45,6 +51,9 @@ export function Content() {
         console.error("Geolocation is not supported by this browser.");
         // Fallback to default location
         if (mapContainerRef.current) {
+          // Clear the container element before rendering the map
+          mapContainerRef.current.innerHTML = "";
+
           const map = new mapboxgl.Map({
             container: mapContainerRef.current,
             style: "mapbox://styles/himanegi/clv9llq4j00q901ocgx2a6new",
@@ -62,10 +71,7 @@ export function Content() {
   }, []);
 
   return (
-    <div className="p-6 pb-5 grid grid-cols-1 md:grid-cols-4 gap-5">
-      <div>
-        <SearchSection map={map} />
-      </div>
+    <div>
       <div
         className="col-span-3 border-2 border-black rounded-xl overflow-hidden"
         ref={mapContainerRef}
@@ -75,4 +81,4 @@ export function Content() {
   );
 }
 
-export default Content;
+export default MapSection;
