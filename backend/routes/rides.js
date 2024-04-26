@@ -1,14 +1,11 @@
 // routes/rides.js
-const express = require("express");
+import express from "express";
+
+import {createRide,searchRide} from "../controllers/rideController.js"
+
 const router = express.Router();
-const Ride = require("../models/rideModel");
 
-router.post("/create", async (req, res) => {
-  // Implement ride creation logic
-});
+router.post("/create",createRide);
+router.get("/search", searchRide);
 
-router.get("/search", async (req, res) => {
-  // Implement ride search logic
-});
-
-module.exports = router;
+export default router;
