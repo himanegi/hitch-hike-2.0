@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
+import { useState } from "react";
 
 function MapboxRoute({
   map,
@@ -7,6 +8,7 @@ function MapboxRoute({
   destinationCoordinates,
   routeId,
 }) {
+  const [error, setError] = useState(null); // Initialize error state
   const sourceIdRef = useRef(
     `route-${routeId}-${sourceCoordinates.join(
       "-"
