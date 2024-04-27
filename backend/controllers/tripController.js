@@ -1,7 +1,7 @@
 import userTrip from "../models/userModel.js";
 
 const showRides=async(req,res)=>
-{
+{console.log(req.body)
     try{
 const rides=await userTrip.findOne({user:req.userId})
 if (rides > 0) {

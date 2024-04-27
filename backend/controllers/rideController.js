@@ -57,11 +57,7 @@ const searchRide = async (req, res) => {
     const { source, destination } = req.body;
     const srcPt = turf.point(source);
     const destPt = turf.point(destination);
-<<<<<<< HEAD
    
-=======
-    console.log("jk");
->>>>>>> b9209ec3d5fccadb33c5e6567357e0885578d4a8
     const All_rides = await Ride.find({});
     const rides = All_rides.filter((ride) => {
       const line = turf.feature(ride.route);
