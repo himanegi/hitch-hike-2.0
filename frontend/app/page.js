@@ -9,6 +9,16 @@ export default function Home() {
   const [sourceCoordinates, setSourceCoordinates] = useState([0, 0]);
   const [destinationCoordinates, setDestinationCoordinates] = useState([0, 0]);
   const [map, setMap] = useState(null);
+
+  const handleSearch=async()=>{
+    const rides=axios.post("http://localhost:5000/api/rides/search",{
+      source: sourceCoordinates,
+      destination: destinationCoordinates,
+      
+    })
+    console.log(rides)
+  }
+
   return (
     <div className="p-6 grid gird-cols-1 md:grid-cols-3 gap-5">
       <div>
@@ -31,7 +41,7 @@ export default function Home() {
           destinationCoordinates={destinationCoordinates}
         />
         {/* </div> */}
-        <button className="bg-[#4264fb] text-white w-full p-3 rounded-lg mt-3 border-2 border-black ">
+        <button className="bg-[#4264fb] text-white w-full p-3 rounded-lg mt-3 border-2 border-black " onClick={handleSearch}>
           Search
         </button>
       </div>
