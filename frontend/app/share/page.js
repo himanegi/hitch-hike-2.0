@@ -25,12 +25,9 @@ const ShareComponent = () => {
 
   const handleShareClick = () => {
     // Handle share functionality here
-    console.log("Share clicked");
-    console.log("Departure Time:", departureTime);
-    console.log("Trip Length:", tripLength);
-    console.log("Spots in Car:", spotsInCar);
-    console.log("Message:", message);
-    console.log("Women Only:", womenOnly);
+    axios.post("https://localhost:5000/api/rides/create",{
+      source:[22,97],destination:[33,90]
+    })
   };
 
   return (
