@@ -1,10 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import MapSection from "../components/Home/MapSection";
-import SearchSection from "../components/Home/SearchSection";
+// import SearchSection from "../components/Home/SearchSection";
 import axios from "axios";
+import InputItem from "../components/Home/InputItem";
+import MapboxRoute from "../components/Home/MapboxRoute";
 
 const ShareComponent = () => {
+  const [sourceCoordinates, setSourceCoordinates] = useState([0, 0]);
+  const [destinationCoordinates, setDestinationCoordinates] = useState([0, 0]);
   const [map, setMap] = useState(null);
   const currentDate = new Date().toISOString().split("T")[0];
   const [departureDate, setDepartureDate] = useState(currentDate);
@@ -16,11 +20,12 @@ const ShareComponent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted");
+    console.log(sourceCoordinates, destinationCoordinates);
     // Handle form submission here
     await axios
       .post("http://localhost:5000/api/rides/create", {
-        source: [0, 0],
-        destination: [1, 1],
+        source: sourceCoordinates,
+        destination: destinationCoordinates,
       })
       .then((res) => {
         console.log(res.data);
@@ -38,7 +43,21 @@ const ShareComponent = () => {
       >
         <h1 className="text-[25px]">Input Trip Details</h1>
         <div className="mb-4">
-          <SearchSection map={map} />
+          <InputItem
+            type="source"
+            map={map}
+            onCoordinatesChange={setSourceCoordinates}
+          />
+          <InputItem
+            type="destination"
+            map={map}
+            onCoordinatesChange={setDestinationCoordinates}
+          />
+          <MapboxRoute
+            map={map}
+            sourceCoordinates={sourceCoordinates}
+            destinationCoordinates={destinationCoordinates}
+          />
         </div>
         <div className="mb-4 px-1 flex justify-between">
           <div className="w-1/2 mr-2">
