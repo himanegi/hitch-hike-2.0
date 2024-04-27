@@ -5,6 +5,10 @@ import MapSection from "../components/Home/MapSection";
 import axios from "axios";
 import InputItem from "../components/Home/InputItem";
 import MapboxRoute from "../components/Home/MapboxRoute";
+import dotenv from "dotenv"
+dotenv.config()
+import { Clerk } from "@clerk/clerk-sdk-node";
+import { useUser } from "@clerk/clerk-react";
 
 const ShareComponent = () => {
   const [sourceCoordinates, setSourceCoordinates] = useState([0, 0]);
@@ -16,6 +20,9 @@ const ShareComponent = () => {
   const [spotsInCar, setSpotsInCar] = useState(1);
   const [message, setMessage] = useState("");
   const [carNumber, setCarNumber] = useState("");
+  const { user } = useUser();
+// const clerk = new Clerk(process.env.CLERK_SECRET_KEY);
+// const currUser = await clerk.users.getUser(user.id);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,6 +33,7 @@ const ShareComponent = () => {
       .post("http://localhost:5000/api/rides/create", {
         source: sourceCoordinates,
         destination: destinationCoordinates,
+        driverId:user.id,
       })
       .then((res) => {
         console.log(res.data);
