@@ -1,16 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import MapSection from "../components/Home/MapSection";
-// import SearchSection from "../components/Home/SearchSection";
 import axios from "axios";
 import InputItem from "../components/Home/InputItem";
 import MapboxRoute from "../components/Home/MapboxRoute";
-import dotenv from "dotenv"
-dotenv.config()
-import { Clerk } from "@clerk/clerk-sdk-node";
 import { useUser } from "@clerk/clerk-react";
 
 const ShareComponent = () => {
+  const [sourcePlace, setSourcePlace] = useState(null);
+  const [destinationPlace, setDestinationPlace] = useState(null);
   const [sourceCoordinates, setSourceCoordinates] = useState([0, 0]);
   const [destinationCoordinates, setDestinationCoordinates] = useState([0, 0]);
   const [map, setMap] = useState(null);
@@ -21,8 +19,8 @@ const ShareComponent = () => {
   const [message, setMessage] = useState("");
   const [carNumber, setCarNumber] = useState("");
   const { user } = useUser();
-// const clerk = new Clerk(process.env.CLERK_SECRET_KEY);
-// const currUser = await clerk.users.getUser(user.id);
+  // const clerk = new Clerk(process.env.CLERK_SECRET_KEY);
+  // const currUser = await clerk.users.getUser(user.id);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +31,7 @@ const ShareComponent = () => {
       .post("http://localhost:5000/api/rides/create", {
         source: sourceCoordinates,
         destination: destinationCoordinates,
-        driverId:user.id,
+        driverId: user.id,
       })
       .then((res) => {
         console.log(res.data);
@@ -55,11 +53,13 @@ const ShareComponent = () => {
             type="source"
             map={map}
             onCoordinatesChange={setSourceCoordinates}
+            onPlaceChange={setSourcePlace}
           />
           <InputItem
             type="destination"
             map={map}
             onCoordinatesChange={setDestinationCoordinates}
+            onPlaceChange={setDestinationPlace}
           />
           <MapboxRoute
             map={map}
@@ -149,4 +149,3 @@ const ShareComponent = () => {
 };
 
 export default ShareComponent;
-

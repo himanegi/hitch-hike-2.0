@@ -31,6 +31,7 @@ const createRide = async (req, res) => {
       driver: driverId,
     });
 
+    // console.log(typeof driverId);
     await newRide.save();
 
     const newRideforUser = await UserRide.findOne({ user: driverId });

@@ -1,23 +1,23 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const rideSchema = new mongoose.Schema({
   source: {
     type: {
       type: String,
-      enum: ['Point'],
+      enum: ["Point"],
     },
     coordinates: {
       type: [Number],
-    }
+    },
   },
   destination: {
     type: {
       type: String,
-      enum: ['Point'],
+      enum: ["Point"],
     },
     coordinates: {
       type: [Number],
-    }
+    },
   },
 
   date: Date,
@@ -25,16 +25,16 @@ const rideSchema = new mongoose.Schema({
   route: {
     type: {
       type: String,
-      enum: ['LineString'],
+      enum: ["LineString"],
     },
     coordinates: {
       type: [[Number]],
-    }
+    },
   },
   message: String,
-  driver: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  driver: { type: String, ref: "User" },
   riders: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   // Add other fields as needed
 });
 
-export default mongoose.model("Ride",rideSchema)
+export default mongoose.model("Ride", rideSchema);
