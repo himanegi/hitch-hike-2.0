@@ -54,6 +54,18 @@ function MapboxRoute({
                   "line-width": 4,
                 },
               });
+              // Calculate bounds to include both source and destination
+              const bounds = new mapboxgl.LngLatBounds();
+              bounds.extend(sourceCoordinates);
+              bounds.extend(destinationCoordinates);
+
+              // Adjust map view to fit bounds
+              map.fitBounds(bounds, {
+                padding: 80, // Add some padding around the bounds
+              });
+
+              // Reset the error state if a route is successfully fetched
+              setError(null);
             }
           }
         } catch (error) {
