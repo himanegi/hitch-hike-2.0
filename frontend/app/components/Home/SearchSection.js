@@ -9,7 +9,6 @@ function SearchSection({ map }) {
   return (
     <div>
       {/* className="p-2 md:p-6 rounded-xl border-[2px] border-black" */}
-      <p className="text-[25px] font-thin">Search for Rides</p>
       <InputItem
         type="source"
         map={map}

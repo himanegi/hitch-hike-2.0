@@ -1,8 +1,8 @@
-import express from "express"
-import mongoose from  "mongoose";
-import cors from "cors"
-import dotenv from 'dotenv'
-dotenv.config()
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
+dotenv.config();
 import rideRoutes from "./routes/rides.js";
 import tripRoutes from "./routes/trips.js";
 
@@ -13,6 +13,7 @@ app.use(cors(
     origin:"https://localhost/3000"
   }
 ));
+app.use(cors({ origin: "http://localhost:3000" }));
 
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -23,7 +24,8 @@ app.use("/api/rides", rideRoutes);
 
 app.use("/api/trips", tripRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
