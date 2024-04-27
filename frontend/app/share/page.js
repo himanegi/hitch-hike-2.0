@@ -6,7 +6,8 @@ import axios from "axios";
 
 const ShareComponent = () => {
   const [map, setMap] = useState(null);
-  const [departureDate, setDepartureDate] = useState("");
+  const currentDate = new Date().toISOString().split("T")[0];
+  const [departureDate, setDepartureDate] = useState(currentDate);
   const [departureTime, setDepartureTime] = useState("");
   const [spotsInCar, setSpotsInCar] = useState(1);
   const [message, setMessage] = useState("");
@@ -48,6 +49,8 @@ const ShareComponent = () => {
               id="departureDate"
               type="date"
               value={departureDate}
+              min={currentDate}
+              max="2024-12-31"
               onChange={(e) => setDepartureDate(e.target.value)}
               className="w-full border border-gray-500 rounded-md py-2 px-3"
             />

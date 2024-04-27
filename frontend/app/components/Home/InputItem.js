@@ -85,7 +85,7 @@ function InputItem({ type, map, onCoordinatesChange }) {
           cssText: `
             .Input {
               border-radius:0.4rem;
-              border:1px solid grey;
+              border:1px solid rgb(107 114 128);
               width: 100%;
             }
             .Input:focus {
