@@ -4,7 +4,7 @@ import * as turf from "@turf/turf";
 
 const createRide = async (req, res) => {
   try {
-    const { source, destination, date, time, message,driverId } = req.body;
+    const { source, destination, date, time, message, driverId } = req.body;
 
     const sourcePoint = {
       type: "Point",
@@ -28,11 +28,11 @@ const createRide = async (req, res) => {
       time,
       route: routeLine,
       message,
-      driver:driverId,
+      driver: driverId,
     });
 
+    // console.log(typeof driverId);
     await newRide.save();
-
     const newRideforUser = await UserRide.findOne({ user: driverId });
     if (newRideforUser) {
       newRideforUser.driving.push(newRide._id);
@@ -40,7 +40,8 @@ const createRide = async (req, res) => {
     } else {
       const newUserRide = new UserRide({
         user: driverId,
-        driving: [newRide._id]
+        driving: [newRide._id],
+        
       });
       await newUserRide.save();
     }
@@ -57,7 +58,6 @@ const searchRide = async (req, res) => {
     const { source, destination } = req.body;
     const srcPt = turf.point(source);
     const destPt = turf.point(destination);
-   
     const All_rides = await Ride.find({});
     const rides = All_rides.filter((ride) => {
       const line = turf.feature(ride.route);

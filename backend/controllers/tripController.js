@@ -1,12 +1,12 @@
 import userTrip from "../models/userModel.js";
 
 const showRides=async(req,res)=>
-{console.log(req.body)
+{
     try{
-const rides=await userTrip.findOne({user:req.userId})
-if (rides > 0) {
-    res.status(200).json({ message: "All Rides", rides });
-    console.log(rides)
+const allRides=await userTrip.find({user:req.body.userId})
+
+if (allRides.length > 0) {
+    res.status(200).json({ message: "All Rides", allRides });
   } else {
     res.status(200).json({ message: "No rides found" });
   }
