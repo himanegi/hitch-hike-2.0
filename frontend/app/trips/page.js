@@ -31,9 +31,9 @@ const Trips = () => {
           userId: user?.id || null,
         });
         // Check if the response data is an array
-
-        if (Array.isArray(response.data)) {
-          setDrivingTrips(response.data);
+          console.log(response.data)
+        if (Array.isArray(response.data.allRides)) {
+          setDrivingTrips(response.data.allRides);
         } else {
           // Handle the case when the response data is not an array
           console.error("Invalid response data format:", response.data);
