@@ -2,8 +2,10 @@ import { Roboto } from "next/font/google";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import Header from "./components/Header";
-import Footer from "./components/Footer"; // Make sure to import the Footer component
+import Footer from "./components/Footer";
+import { light } from "@mui/material/styles/createPalette";
 
 const roboto = Roboto({
   weight: ["400", "500", "700", "900"],
@@ -17,7 +19,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        baseTheme: light,
+      }}
+    >
       <html lang="en">
         <head>
           <link rel="icon" href="/carpool.ico" />

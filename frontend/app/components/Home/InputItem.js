@@ -3,7 +3,7 @@ import { SearchBox } from "@mapbox/search-js-react";
 import React, { useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 
-function InputItem({ type, map, onCoordinatesChange }) {
+function InputItem({ type, map, onCoordinatesChange, onPlaceChange }) {
   const [value, setValue] = useState(null);
   const [placeholder, setPlaceholder] = useState(null);
   const [marker, setMarker] = useState(null); // State to store the marker reference
@@ -23,9 +23,12 @@ function InputItem({ type, map, onCoordinatesChange }) {
 
     // Get the new coordinates from the selected feature
     const newCoordinates = feature.geometry.coordinates;
+    const newplaceName = feature.properties.name;
 
     // Call the callback with the new coordinates
     onCoordinatesChange(newCoordinates);
+    // Call the callback with the new place name
+    onPlaceChange(newplaceName);
 
     // Remove the existing marker, if any
     if (marker) {

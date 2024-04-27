@@ -44,7 +44,7 @@ const searchRide = async (req, res) => {
     const { source, destination } = req.body;
     const srcPt = turf.point(source);
     const destPt = turf.point(destination);
-    console.log("jk")
+    console.log("jk");
     const All_rides = await Ride.find({});
     const rides = All_rides.filter((ride) => {
       const line = turf.feature(ride.route);
@@ -59,7 +59,7 @@ const searchRide = async (req, res) => {
 
     if (rides.length > 0) {
       res.status(200).json({ message: "Search Result", rides });
-      console.log(rides)
+      console.log(rides);
     } else {
       res.status(200).json({ message: "No rides found" });
     }
