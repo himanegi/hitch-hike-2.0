@@ -220,19 +220,21 @@ import { useUser } from "@clerk/clerk-react";
 const Trips = () => {
   const { user } = useUser();
 
-useEffect(() => {
-  if (user) {
-    // User is logged in, safe to use user.id
+  useEffect(() => {
     const fetchTrips = async () => {
-      const response = await axios.post("http://localhost:5000/api/trips/",{
-        userId: user.id
-      });
-      setDrivingTrips(response.data);
+      try {
+        const response = await axios.post("http://localhost:5000/api/trips/", {
+          userId: user?.id || null,
+        });
+        setDrivingTrips(response.data);
+      } catch (error) {
+        // Handle the error here
+        console.error("Error fetching trips:", error);
+      }
     };
-
+  
     fetchTrips();
-  }
-}, [user]);
+  }, [user]);
   // console.log("hi",user.id)
   
   //[
