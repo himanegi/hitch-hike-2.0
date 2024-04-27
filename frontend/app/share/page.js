@@ -12,24 +12,14 @@ const ShareComponent = () => {
   const [womenOnly, setWomenOnly] = useState(false);
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Form submitted");
     // Handle form submission here
-    axios
-      .post("/api/trips", {
-        departure,
-        tripLength,
-        spotsInCar,
-        womenOnly,
-        message,
-        source: {
-          type: "Point",
-          coordinates: map.getSource().getCenter(),
-        },
-        destination: {
-          type: "Point",
-          coordinates: map.getDestination().getCenter(),
-        },
+    await axios
+      .post("http://localhost:5000/api/rides/create", {
+        source: [0, 0],
+        destination: [1, 1],
       })
       .then((res) => {
         console.log(res.data);
