@@ -57,7 +57,8 @@ function InputItem({ type, map, onCoordinatesChange }) {
           variables: {
             unit: "16px",
             padding: "0.5rem 1rem",
-            boxShadow: "0 0 0.5rem rgba(0, 0, 0, 0.1)",
+            boxShadow: "0 0 0 rgba(0, 0, 0, 0.1)",
+            borderRadius: "0.5rem",
           },
           icons:
             type === "source"
@@ -83,15 +84,13 @@ function InputItem({ type, map, onCoordinatesChange }) {
                 },
           cssText: `
             .Input {
-            border: 2px solid black;
-            transition: border-color 0.3s ease;
-            border-radius:4px;
-            width: 100%;
+              border-radius:0.4rem;
+              border:1px solid rgb(107 114 128);
+              width: 100%;
             }
             .Input:focus {
-              border: 2px solid #4264fb;
-              border-radius:4px;
-              box-shadow: 0 0 4px 1px #c8d1f9;
+              border: 2px solid black;
+              border-radius:0.4rem;
             }
 
             .Results {
