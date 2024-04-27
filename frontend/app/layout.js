@@ -1,4 +1,3 @@
-import { Poppins } from "next/font/google";
 import { Roboto } from "next/font/google";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./globals.css";
@@ -8,11 +7,6 @@ import Footer from "./components/Footer"; // Make sure to import the Footer comp
 
 const roboto = Roboto({
   weight: ["400", "500", "700", "900"],
-  subsets: ["latin"],
-});
-
-const poppins = Poppins({
-  weight: ["400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
 });
 
