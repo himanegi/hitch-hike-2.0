@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
 import rideRoutes from "./routes/rides.js";
-import tripRoutes from "./routes/trips.js";
+import userTripRoutes from "./routes/userTrips.js";
 
 const app = express();
 app.use(express.json());
@@ -17,7 +17,7 @@ mongoose
 
 app.use("/api/rides", rideRoutes);
 
-app.use("/api/trips", tripRoutes);
+app.use("/api/trips", userTripRoutes);
 
 const PORT = process.env.PORT;
 

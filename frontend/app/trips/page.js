@@ -196,7 +196,8 @@
 
 // export default Trips;
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import axios from "axios"
 import {
   Box,
   Button,
@@ -214,27 +215,47 @@ import {
   Typography,
 } from "@mui/material";
 
+import { useUser } from "@clerk/clerk-react";
+
 const Trips = () => {
-  // Sample data for demonstration
-  const drivingTrips = [
-    {
-      departure: "2023-04-24T10:00:00",
-      origin: "New York, NY",
-      destination: "Boston, MA",
-      riders: 2,
-      rideRequests: [
-        { userName: "John Doe", spots: 1, isHandled: false },
-        { userName: "Jane Smith", spots: 1, isHandled: false },
-      ],
-    },
-    {
-      departure: "2023-04-25T14:30:00",
-      origin: "Chicago, IL",
-      destination: "Los Angeles, CA",
-      riders: 4,
-      rideRequests: [{ userName: "Bob Johnson", spots: 1, isHandled: false }],
-    },
-  ];
+  const { user } = useUser();
+
+  useEffect(() => {
+    const fetchTrips = async () => {
+      try {
+        const response = await axios.post("http://localhost:5000/api/trips/", {
+          userId: user?.id || null,
+        });
+        setDrivingTrips(response.data);
+      } catch (error) {
+        // Handle the error here
+        console.error("Error fetching trips:", error);
+      }
+    };
+  
+    fetchTrips();
+  }, [user]);
+  // console.log("hi",user.id)
+  
+  //[
+    // {
+    //   departure: "2023-04-24T10:00:00",
+    //   origin: "New York, NY",
+    //   destination: "Boston, MA",
+    //   riders: 2,
+    //   rideRequests: [
+    //     { userName: "John Doe", spots: 1, isHandled: false },
+    //     { userName: "Jane Smith", spots: 1, isHandled: false },
+    //   ],
+    // },
+    // {
+    //   departure: "2023-04-25T14:30:00",
+    //   origin: "Chicago, IL",
+    //   destination: "Los Angeles, CA",
+    //   riders: 4,
+    //   rideRequests: [{ userName: "Bob Johnson", spots: 1, isHandled: false }],
+    // },
+  //];
 
   const ridingTrips = [
     {
