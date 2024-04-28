@@ -23,7 +23,7 @@ function MapboxRoute({
   useEffect(() => {
     if (map && sourceCoordinates && destinationCoordinates) {
       const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${sourceCoordinates[0]},${sourceCoordinates[1]};${destinationCoordinates[0]},${destinationCoordinates[1]}?geometries=geojson&overview=full&access_token=${process.env.NEXT_PUBLIC_MAPBOX_API_KEY}`;
-
+      // console.log("coordinates :", sourceCoordinates, destinationCoordinates);
       const fetchRoute = async () => {
         try {
           const response = await fetch(url);
