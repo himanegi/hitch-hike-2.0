@@ -2,8 +2,8 @@ import { createRideRequest,showRideRequests} from "../controllers/rideRequestCon
 import express from "express";
 const router = express.Router();
 
-router.post("/rideRequest", createRideRequest);
-router.get("/rideRequests", showRideRequests);
+router.post("/create", createRideRequest);
+router.get("/show", showRideRequests);
 
 export default router;
 
