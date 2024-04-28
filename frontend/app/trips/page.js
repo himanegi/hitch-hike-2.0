@@ -226,7 +226,7 @@ const Trips = () => {
               {ridingTrips.map((trip, index) => (
                 <TableRow key={index}>
                   <TableCell>
-                    {new Date(trip.departure).toLocaleString("en-US", {
+                    {new Date(trip.date).toLocaleString("en-US", {
                       weekday: "short",
                       day: "numeric",
                       month: "numeric",

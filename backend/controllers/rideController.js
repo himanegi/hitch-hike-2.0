@@ -4,7 +4,7 @@ import * as turf from "@turf/turf";
 
 const createRide = async (req, res) => {
   try {
-    const { source, destination, date, time, message, driverId } = req.body;
+    const { source, destination, date, time, message, driverId,sourceName,destinationName} = req.body;
 
     const sourcePoint = {
       type: "Point",
@@ -24,6 +24,8 @@ const createRide = async (req, res) => {
     const newRide = new Ride({
       source: sourcePoint,
       destination: destinationPoint,
+      sourceName,
+      destinationName,
       date,
       time,
       route: routeLine,

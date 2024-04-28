@@ -31,6 +31,8 @@ const rideSchema = new mongoose.Schema({
       type: [[Number]],
     },
   },
+  sourceName: String,
+  destinationName: String,
   message: String,
   driver: { type: String, ref: "User" },
   riders: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

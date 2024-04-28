@@ -5,7 +5,7 @@ const showRides=async(req,res)=>
     try{
 const allRides=await userTrip.find({user:req.body.userId}).populate({
     path: 'driving',
-    select: 'driver date'
+    select: 'driver date sourceName destinationName time'
 })
 // console.log(allRides)
 if (allRides.length > 0) {

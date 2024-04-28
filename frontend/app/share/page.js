@@ -30,7 +30,7 @@ const ShareComponent = () => {
       sourcePlace,
       destinationPlace,
       sourceCoordinates,
-      destinationCoordinates
+      destinationCoordinates,
     );
     // Handle form submission here
     await axios
