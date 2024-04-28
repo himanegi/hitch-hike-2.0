@@ -100,18 +100,36 @@ const distanceFromPoint=(point, line)=>{
   });
 }
 
+const getAngle=(l1,l2)=>
+{if (!l1 || !l1.geometry || !l1.geometry.coordinates[0] || !l1.geometry.coordinates[1]) {
+  return 180;
+}
+if (!l2 || !l2.geometry || !l2.geometry.coordinates[0] || !l2.geometry.coordinates[1]) {
+  return 180;
+}
+  const rideDirection = turf.bearing(l1.geometry.coordinates[0], l1.geometry.coordinates[1]);
+      const searchDirection =turf.bearing(l2.geometry.coordinates[0], l2.geometry.coordinates[1]);
+      return Math.abs(rideDirection - searchDirection);
+}
+
 
 const searchRide = async (req, res) => {
   try {
     const { source, destination } = req.body;
+    const line2 = {
+      type: "LineString",
+      coordinates: [source, destination],
+    };
     const srcPt = turf.point(source);
     const destPt = turf.point(destination);
     const All_rides = await Ride.find({});
-    const rides = All_rides.filter((ride) => {
-      const line = turf.feature(ride.route);
+    const rides = await All_rides.filter((ride) => {
+      const line = ride.route;
       const srcDistance = distanceFromPoint(srcPt, line);
       const destDistance = distanceFromPoint(destPt, line);
-      return srcDistance < 5 && destDistance < 5;
+     
+      const angle=getAngle(line,line2);
+      return srcDistance < 5 && destDistance < 5 && angle<30;
     });
 
     if (rides.length > 0) {
