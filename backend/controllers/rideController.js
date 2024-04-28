@@ -128,7 +128,7 @@ const searchRide = async (req, res) => {
 
       const angle = getAngle(line, line2);
       console.log(angle);
-      return srcDistance < 5 && destDistance < 5 && angle < 30;
+      return srcDistance < 50 && destDistance < 50 && angle < 15;
     });
 
     if (rides.length > 0) {
