@@ -46,11 +46,12 @@ export default function Home() {
   };
   const handleSubmit = async (ride) => {
     console.log("Form submitted");
+    console.log("Ride: ", ride);
     // Handle form submission here
     await axios
-      .post("http://localhost:5000/api/rideRequest/create", {
+      .post("http://localhost:5000/api/rideRequests/create", {
         rider: user.id,
-        driver: ride.driverId,
+        driver: ride.driver,
       })
       .then((res) => {
         console.log(res.data);
