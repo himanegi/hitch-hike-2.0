@@ -48,6 +48,7 @@ function InputItem({ type, map, onCoordinatesChange, onPlaceChange }) {
   return (
     <div className=" p-1 mt-3 gap-3 border-black">
       <SearchBox
+        type={type}
         selectPosition={value}
         setSelectPosition={(newValue) => {
           setValue(newValue);

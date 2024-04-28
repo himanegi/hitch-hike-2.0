@@ -1,12 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
 
 const NOMINATIM_BASE_URL = "https://nominatim.openstreetmap.org/search?";
 
@@ -27,7 +20,6 @@ export default function SearchBox(props) {
       method: "GET",
       redirect: "follow",
     };
-
     fetch(`${NOMINATIM_BASE_URL}${queryString}`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
@@ -45,45 +37,50 @@ export default function SearchBox(props) {
         name: place.display_name,
       },
     };
-
     setSelectPosition(feature);
   };
 
   return (
-    <div className="flex flex-col">
-      <div className="flex">
-        <div className="flex-1">
-          <OutlinedInput
-            className="w-full"
+    <>
+      <div className="flex mb-4">
+        <div className="flex-1 mr-2">
+          <input
+            placeholder="Search for a place"
+            required={true}
+            className="w-full border border-gray-500 rounded-md py-2 px-3"
             value={searchText}
             onChange={(event) => setSearchText(event.target.value)}
           />
         </div>
-        <div className="flex items-center px-5">
-          <Button variant="contained" color="primary" onClick={handleSearch}>
+        <div>
+          <button
+            onClick={handleSearch}
+            className="bg-blue-500 hover:bg-blue-600 border-black border-[2px] text-white font-thin py-2 px-4 rounded-md transition-colors"
+          >
             Search
-          </Button>
+          </button>
         </div>
       </div>
       <div>
-        <List component="nav" aria-label="main mailbox folders">
+        <ul>
           {listPlace.map((item) => (
-            <div key={item?.place_id}>
-              <ListItem button onClick={() => handleSelectPlace(item)}>
-                <ListItemIcon>
-                  <img
-                    src="/searchresult.svg"
-                    alt="Placeholder"
-                    className="w-8 h-8"
-                  />
-                </ListItemIcon>
-                <ListItemText primary={item?.display_name} />
-              </ListItem>
-              <Divider />
-            </div>
+            <li key={item?.place_id}>
+              <div
+                onClick={() => handleSelectPlace(item)}
+                className="hover:bg-gray-100 cursor-pointer py-2 px-4 flex items-center"
+              >
+                <img
+                  src="/searchresult.svg"
+                  alt="Placeholder"
+                  className="w-8 h-8 mr-2"
+                />
+                <span>{item?.display_name}</span>
+              </div>
+              <hr />
+            </li>
           ))}
-        </List>
+        </ul>
       </div>
-    </div>
+    </>
   );
 }

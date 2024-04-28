@@ -4,6 +4,7 @@ import { useState } from "react";
 import InputItem from "./components/Home/InputItem";
 import MapboxRoute from "./components/Home/MapboxRoute";
 import axios from "axios";
+import { useUser } from "@clerk/clerk-react";
 
 export default function Home() {
   const [sourcePlace, setSourcePlace] = useState(null);
@@ -13,6 +14,8 @@ export default function Home() {
   const [map, setMap] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [selectedRide, setSelectedRide] = useState(null);
+
+  const { user } = useUser();
 
   const fetchAvailableRides = async () => {
     try {
@@ -40,6 +43,21 @@ export default function Home() {
 
   const handleRideClick = (ride) => {
     setSelectedRide(ride);
+  };
+  const handleSubmit = async (ride) => {
+    console.log("Form submitted");
+    // Handle form submission here
+    await axios
+      .post("http://localhost:5000/api/rideRequest/create", {
+        rider: user.id,
+        driver: ride.driverId,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
@@ -89,6 +107,12 @@ export default function Home() {
                   <p className="font-thin">Time: {ride.time}</p>
                   <p className="font-thin">Message: {ride.message}</p>
                 </div>
+                <button
+                  onClick={() => handleSubmit(ride)}
+                  className="px-2 border-black bg-green-500 border-[2px] hover:bg-blue-500 rounded-md"
+                >
+                  Send Request
+                </button>
               </div>
             ))}
           </div>
