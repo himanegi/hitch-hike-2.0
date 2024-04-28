@@ -66,7 +66,6 @@ export default function Home() {
         </button>
 
         {/* Render search results */}
-
         {searchResults.length > 0 ? (
           <div className="mt-4">
             <h2 className="text-lg font-bold">Search Results:</h2>

@@ -25,12 +25,20 @@ const ShareComponent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted");
-    console.log(sourceCoordinates, destinationCoordinates);
+    console.log(
+      "Fetching available rides :",
+      sourcePlace,
+      destinationPlace,
+      sourceCoordinates,
+      destinationCoordinates
+    );
     // Handle form submission here
     await axios
       .post("http://localhost:5000/api/rides/create", {
         source: sourceCoordinates,
         destination: destinationCoordinates,
+        sourceName: sourcePlace,
+        destinationName: destinationPlace,
         driverId: user.id,
       })
       .then((res) => {
