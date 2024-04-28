@@ -4,7 +4,7 @@ const showRides=async(req,res)=>
 {
     try{
 const allRides=await userTrip.find({user:req.body.userId}).populate('driving')
-console.log(allRides)
+console.log(allRides[0].driving)
 if (allRides.length > 0) {
     res.status(200).json({ message: "All Rides", allRides });
   } else {

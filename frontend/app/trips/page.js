@@ -31,7 +31,7 @@ const Trips = () => {
           userId: user?.id || null,
         });
         // Check if the response data is an array
-          // console.log("hjh",response.data.allRides[0].driving)
+          console.log("hjh",response.data.allRides[0].driving)
         if (Array.isArray(response.data.allRides[0].driving)) {
           setDrivingTrips(response.data.allRides[0].driving);
         } else {
