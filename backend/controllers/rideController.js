@@ -13,18 +13,18 @@ const toRadians = (deg) => {
 const haversineDistance = (pt1, pt2) => {
   const earthRadius = 6371; // in kilometers
 
-  const [lat1, lon1] = pt1;
-  const [lat2, lon2] = pt2;
-
+  const [lat1, lon1] = pt1; 
+  const [lat2, lon2] = pt2; 
+console.log(lat1,lon1,lat2,lon2)
   const latDif = toRadians(lat2 - lat1);
   const lonDif = toRadians(lon2 - lon1);
 
   const a =           //sin^2((x2-x1)/2)+cos(x1)*cos(x2)*sin^2((y2-y1)/2)
-    Math.pow(Math.sin(latDif / 2),2) *
-    Math.pow(Math.cos(toRadians(lat1)),2)*
+    Math.pow(Math.sin(latDif / 2),2) +
+    Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2))*
     Math.pow(Math.sin(lonDif / 2),2) 
 
-  const c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  const c = 2*Math.asin(Math.sqrt(a)); //arctangent is used to get angle from tangent
 
   const dist = earthRadius*c;
 
