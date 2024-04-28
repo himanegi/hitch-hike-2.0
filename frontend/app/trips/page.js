@@ -37,11 +37,12 @@ const Trips = () => {
         ) {
           const trips = response.data.allRides[0].driving.map((trip) => ({
             departure: trip.date,
-            origin: trip.source.coordinates.join(", "),
-            destination: trip.destination.coordinates.join(", "),
+            origin: trip.sourceName,
+            destination: trip.destinationName,
             riders: trip.riders.length,
           }));
           setDrivingTrips(trips);
+          console.log("message: ", response.data.allRides);
         } else {
           console.error("Invalid response data format:", response.data);
           setDrivingTrips([]);
@@ -115,7 +116,7 @@ const Trips = () => {
                 <TableCell>Departure</TableCell>
                 <TableCell>Origin</TableCell>
                 <TableCell>Destination</TableCell>
-                <TableCell>Riders</TableCell>
+                <TableCell>Available Spots</TableCell>
                 <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
