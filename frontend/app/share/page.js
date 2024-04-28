@@ -5,6 +5,7 @@ import axios from "axios";
 import InputItem from "../components/Home/InputItem";
 import MapboxRoute from "../components/Home/MapboxRoute";
 import { useUser } from "@clerk/clerk-react";
+import { DriveFileRenameOutline } from "@mui/icons-material";
 
 const ShareComponent = () => {
   const [sourcePlace, setSourcePlace] = useState(null);
@@ -40,6 +41,7 @@ const ShareComponent = () => {
         sourceName: sourcePlace,
         destinationName: destinationPlace,
         driverId: user.id,
+        driverName: user.fullName,
         date:departureDate,
         message:message,
         time:departureTime

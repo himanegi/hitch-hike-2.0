@@ -21,7 +21,7 @@ import {
 import { useUser } from "@clerk/clerk-react";
 
 const Trips = () => {
-  const [drivingTrips, setDrivingTrips] = useState([{source:"", destination:"", route:"",driver:"",date:""}]);
+  const [drivingTrips, setDrivingTrips] = useState([]);
   const { user } = useUser();
 
   useEffect(() => {
@@ -30,18 +30,24 @@ const Trips = () => {
         const response = await axios.post("http://localhost:5000/api/trips/", {
           userId: user?.id || null,
         });
-        // Check if the response data is an array
-          console.log("hjh",response.data.allRides)
-        if (Array.isArray(response.data.allRides[0].driving)) {
-          setDrivingTrips(response.data.allRides[0].driving);
+        if (
+          Array.isArray(response.data.allRides) &&
+          response.data.allRides.length > 0 &&
+          Array.isArray(response.data.allRides[0].driving)
+        ) {
+          const trips = response.data.allRides[0].driving.map((trip) => ({
+            departure: trip.date,
+            origin: trip.sourceName,
+            destination: trip.destinationName,
+            riders: trip.riders.length,
+          }));
+          setDrivingTrips(trips);
+          console.log("message: ", response.data.allRides);
         } else {
-          // Handle the case when the response data is not an array
           console.error("Invalid response data format:", response.data);
-          setDrivingTrips([]); // Set an empty array if the data is not valid
+          setDrivingTrips([]);
         }
-        console.log("message: ", response.data);
       } catch (error) {
-        // Handle the error here
         console.error("Error fetching trips:", error);
       }
     };
@@ -110,7 +116,7 @@ const Trips = () => {
                 <TableCell>Departure</TableCell>
                 <TableCell>Origin</TableCell>
                 <TableCell>Destination</TableCell>
-                <TableCell>Riders</TableCell>
+                <TableCell>Available Spots</TableCell>
                 <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>

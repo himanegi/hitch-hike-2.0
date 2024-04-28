@@ -4,7 +4,7 @@ import * as turf from "@turf/turf";
 
 const createRide = async (req, res) => {
   try {
-    const { source, destination, date, time, message, driverId,sourceName,destinationName} = req.body;
+    const { source, destination, date, time, message, driverId,sourceName,destinationName,driverName} = req.body;
 
     const sourcePoint = {
       type: "Point",
@@ -31,7 +31,9 @@ const createRide = async (req, res) => {
       route: routeLine,
       message,
       driver: driverId,
+      driverName
     });
+    console.log(driverName);
 
     // console.log(typeof driverId);
     await newRide.save();
@@ -55,6 +57,8 @@ const createRide = async (req, res) => {
       .json({ message: "An error occurred while creating the ride" });
   }
 };
+
+
 const searchRide = async (req, res) => {
   try {
     const { source, destination } = req.body;
