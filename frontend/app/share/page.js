@@ -5,7 +5,6 @@ import axios from "axios";
 import InputItem from "../components/Home/InputItem";
 import MapboxRoute from "../components/Home/MapboxRoute";
 import { useUser } from "@clerk/clerk-react";
-import { DriveFileRenameOutline } from "@mui/icons-material";
 
 const ShareComponent = () => {
   const [sourcePlace, setSourcePlace] = useState(null);
@@ -27,11 +26,11 @@ const ShareComponent = () => {
     e.preventDefault();
     console.log("Form submitted");
     console.log(
-      "Fetching available rides :",
+      "Ride Shared :",
       sourcePlace,
       destinationPlace,
       sourceCoordinates,
-      destinationCoordinates,
+      destinationCoordinates
     );
     // Handle form submission here
     await axios
@@ -42,9 +41,9 @@ const ShareComponent = () => {
         destinationName: destinationPlace,
         driverId: user.id,
         driverName: user.fullName,
-        date:departureDate,
-        message:message,
-        time:departureTime
+        date: departureDate,
+        message: message,
+        time: departureTime,
       })
       .then((res) => {
         console.log(res.data);

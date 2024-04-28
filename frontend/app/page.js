@@ -4,6 +4,7 @@ import { useState } from "react";
 import InputItem from "./components/Home/InputItem";
 import MapboxRoute from "./components/Home/MapboxRoute";
 import axios from "axios";
+import { useUser } from "@clerk/clerk-react";
 
 export default function Home() {
   const [sourcePlace, setSourcePlace] = useState(null);
@@ -13,6 +14,8 @@ export default function Home() {
   const [map, setMap] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [selectedRide, setSelectedRide] = useState(null);
+
+  const { user } = useUser();
 
   const fetchAvailableRides = async () => {
     try {
@@ -28,6 +31,7 @@ export default function Home() {
 
       if (response.data.rides && response.data.rides.length > 0) {
         setSearchResults(response.data.rides);
+        console.log("Available rides:", response.data.rides);
       } else {
         setSearchResults([]);
         console.log("No rides found");
@@ -39,6 +43,22 @@ export default function Home() {
 
   const handleRideClick = (ride) => {
     setSelectedRide(ride);
+  };
+  const handleSubmit = async (ride) => {
+    console.log("Form submitted");
+    console.log("Ride: ", ride);
+    // Handle form submission here
+    await axios
+      .post("http://localhost:5000/api/rideRequests/create", {
+        rider: user.id,
+        driver: ride.driver,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
@@ -83,7 +103,17 @@ export default function Home() {
                   <p className="font-thin">
                     Destination Name: {ride.destinationName}
                   </p>
+                  <p className="font-thin">Driver Name: {ride.driverName}</p>
+                  <p className="font-thin">Date: {ride.date}</p>
+                  <p className="font-thin">Time: {ride.time}</p>
+                  <p className="font-thin">Message: {ride.message}</p>
                 </div>
+                <button
+                  onClick={() => handleSubmit(ride)}
+                  className="px-2 border-black bg-green-500 border-[2px] hover:bg-blue-500 rounded-md"
+                >
+                  Send Request
+                </button>
               </div>
             ))}
           </div>
