@@ -33,6 +33,7 @@ const rideSchema = new mongoose.Schema({
   },
   sourceName: String,
   destinationName: String,
+  totalDist: Number,
   message: String,
   driver: { type: String, ref: "User" },
   driverName: String,

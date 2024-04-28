@@ -2,6 +2,37 @@ import Ride from "../models/rideModel.js";
 import UserRide from "../models/userModel.js";
 import * as turf from "@turf/turf";
 
+
+
+//Implementing the HaverSine distance calculation function
+
+const toRadians = (deg) => {
+  return deg * (Math.PI / 180);
+};
+
+const haversineDistance = (pt1, pt2) => {
+  const earthRadius = 6371; // in kilometers
+
+  const [lat1, lon1] = pt1;
+  const [lat2, lon2] = pt2;
+
+  const latDif = toRadians(lat2 - lat1);
+  const lonDif = toRadians(lon2 - lon1);
+
+  const a =           //sin^2((x2-x1)/2)+cos(x1)*cos(x2)*sin^2((y2-y1)/2)
+    Math.pow(Math.sin(latDif / 2),2) *
+    Math.pow(Math.cos(toRadians(lat1)),2)*
+    Math.pow(Math.sin(lonDif / 2),2) 
+
+  const c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+  const dist = earthRadius*c;
+
+  return dist;
+};
+
+
+
 const createRide = async (req, res) => {
   try {
     const { source, destination, date, time, message, driverId,sourceName,destinationName,driverName} = req.body;
@@ -21,6 +52,9 @@ const createRide = async (req, res) => {
       coordinates: [source, destination],
     };
 
+    const totalDist=haversineDistance(source, destination)
+    console.log(totalDist);
+
     const newRide = new Ride({
       source: sourcePoint,
       destination: destinationPoint,
@@ -31,9 +65,10 @@ const createRide = async (req, res) => {
       route: routeLine,
       message,
       driver: driverId,
-      driverName
+      driverName,
+      totalDist
     });
-    console.log(driverName);
+    
 
     // console.log(typeof driverId);
     await newRide.save();
@@ -51,12 +86,19 @@ const createRide = async (req, res) => {
     }
 
     res.status(200).json({ message: "Ride created successfully" });
-  } catch (err) {
+  } catch (err) {console.error(err);
     res
       .status(500)
       .json({ message: "An error occurred while creating the ride" });
   }
 };
+
+
+const distanceFromPoint=(point, line)=>{
+  return turf.pointToLineDistance(point, line, {
+    units: "kilometers",
+  });
+}
 
 
 const searchRide = async (req, res) => {
@@ -67,12 +109,8 @@ const searchRide = async (req, res) => {
     const All_rides = await Ride.find({});
     const rides = All_rides.filter((ride) => {
       const line = turf.feature(ride.route);
-      const srcDistance = turf.pointToLineDistance(srcPt, line, {
-        units: "kilometers",
-      });
-      const destDistance = turf.pointToLineDistance(destPt, line, {
-        units: "kilometers",
-      });
+      const srcDistance = distanceFromPoint(srcPt, line);
+      const destDistance = distanceFromPoint(destPt, line);
       return srcDistance < 5 && destDistance < 5;
     });
 
