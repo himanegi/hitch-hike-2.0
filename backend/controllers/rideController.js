@@ -101,14 +101,9 @@ const distanceFromPoint=(point, line)=>{
 }
 
 const getAngle=(l1,l2)=>
-{if (!l1 || !l1.geometry || !l1.geometry.coordinates[0] || !l1.geometry.coordinates[1]) {
-  return 180;
-}
-if (!l2 || !l2.geometry || !l2.geometry.coordinates[0] || !l2.geometry.coordinates[1]) {
-  return 180;
-}
-  const rideDirection = turf.bearing(l1.geometry.coordinates[0], l1.geometry.coordinates[1]);
-      const searchDirection =turf.bearing(l2.geometry.coordinates[0], l2.geometry.coordinates[1]);
+{
+  const rideDirection = turf.bearing(l1.coordinates[0], l1.coordinates[1]);
+      const searchDirection =turf.bearing(l2.coordinates[0], l2.coordinates[1]);
       return Math.abs(rideDirection - searchDirection);
 }
 
@@ -129,6 +124,7 @@ const searchRide = async (req, res) => {
       const destDistance = distanceFromPoint(destPt, line);
      
       const angle=getAngle(line,line2);
+      console.log(angle)
       return srcDistance < 5 && destDistance < 5 && angle<30;
     });
 
