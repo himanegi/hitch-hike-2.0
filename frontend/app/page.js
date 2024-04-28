@@ -11,7 +11,8 @@ export default function Home() {
   const [sourceCoordinates, setSourceCoordinates] = useState([0, 0]);
   const [destinationCoordinates, setDestinationCoordinates] = useState([0, 0]);
   const [map, setMap] = useState(null);
-  const [searchResults, setSearchResults] = useState([]); // New state for search results
+  const [searchResults, setSearchResults] = useState([]);
+  const [selectedRide, setSelectedRide] = useState(null);
 
   const fetchAvailableRides = async () => {
     try {
@@ -25,16 +26,19 @@ export default function Home() {
         }
       );
 
-      // Check if the response has rides data
       if (response.data.rides && response.data.rides.length > 0) {
-        setSearchResults(response.data.rides); // Update the searchResults state with the rides data
+        setSearchResults(response.data.rides);
       } else {
-        setSearchResults([]); // Clear the search results if no rides found
+        setSearchResults([]);
         console.log("No rides found");
       }
     } catch (error) {
       console.error("Error fetching available rides:", error);
     }
+  };
+
+  const handleRideClick = (ride) => {
+    setSelectedRide(ride);
   };
 
   return (
@@ -64,28 +68,38 @@ export default function Home() {
         >
           Search
         </button>
-
         {/* Render search results */}
         {searchResults.length > 0 ? (
           <div className="mt-4">
             <h2 className="text-lg font-bold">Search Results:</h2>
             {searchResults.map((ride, index) => (
-              <div key={index} className="my-2">
-                <p>Source Coordinates: {ride.source.coordinates.join(", ")}</p>
-                <p>
-                  Destination Coordinates:{" "}
-                  {ride.destination.coordinates.join(", ")}
-                </p>
-                <MapboxRoute
-                  map={map}
-                  sourceCoordinates={ride.source.coordinates}
-                  destinationCoordinates={ride.destination.coordinates}
-                  routeId={`route-${index}`} // Add a unique routeId prop
-                />
+              <div
+                key={index}
+                className="my-2 cursor-pointer bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                onClick={() => handleRideClick(ride)}
+              >
+                <div className="p-4">
+                  <p className="font-thin">Source Name: {ride.sourceName}</p>
+                  <p className="font-thin">
+                    Destination Name: {ride.destinationName}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
         ) : null}
+        {/* Render the selected ride */}
+        {selectedRide && (
+          <div className="mt-4">
+            <h2 className="text-lg font-bold">Selected Ride:</h2>
+            <MapboxRoute
+              map={map}
+              sourceCoordinates={selectedRide.source.coordinates}
+              destinationCoordinates={selectedRide.destination.coordinates}
+              routeId="selected-route"
+            />
+          </div>
+        )}
       </div>
       <div className="col-span-2">
         <MapSection onMapChange={setMap} />
