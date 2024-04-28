@@ -32,6 +32,9 @@ const ShareComponent = () => {
         source: sourceCoordinates,
         destination: destinationCoordinates,
         driverId: user.id,
+        date:departureDate,
+        message:message,
+        time:departureTime
       })
       .then((res) => {
         console.log(res.data);

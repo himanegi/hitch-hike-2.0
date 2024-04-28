@@ -21,7 +21,7 @@ import {
 import { useUser } from "@clerk/clerk-react";
 
 const Trips = () => {
-  const [drivingTrips, setDrivingTrips] = useState([]);
+  const [drivingTrips, setDrivingTrips] = useState([{source:"", destination:"", route:"",driver:"",date:""}]);
   const { user } = useUser();
 
   useEffect(() => {
@@ -31,9 +31,9 @@ const Trips = () => {
           userId: user?.id || null,
         });
         // Check if the response data is an array
-          console.log(response.data)
-        if (Array.isArray(response.data.allRides)) {
-          setDrivingTrips(response.data.allRides);
+          console.log(response.data.allRides[0].driving)
+        if (Array.isArray(response.data.allRides[0].driving)) {
+          setDrivingTrips(response.data.allRides[0].driving);
         } else {
           // Handle the case when the response data is not an array
           console.error("Invalid response data format:", response.data);
