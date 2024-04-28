@@ -27,11 +27,11 @@ const ShareComponent = () => {
     e.preventDefault();
     console.log("Form submitted");
     console.log(
-      "Fetching available rides :",
+      "Ride Shared :",
       sourcePlace,
       destinationPlace,
       sourceCoordinates,
-      destinationCoordinates,
+      destinationCoordinates
     );
     // Handle form submission here
     await axios
@@ -42,9 +42,9 @@ const ShareComponent = () => {
         destinationName: destinationPlace,
         driverId: user.id,
         driverName: user.fullName,
-        date:departureDate,
-        message:message,
-        time:departureTime
+        date: departureDate,
+        message: message,
+        time: departureTime,
       })
       .then((res) => {
         console.log(res.data);

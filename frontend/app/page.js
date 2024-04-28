@@ -28,6 +28,7 @@ export default function Home() {
 
       if (response.data.rides && response.data.rides.length > 0) {
         setSearchResults(response.data.rides);
+        console.log("Available rides:", response.data.rides);
       } else {
         setSearchResults([]);
         console.log("No rides found");
@@ -83,6 +84,10 @@ export default function Home() {
                   <p className="font-thin">
                     Destination Name: {ride.destinationName}
                   </p>
+                  <p className="font-thin">Driver Name: {ride.driverName}</p>
+                  <p className="font-thin">Date: {ride.date}</p>
+                  <p className="font-thin">Time: {ride.time}</p>
+                  <p className="font-thin">Message: {ride.message}</p>
                 </div>
               </div>
             ))}
