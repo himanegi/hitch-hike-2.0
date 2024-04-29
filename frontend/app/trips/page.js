@@ -17,13 +17,22 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-
 import { useUser } from "@clerk/clerk-react";
 
 const Trips = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTrip, setSelectedTrip] = useState(null);
+  const [availableSpots, setAvailableSpots] = useState(0);
   const [drivingTrips, setDrivingTrips] = useState([]);
+  const [rideRequests, setRideRequests] = useState([]);
   const { user } = useUser();
 
+  useEffect(() => {
+    if (user) {
+      const fullName = user.fullName;
+      console.log(fullName);
+    }
+  }, [user]);
   useEffect(() => {
     const fetchTrips = async () => {
       try {
@@ -40,6 +49,7 @@ const Trips = () => {
             origin: trip.sourceName,
             destination: trip.destinationName,
             riders: trip.riders.length,
+            id: trip._id, // Assuming the trip object has an '_id' property
           }));
           setDrivingTrips(trips);
           console.log("message: ", response.data.allRides);
@@ -55,6 +65,22 @@ const Trips = () => {
     fetchTrips();
   }, [user]);
 
+  const fetchRideRequests = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/rideRequests/show",
+        {
+          userId: user?.id || null,
+        }
+      );
+      console.log("Ride requests:", response.data);
+      setShowModal(true);
+      setRideRequests(response.data.rideRequests);
+    } catch (error) {
+      console.error("Error fetching ride requests:", error);
+    }
+  };
+
   const ridingTrips = [
     {
       departure: "2023-04-26T09:15:00",
@@ -69,16 +95,6 @@ const Trips = () => {
       requestStatus: "Approved",
     },
   ];
-
-  const [showModal, setShowModal] = useState(false);
-  const [selectedTrip, setSelectedTrip] = useState(null);
-  const [availableSpots, setAvailableSpots] = useState(0);
-
-  const handleManageTrip = (trip) => {
-    setSelectedTrip(trip);
-    setAvailableSpots(trip.riders);
-    setShowModal(true);
-  };
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -142,7 +158,7 @@ const Trips = () => {
                       style={{ textTransform: "none" }}
                       variant="contained"
                       color="primary"
-                      onClick={() => handleManageTrip(trip)}
+                      onClick={() => fetchRideRequests()}
                     >
                       Manage Trip
                     </Button>
@@ -172,9 +188,9 @@ const Trips = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {selectedTrip?.rideRequests.map((request, index) => (
+                {rideRequests.map((request, index) => (
                   <TableRow key={index}>
-                    <TableCell>{request.userName}</TableCell>
+                    <TableCell>{request.status}</TableCell>
                     <TableCell>
                       <Button
                         style={{ textTransform: "none", marginRight: "8px" }}

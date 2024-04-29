@@ -6,6 +6,6 @@ import express from "express";
 const router = express.Router();
 
 router.post("/create", createRideRequest);
-router.get("/show", showRideRequests);
+router.post("/show", showRideRequests);
 
 export default router;
