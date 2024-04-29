@@ -9,5 +9,6 @@ const rideRequestSchema = new mongoose.Schema({
     enum: ["pending", "accepted", "declined"],
     default: "pending",
   },
+  tripId: { type: mongoose.Schema.Types.ObjectId, ref: "Ride" },
 });
 export default mongoose.model("RideRequest", rideRequestSchema);

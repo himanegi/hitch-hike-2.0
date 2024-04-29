@@ -2,12 +2,13 @@ import RideRequest from "../models/rideRequestModel.js";
 
 const createRideRequest = async (req, res) => {
   try {
-    const { rider, driver, username } = req.body;
+    const { rider, driver, username, tripId } = req.body;
     console.log("my name", username);
     const newRideRequest = new RideRequest({
       riderId: rider,
       driverId: driver,
       username: username,
+      tripId: tripId,
     });
     console.log("newRideRequest: ", newRideRequest);
     await newRideRequest.save();

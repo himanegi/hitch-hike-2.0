@@ -7,6 +7,8 @@ import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
 
 export default function Home() {
+  const [requestSent, setRequestSent] = useState(false);
+  const [clickedIndex, setClickedIndex] = useState(null);
   const [sourcePlace, setSourcePlace] = useState(null);
   const [destinationPlace, setDestinationPlace] = useState(null);
   const [sourceCoordinates, setSourceCoordinates] = useState([0, 0]);
@@ -41,18 +43,22 @@ export default function Home() {
     }
   };
 
-  const handleRideClick = (ride) => {
-    setSelectedRide(ride);
+  const handleRideClick = (ride, index) => {
+    setClickedIndex(index);
+    setSelectedRide(ride); // Set requestSent to true after the first click
   };
   const handleSubmit = async (ride) => {
     console.log("Form submitted");
     console.log("Ride: ", ride);
     // Handle form submission here
+    if (!requestSent) setRequestSent(true);
+
     await axios
       .post("http://localhost:5000/api/rideRequests/create", {
         rider: user.id,
         driver: ride.driver,
         username: user.fullName,
+        tripId: ride._id,
       })
       .then((res) => {
         console.log(res.data);
@@ -97,7 +103,7 @@ export default function Home() {
               <div
                 key={index}
                 className="my-2 cursor-pointer bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-                onClick={() => handleRideClick(ride)}
+                onClick={() => handleRideClick(ride, index)}
               >
                 <div className="p-4">
                   <p className="font-thin">Source Name: {ride.sourceName}</p>
@@ -110,10 +116,11 @@ export default function Home() {
                   <p className="font-thin">Message: {ride.message}</p>
                 </div>
                 <button
+                  className="block mx-auto px-4 py-2 rounded-md bg-blue-500 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={() => handleSubmit(ride)}
-                  className="px-2 border-black bg-green-500 border-[2px] hover:bg-blue-500 rounded-md"
+                  disabled={requestSent}
                 >
-                  Send Request
+                  {requestSent ? "Request Sent" : "Send Request"}
                 </button>
               </div>
             ))}
