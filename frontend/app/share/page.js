@@ -18,6 +18,7 @@ const ShareComponent = () => {
   const [spotsInCar, setSpotsInCar] = useState(1);
   const [message, setMessage] = useState("");
   const [carNumber, setCarNumber] = useState("");
+  
   const { user } = useUser();
   // const clerk = new Clerk(process.env.CLERK_SECRET_KEY);
   // const currUser = await clerk.users.getUser(user.id);

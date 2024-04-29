@@ -17,7 +17,7 @@ const createRideRequest = async (req, res) => {
 
 const showRideRequests = async (req, res) => {
   try {
-    const rideRequests = await RideRequest.find({ driver: req.user._id });
+    const rideRequests = await RideRequest.find({ driverId: req.body.userId });
     res.status(200).json(rideRequests);
   } catch (error) {
     res.status(404).json({ message: error.message });
