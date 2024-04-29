@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const rideRequestSchema = new mongoose.Schema({
-  riderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  riderId: { type: String },
   username: { type: String },
   status: {
     type: String,
@@ -48,6 +48,7 @@ const rideSchema = new mongoose.Schema({
   message: String,
   driver: { type: String, ref: "User" },
   driverName: String,
+  riders: [rideRequestSchema],
   rideRequests: [rideRequestSchema],
   spotsLeft: {type:Number, default:3},
   // Add other fields as needed

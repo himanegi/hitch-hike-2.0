@@ -39,6 +39,7 @@ const Trips = () => {
         const response = await axios.post("http://localhost:5000/api/trips/", {
           userId: user?.id || null,
         });
+        console.log(response.data)
         if (
           Array.isArray(response.data.allRides) &&
           response.data.allRides.length > 0 &&
@@ -49,12 +50,13 @@ const Trips = () => {
             origin: trip.sourceName,
             destination: trip.destinationName,
             riders: trip.riders.length,
-            id: trip._id, // Assuming the trip object has an '_id' property
+            id: trip._id,
+            availableSpots:trip.spotsLeft // Assuming the trip object has an '_id' property
           }));
           setDrivingTrips(trips);
           console.log("message: ", response.data.allRides);
         } else {
-          console.error("Invalid response data format:", response.data);
+          console.log("Invalid response data format:", response.data);
           setDrivingTrips([]);
         }
       } catch (error) {

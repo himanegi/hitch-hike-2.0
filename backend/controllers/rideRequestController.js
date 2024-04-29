@@ -3,7 +3,7 @@ import rideModel from "../models/rideModel.js";
 
 const createRideRequest = async (req, res) => {
   try {
-    const {  rideId, username } = req.body;
+    const {  rideId, username ,rider} = req.body;
     const ride = await rideModel.findById(rideId)
     if(ride.spotsLeft == 0){
         res.status(201).json({ message:"sorry no spots left" });}

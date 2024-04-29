@@ -57,6 +57,7 @@ export default function Home() {
       .post("http://localhost:5000/api/rideRequests/create", {
         username: user.fullName,
         rideId: ride._id,
+        rider: user.id,
       })
       .then((res) => {
         console.log(res.data);
