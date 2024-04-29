@@ -1,14 +1,13 @@
 // routes/trips.js
 import express from "express";
 const router = express.Router();
-import Trip from "../models/tripModel.js";
-
+import {showRides} from "../controllers/tripController.js"
 router.post("/create", async (req, res) => {
   // Implement trip creation logic
 });
 
-router.get("/", async (req, res) => {
-  // Implement logic to fetch user's trips
-});
+router.post("/", showRides);
 
 export default router;
+
+

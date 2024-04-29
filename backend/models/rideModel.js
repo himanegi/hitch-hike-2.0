@@ -1,23 +1,34 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
+
+const rideRequestSchema = new mongoose.Schema({
+  riderId: { type: String },
+  username: { type: String },
+  status: {
+    type: String,
+    enum: ["pending", "accepted", "declined"],
+    default: "pending",
+  },
+},{_id: false});
+
 
 const rideSchema = new mongoose.Schema({
   source: {
     type: {
       type: String,
-      enum: ['Point'],
+      enum: ["Point"],
     },
     coordinates: {
       type: [Number],
-    }
+    },
   },
   destination: {
     type: {
       type: String,
-      enum: ['Point'],
+      enum: ["Point"],
     },
     coordinates: {
       type: [Number],
-    }
+    },
   },
 
   date: Date,
@@ -25,16 +36,22 @@ const rideSchema = new mongoose.Schema({
   route: {
     type: {
       type: String,
-      enum: ['LineString'],
+      enum: ["LineString"],
     },
     coordinates: {
       type: [[Number]],
-    }
+    },
   },
+  sourceName: String,
+  destinationName: String,
+  totalDist: Number,
   message: String,
-  driver: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  riders: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  driver: { type: String, ref: "User" },
+  driverName: String,
+  riders: [rideRequestSchema],
+  rideRequests: [rideRequestSchema],
+  spotsLeft: {type:Number, default:3},
   // Add other fields as needed
 });
 
-export default mongoose.model("Ride",rideSchema)
+export default mongoose.model("Ride", rideSchema);
