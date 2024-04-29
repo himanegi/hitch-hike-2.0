@@ -8,7 +8,8 @@ export default function SearchBox(props) {
   const [searchText, setSearchText] = useState("");
   const [listPlace, setListPlace] = useState([]);
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault();
     const params = {
       q: searchText,
       format: "json",
@@ -46,7 +47,6 @@ export default function SearchBox(props) {
         <div className="flex-1 mr-2">
           <input
             placeholder="Search for a place"
-            required={true}
             className="w-full border border-gray-500 rounded-md py-2 px-3"
             value={searchText}
             onChange={(event) => setSearchText(event.target.value)}

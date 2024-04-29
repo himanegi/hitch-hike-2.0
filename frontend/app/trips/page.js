@@ -17,13 +17,22 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-
 import { useUser } from "@clerk/clerk-react";
 
 const Trips = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTrip, setSelectedTrip] = useState(null);
+  const [availableSpots, setAvailableSpots] = useState(0);
   const [drivingTrips, setDrivingTrips] = useState([]);
+  const [rideRequests, setRideRequests] = useState([]);
   const { user } = useUser();
 
+  useEffect(() => {
+    if (user) {
+      const fullName = user.fullName;
+      console.log(fullName);
+    }
+  }, [user]);
   useEffect(() => {
     const fetchTrips = async () => {
       try {
@@ -40,6 +49,7 @@ const Trips = () => {
             origin: trip.sourceName,
             destination: trip.destinationName,
             riders: trip.riders.length,
+            id: trip._id, // Assuming the trip object has an '_id' property
           }));
           setDrivingTrips(trips);
           console.log("message: ", response.data.allRides);
@@ -55,6 +65,27 @@ const Trips = () => {
     fetchTrips();
   }, [user]);
 
+  const fetchRideRequests = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/rideRequests/show",
+        {
+          userId: user?.id || null,
+        }
+      );
+      setShowModal(true);
+      if (Array.isArray(response.data)) {
+        setRideRequests(response.data);
+        console.log("Ride requests for real:", rideRequests);
+      } else {
+        setRideRequests([]);
+      }
+    } catch (error) {
+      console.error("Error fetching ride requests:", error);
+      setRideRequests([]);
+    }
+  };
+
   const ridingTrips = [
     {
       departure: "2023-04-26T09:15:00",
@@ -69,16 +100,6 @@ const Trips = () => {
       requestStatus: "Approved",
     },
   ];
-
-  const [showModal, setShowModal] = useState(false);
-  const [selectedTrip, setSelectedTrip] = useState(null);
-  const [availableSpots, setAvailableSpots] = useState(0);
-
-  const handleManageTrip = (trip) => {
-    setSelectedTrip(trip);
-    setAvailableSpots(trip.riders);
-    setShowModal(true);
-  };
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -142,9 +163,9 @@ const Trips = () => {
                       style={{ textTransform: "none" }}
                       variant="contained"
                       color="primary"
-                      onClick={() => handleManageTrip(trip)}
+                      onClick={() => fetchRideRequests()}
                     >
-                      Manage Trip
+                      Requests
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -157,51 +178,61 @@ const Trips = () => {
       <Dialog open={showModal} onClose={handleCloseModal}>
         <DialogTitle>Ride Requests</DialogTitle>
         <DialogContent>
-          <Typography variant="body1" gutterBottom>
-            Use this dialog to approve or deny requests made by other users.
-          </Typography>
-          <Typography variant="body2" gutterBottom>
-            Available Spots: {availableSpots}
-          </Typography>
-          <TableContainer component={Box}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>User Name</TableCell>
-                  <TableCell>Action</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {selectedTrip?.rideRequests.map((request, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{request.userName}</TableCell>
-                    <TableCell>
-                      <Button
-                        style={{ textTransform: "none", marginRight: "8px" }}
-                        variant="contained"
-                        color="primary"
-                        onClick={() => handleApprove(request)}
-                        disabled={
-                          availableSpots < request.spots || request.isHandled
-                        }
-                      >
-                        Approve
-                      </Button>
-                      <Button
-                        style={{ textTransform: "none" }}
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleDecline(request)}
-                        disabled={request.isHandled}
-                      >
-                        Decline
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          {rideRequests.length > 0 ? (
+            <>
+              <Typography variant="body1" gutterBottom>
+                Use this dialog to approve or deny requests made by other users.
+              </Typography>
+              <Typography variant="body2" gutterBottom>
+                Available Spots: {availableSpots}
+              </Typography>
+              <TableContainer component={Box}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>User Name</TableCell>
+                      <TableCell>Action</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rideRequests.map((request, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{request.username}</TableCell>
+                        <TableCell>
+                          <Button
+                            style={{
+                              textTransform: "none",
+                              marginRight: "8px",
+                            }}
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleApprove(request)}
+                            disabled={
+                              availableSpots < request.spots ||
+                              request.isHandled
+                            }
+                          >
+                            Approve
+                          </Button>
+                          <Button
+                            style={{ textTransform: "none" }}
+                            variant="outlined"
+                            color="secondary"
+                            onClick={() => handleDecline(request)}
+                            disabled={request.isHandled}
+                          >
+                            Decline
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </>
+          ) : (
+            <Typography variant="body1">You have no ride requests.</Typography>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseModal} color="primary">

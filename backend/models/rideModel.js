@@ -1,5 +1,16 @@
 import mongoose from "mongoose";
 
+const rideRequestSchema = new mongoose.Schema({
+  riderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  username: { type: String },
+  status: {
+    type: String,
+    enum: ["pending", "accepted", "declined"],
+    default: "pending",
+  },
+},{_id: false});
+
+
 const rideSchema = new mongoose.Schema({
   source: {
     type: {
@@ -37,7 +48,8 @@ const rideSchema = new mongoose.Schema({
   message: String,
   driver: { type: String, ref: "User" },
   driverName: String,
-  riders: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  rideRequests: [rideRequestSchema],
+  spotsLeft: {type:Number, default:3},
   // Add other fields as needed
 });
 
