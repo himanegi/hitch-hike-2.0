@@ -39,7 +39,7 @@ const Trips = () => {
         const response = await axios.post("http://localhost:5000/api/trips/", {
           userId: user?.id || null,
         });
-        console.log(response.data)
+        console.log(response.data);
         if (
           Array.isArray(response.data.allRides) &&
           response.data.allRides.length > 0 &&
@@ -52,7 +52,7 @@ const Trips = () => {
             riders: trip.riders.length,
             id: trip._id,
             rideRequests: trip.rideRequests,
-            availableSpots:trip.spotsLeft // Assuming the trip object has an '_id' property
+            availableSpots: trip.spotsLeft, // Assuming the trip object has an '_id' property
           }));
           setDrivingTrips(trips);
           console.log("message: ", response.data.allRides);
@@ -71,15 +71,12 @@ const Trips = () => {
   //yaha pe each ride ke liye request fetch karna hai so  that we can show the riderequests in the trip
   const fetchRideRequests = async (trip) => {
     console.log("Ride requests for real:", trip);
-      setShowModal(true);
-      if (Array.isArray(trip.rideRequests)) {
-        setRideRequests(trip.rideRequests);
-        
-      } else {
-        setRideRequests([]);
-      }
-    
-    
+    setShowModal(true);
+    if (Array.isArray(trip.rideRequests)) {
+      setRideRequests(trip.rideRequests);
+    } else {
+      setRideRequests([]);
+    }
   };
 
   const ridingTrips = [

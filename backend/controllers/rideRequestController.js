@@ -8,7 +8,7 @@ const createRideRequest = async (req, res) => {
       res.status(201).json({ message: "sorry no spots left" });
     }
 
-    ride.rideRequests.push({ riderId: rider, username: username });
+    ride.rideRequests.push({ riderId: rideId, username: username });
     ride.spotsLeft = ride.spotsLeft - 1;
     res.status(201).json({ message: "Request sent" });
   } catch (error) {
