@@ -42,6 +42,7 @@ const createRide = async (req, res) => {
       sourceName,
       destinationName,
       driverName,
+      spotsInCar,
     } = req.body;
 
     const sourcePoint = {
@@ -74,6 +75,7 @@ const createRide = async (req, res) => {
       driver: driverId,
       driverName,
       totalDist,
+      spotsLeft: spotsInCar,
     });
 
     // console.log(typeof driverId);
