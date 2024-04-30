@@ -52,7 +52,7 @@ const Trips = () => {
             riders: trip.riders.length,
             id: trip._id,
             rideRequests: trip.rideRequests,
-            availableSpots: trip.spotsLeft, // Assuming the trip object has an '_id' property
+            availableSpots: trip.spotsLeft,
           }));
           setDrivingTrips(trips);
           console.log("message: ", response.data.allRides);
@@ -150,7 +150,7 @@ const Trips = () => {
                   </TableCell>
                   <TableCell>{trip.origin}</TableCell>
                   <TableCell>{trip.destination}</TableCell>
-                  <TableCell>{trip.riders}</TableCell>
+                  <TableCell>{trip.availableSpots}</TableCell>
                   <TableCell>
                     <Button
                       style={{ textTransform: "none" }}
@@ -177,7 +177,7 @@ const Trips = () => {
                 Use this dialog to approve or deny requests made by other users.
               </Typography>
               <Typography variant="body2" gutterBottom>
-                Available Spots: {availableSpots}
+                y Available Spots: {availableSpots}
               </Typography>
               <TableContainer component={Box}>
                 <Table>
