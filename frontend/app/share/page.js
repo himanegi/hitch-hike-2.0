@@ -5,8 +5,10 @@ import axios from "axios";
 import InputItem from "../components/Home/InputItem";
 import MapboxRoute from "../components/Home/MapboxRoute";
 import { useUser } from "@clerk/clerk-react";
+import RideSharedPopup from "../components/RideSharedPopup";
 
 const ShareComponent = () => {
+  const [showPopup, setShowPopup] = useState(false);
   const [sourcePlace, setSourcePlace] = useState(null);
   const [destinationPlace, setDestinationPlace] = useState(null);
   const [sourceCoordinates, setSourceCoordinates] = useState([0, 0]);
@@ -47,6 +49,7 @@ const ShareComponent = () => {
       })
       .then((res) => {
         console.log(res.data);
+        setShowPopup(true);
       })
       .catch((err) => {
         console.error(err);
@@ -156,6 +159,7 @@ const ShareComponent = () => {
       <div className="md:col-span-2">
         <MapSection onMapChange={setMap} />
       </div>
+      <RideSharedPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
     </div>
   );
 };
