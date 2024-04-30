@@ -18,7 +18,7 @@ const ShareComponent = () => {
   const [spotsInCar, setSpotsInCar] = useState(1);
   const [message, setMessage] = useState("");
   const [carNumber, setCarNumber] = useState("");
-  
+
   const { user } = useUser();
 
   const handleSubmit = async (e) => {
@@ -43,6 +43,7 @@ const ShareComponent = () => {
         date: departureDate,
         message: message,
         time: departureTime,
+        spots: spotsInCar,
       })
       .then((res) => {
         console.log(res.data);
