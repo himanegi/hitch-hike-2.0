@@ -21,6 +21,7 @@ export default function SearchBox(props) {
       method: "GET",
       redirect: "follow",
     };
+
     fetch(`${NOMINATIM_BASE_URL}${queryString}`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
@@ -39,6 +40,8 @@ export default function SearchBox(props) {
       },
     };
     setSelectPosition(feature);
+    setSearchText(place.display_name); // Set the selected place as the search input value
+    setListPlace([]); // Clear the search results
   };
 
   return (
