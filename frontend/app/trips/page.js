@@ -39,6 +39,7 @@ const Trips = () => {
         const response = await axios.post("http://localhost:5000/api/trips/", {
           userId: user?.id || null,
         });
+        console.log(response.data)
         if (
           Array.isArray(response.data.allRides) &&
           response.data.allRides.length > 0 &&
@@ -49,12 +50,14 @@ const Trips = () => {
             origin: trip.sourceName,
             destination: trip.destinationName,
             riders: trip.riders.length,
-            id: trip._id, // Assuming the trip object has an '_id' property
+            id: trip._id,
+            rideRequests: trip.rideRequests,
+            availableSpots:trip.spotsLeft // Assuming the trip object has an '_id' property
           }));
           setDrivingTrips(trips);
           console.log("message: ", response.data.allRides);
         } else {
-          console.error("Invalid response data format:", response.data);
+          console.log("Invalid response data format:", response.data);
           setDrivingTrips([]);
         }
       } catch (error) {
@@ -65,25 +68,18 @@ const Trips = () => {
     fetchTrips();
   }, [user]);
 
-  const fetchRideRequests = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/rideRequests/show",
-        {
-          userId: user?.id || null,
-        }
-      );
+  //yaha pe each ride ke liye request fetch karna hai so  that we can show the riderequests in the trip
+  const fetchRideRequests = async (trip) => {
+    console.log("Ride requests for real:", trip);
       setShowModal(true);
-      if (Array.isArray(response.data)) {
-        setRideRequests(response.data);
-        console.log("Ride requests for real:", rideRequests);
+      if (Array.isArray(trip.rideRequests)) {
+        setRideRequests(trip.rideRequests);
+        
       } else {
         setRideRequests([]);
       }
-    } catch (error) {
-      console.error("Error fetching ride requests:", error);
-      setRideRequests([]);
-    }
+    
+    
   };
 
   const ridingTrips = [
@@ -163,7 +159,7 @@ const Trips = () => {
                       style={{ textTransform: "none" }}
                       variant="contained"
                       color="primary"
-                      onClick={() => fetchRideRequests()}
+                      onClick={() => fetchRideRequests(trip)}
                     >
                       Requests
                     </Button>
