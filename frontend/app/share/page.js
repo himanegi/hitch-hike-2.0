@@ -57,109 +57,134 @@ const ShareComponent = () => {
   };
 
   return (
-    <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-5">
-      <form
-        onSubmit={handleSubmit}
-        className="md:col-span-1 bg-white shadow-md rounded-lg p-2 px-4"
-      >
-        <h1 className="text-[25px]">Input Trip Details</h1>
-        <div className="mb-4">
-          <InputItem
-            type="source"
-            map={map}
-            onCoordinatesChange={setSourceCoordinates}
-            onPlaceChange={setSourcePlace}
-          />
-          <InputItem
-            type="destination"
-            map={map}
-            onCoordinatesChange={setDestinationCoordinates}
-            onPlaceChange={setDestinationPlace}
-          />
-          <MapboxRoute
-            map={map}
-            sourceCoordinates={sourceCoordinates}
-            destinationCoordinates={destinationCoordinates}
-          />
-        </div>
-        <div className="mb-4 px-1 flex justify-between">
-          <div className="w-1/2 mr-2">
-            <label htmlFor="departureDate" className="block font-medium mb-2">
-              Departure Date
-            </label>
-            <input
-              id="departureDate"
-              type="date"
-              value={departureDate}
-              min={currentDate}
-              max="2024-12-31"
-              onChange={(e) => setDepartureDate(e.target.value)}
-              className="w-full border border-gray-500 rounded-md py-2 px-3"
-            />
-          </div>
-          <div className="w-1/2 ml-2">
-            <label htmlFor="departureTime" className="block font-medium mb-2">
-              Departure Time
-            </label>
-            <input
-              id="departureTime"
-              type="time"
-              value={departureTime}
-              onChange={(e) => setDepartureTime(e.target.value)}
-              className="w-full border border-gray-500 rounded-md py-2 px-3"
-            />
-          </div>
-        </div>
-        <div className="mb-4 px-1">
-          <label htmlFor="spotsInCar" className="block font-medium mb-2">
-            Spots in Your Car
-          </label>
-          <input
-            id="spotsInCar"
-            type="number"
-            min="1"
-            value={spotsInCar}
-            onChange={(e) => setSpotsInCar(e.target.value)}
-            className="w-full border border-gray-500 rounded-md py-2 px-3"
-          />
-        </div>
-        <div className="mb-4 px-1">
-          <label htmlFor="carNumber" className="block font-medium mb-2">
-            Car Number
-          </label>
-          <input
-            id="carNumber"
-            type="text"
-            value={carNumber}
-            onChange={(e) => setCarNumber(e.target.value)}
-            className="w-full border border-gray-500 rounded-md py-2 px-3"
-          />
-        </div>
-        <div className="mb-2 px-1">
-          <label htmlFor="message" className="block font-medium mb-2">
-            Message
-          </label>
-          <textarea
-            id="message"
-            placeholder="Message..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="w-full border border-gray-500 rounded-md py-2 px-3"
-          ></textarea>
-        </div>
-        <div className="px-1">
-          <button
-            type="submit"
-            className="bg-blue-500 text-white text-[14px] py-1 px-3 rounded-md hover:bg-blue-600 transition-colors"
+    <div className="bg-gray-100 min-h-screen py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <form
+            onSubmit={handleSubmit}
+            className="md:col-span-1 bg-white shadow-md rounded-lg p-6 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
           >
-            Share
-          </button>
+            <h1 className="text-2xl font-semibold mb-6 text-gray-800">
+              Input Trip Details
+            </h1>
+            <div className="mb-6">
+              <InputItem
+                type="source"
+                map={map}
+                onCoordinatesChange={setSourceCoordinates}
+                onPlaceChange={setSourcePlace}
+              />
+              <InputItem
+                type="destination"
+                map={map}
+                onCoordinatesChange={setDestinationCoordinates}
+                onPlaceChange={setDestinationPlace}
+              />
+              <MapboxRoute
+                map={map}
+                sourceCoordinates={sourceCoordinates}
+                destinationCoordinates={destinationCoordinates}
+              />
+            </div>
+            <div className="mb-6 flex justify-between">
+              <div className="w-1/2 mr-2">
+                <label
+                  htmlFor="departureDate"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Departure Date
+                </label>
+                <input
+                  id="departureDate"
+                  type="date"
+                  value={departureDate}
+                  min={currentDate}
+                  max="2024-12-31"
+                  onChange={(e) => setDepartureDate(e.target.value)}
+                  className="mt-1 block w-full outline-none rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 transition-all duration-300 focus:outline-none focus:ring-2 hover:ring-2 hover:ring-indigo-500"
+                />
+              </div>
+              <div className="w-1/2 ml-2">
+                <label
+                  htmlFor="departureTime"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Departure Time
+                </label>
+                <input
+                  id="departureTime"
+                  type="time"
+                  value={departureTime}
+                  onChange={(e) => setDepartureTime(e.target.value)}
+                  className="mt-1 block w-full outline-none rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 transition-all duration-300 focus:outline-none focus:ring-2 hover:ring-2 hover:ring-indigo-500"
+                />
+              </div>
+            </div>
+            <div className="mb-6">
+              <label
+                htmlFor="spotsInCar"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Spots in Your Car
+              </label>
+              <input
+                id="spotsInCar"
+                type="number"
+                min="1"
+                value={spotsInCar}
+                onChange={(e) => setSpotsInCar(e.target.value)}
+                className="mt-1 block w-full outline-none rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 transition-all duration-300 focus:outline-none focus:ring-2 hover:ring-2 hover:ring-indigo-500"
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                htmlFor="carNumber"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Car Number
+              </label>
+              <input
+                id="carNumber"
+                type="text"
+                value={carNumber}
+                onChange={(e) => setCarNumber(e.target.value)}
+                className="mt-1 block w-full outline-none rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 transition-all duration-300 focus:outline-none focus:ring-2 hover:ring-2 hover:ring-indigo-500"
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Message
+              </label>
+              <textarea
+                id="message"
+                placeholder="Message..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className="mt-1 block w-full outline-none rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 transition-all duration-300 focus:outline-none focus:ring-2 hover:ring-2 hover:ring-indigo-500"
+              ></textarea>
+            </div>
+            <div>
+              <button
+                type="submit"
+                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
+              >
+                Share
+              </button>
+            </div>
+          </form>
+          <div className="md:col-span-2 transition-all duration-300">
+            <MapSection onMapChange={setMap} />
+          </div>
         </div>
-      </form>
-      <div className="md:col-span-2">
-        <MapSection onMapChange={setMap} />
       </div>
-      <RideSharedPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
+      <RideSharedPopup
+        isOpen={showPopup}
+        onClose={() => setShowPopup(false)}
+        className="transition-all duration-300"
+      />
     </div>
   );
 };
