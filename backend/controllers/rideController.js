@@ -42,6 +42,7 @@ const createRide = async (req, res) => {
       sourceName,
       destinationName,
       driverName,
+      spotsInCar,
     } = req.body;
 
     const sourcePoint = {
@@ -74,6 +75,7 @@ const createRide = async (req, res) => {
       driver: driverId,
       driverName,
       totalDist,
+      spotsLeft: spotsInCar,
     });
 
     // console.log(typeof driverId);
@@ -113,7 +115,7 @@ const getAngle = (l1, l2) => {
 
 const searchRide = async (req, res) => {
   try {
-    const { source, destination } = req.body;
+    const { source, destination,rider } = req.body;
     const line2 = {
       type: "LineString",
       coordinates: [source, destination],
@@ -125,10 +127,17 @@ const searchRide = async (req, res) => {
       const line = ride.route;
       const srcDistance = distanceFromPoint(srcPt, line);
       const destDistance = distanceFromPoint(destPt, line);
+      const alreadyRequested = ride.rideRequests.some((request) => {
+        return request.riderId == rider;
+      });
+      
 
       const angle = getAngle(line, line2);
       console.log(angle);
-      return srcDistance < 50 && destDistance < 50 && angle < 15;
+      if( srcDistance < 50 && destDistance < 50 && angle < 15){
+        return {...ride,alreadyRequested};
+      } 
+      return false;
     });
 
     if (rides.length > 0) {
