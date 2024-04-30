@@ -1,18 +1,18 @@
-
 import rideModel from "../models/rideModel.js";
 
 const createRideRequest = async (req, res) => {
   try {
-    const {  rideId, username ,rider} = req.body;
-    const ride = await rideModel.findById(rideId)
-    if(ride.spotsLeft == 0){
-        res.status(201).json({ message:"sorry no spots left" });}
+    const { rideId, username, rider } = req.body;
+    const ride = await rideModel.findById(rideId);
+    if (ride.spotsLeft == 0) {
+      res.status(201).json({ message: "sorry no spots left" });
+    }
 
-   ride.rideRequests.push({ riderId: rider, username: username });
-   console.log("ride: ", ride.rideRequests);
+    ride.rideRequests.push({ riderId: rider, username: username });
+    console.log("ride: ", ride.rideRequests);
     ride.spotsLeft = ride.spotsLeft - 1;
-    await ride.save();  //this was the issue
-    res.status(201).json({ message:"Request sent" });
+    await ride.save(); //this was the issue
+    res.status(201).json({ message: "Request sent" });
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
