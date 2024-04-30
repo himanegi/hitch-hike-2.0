@@ -78,7 +78,7 @@ const createRide = async (req, res) => {
       spotsLeft: spotsInCar,
     });
 
-    // console.log(typeof driverId);
+    console.log("new ride: ", spotsInCar, newRide.spotsLeft);
     await newRide.save();
     const newRideforUser = await UserRide.findOne({ user: driverId });
     if (newRideforUser) {
@@ -115,7 +115,7 @@ const getAngle = (l1, l2) => {
 
 const searchRide = async (req, res) => {
   try {
-    const { source, destination,rider } = req.body;
+    const { source, destination, rider } = req.body;
     const line2 = {
       type: "LineString",
       coordinates: [source, destination],
@@ -123,23 +123,20 @@ const searchRide = async (req, res) => {
     const srcPt = turf.point(source);
     const destPt = turf.point(destination);
     const All_rides = await Ride.find({});
-    const rides = await All_rides.filter((ride) => {
+
+    const rides = All_rides.filter((ride) => {
       const line = ride.route;
       const srcDistance = distanceFromPoint(srcPt, line);
       const destDistance = distanceFromPoint(destPt, line);
+      const angle = getAngle(line, line2);
+      return srcDistance < 50 && destDistance < 50 && angle < 15;
+    }).map((ride) => {
       const alreadyRequested = ride.rideRequests.some((request) => {
         return request.riderId == rider;
       });
-      
-
-      const angle = getAngle(line, line2);
-      console.log(angle);
-      if( srcDistance < 50 && destDistance < 50 && angle < 15){
-        return {...ride,alreadyRequested};
-      } 
-      return false;
+      return { ...ride._doc, alreadyRequested };
     });
-
+    // console.log("imma rider: ", rides);
     if (rides.length > 0) {
       res.status(200).json({ message: "Search Result", rides });
       console.log(rides);

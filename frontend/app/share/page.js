@@ -43,7 +43,7 @@ const ShareComponent = () => {
         date: departureDate,
         message: message,
         time: departureTime,
-        spots: spotsInCar,
+        spotsInCar: spotsInCar,
       })
       .then((res) => {
         console.log(res.data);

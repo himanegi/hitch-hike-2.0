@@ -5,10 +5,6 @@ import {
   Box,
   Button,
   Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Table,
   TableBody,
   TableCell,
@@ -18,13 +14,10 @@ import {
   Typography,
 } from "@mui/material";
 import { useUser } from "@clerk/clerk-react";
+import RideRequestModal from "../components/RideRequestModal";
 
 const Trips = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedTrip, setSelectedTrip] = useState(null);
-  const [availableSpots, setAvailableSpots] = useState(0);
   const [drivingTrips, setDrivingTrips] = useState([]);
-  const [rideRequests, setRideRequests] = useState([]);
   const { user } = useUser();
 
   useEffect(() => {
@@ -33,6 +26,7 @@ const Trips = () => {
       console.log(fullName);
     }
   }, [user]);
+
   useEffect(() => {
     const fetchTrips = async () => {
       try {
@@ -68,15 +62,20 @@ const Trips = () => {
     fetchTrips();
   }, [user]);
 
-  //yaha pe each ride ke liye request fetch karna hai so  that we can show the riderequests in the trip
-  const fetchRideRequests = async (trip) => {
-    console.log("Ride requests for real:", trip);
-    setShowModal(true);
-    if (Array.isArray(trip.rideRequests)) {
-      setRideRequests(trip.rideRequests);
-    } else {
-      setRideRequests([]);
-    }
+  const handleCloseModal = (tripId) => {
+    setDrivingTrips((prevTrips) =>
+      prevTrips.map((trip) =>
+        trip.id === tripId ? { ...trip, showModal: false } : trip
+      )
+    );
+  };
+
+  const fetchRideRequests = (tripId) => {
+    setDrivingTrips((prevTrips) =>
+      prevTrips.map((trip) =>
+        trip.id === tripId ? { ...trip, showModal: true } : trip
+      )
+    );
   };
 
   const ridingTrips = [
@@ -93,25 +92,6 @@ const Trips = () => {
       requestStatus: "Approved",
     },
   ];
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelectedTrip(null);
-    setAvailableSpots(0);
-  };
-
-  const handleApprove = (request) => {
-    if (availableSpots >= request.spots && !request.isHandled) {
-      setAvailableSpots(availableSpots - request.spots);
-      request.isHandled = true;
-    }
-  };
-
-  const handleDecline = (request) => {
-    if (!request.isHandled) {
-      request.isHandled = true;
-    }
-  };
 
   return (
     <Container maxWidth="lg">
@@ -136,103 +116,49 @@ const Trips = () => {
             </TableHead>
             <TableBody>
               {drivingTrips.map((trip, index) => (
-                <TableRow key={index}>
-                  <TableCell>
-                    {new Date(trip.departure).toLocaleString("en-US", {
-                      weekday: "short",
-                      day: "numeric",
-                      month: "numeric",
-                      year: "numeric",
-                      hour: "numeric",
-                      minute: "numeric",
-                      hour12: true,
-                    })}
-                  </TableCell>
-                  <TableCell>{trip.origin}</TableCell>
-                  <TableCell>{trip.destination}</TableCell>
-                  <TableCell>{trip.availableSpots}</TableCell>
-                  <TableCell>
-                    <Button
-                      style={{ textTransform: "none" }}
-                      variant="contained"
-                      color="primary"
-                      onClick={() => fetchRideRequests(trip)}
-                    >
-                      Requests
-                    </Button>
-                  </TableCell>
-                </TableRow>
+                <React.Fragment key={index}>
+                  <TableRow>
+                    <TableCell>
+                      {new Date(trip.departure).toLocaleString("en-US", {
+                        weekday: "short",
+                        day: "numeric",
+                        month: "numeric",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                        hour12: true,
+                      })}
+                    </TableCell>
+                    <TableCell>{trip.origin}</TableCell>
+                    <TableCell>{trip.destination}</TableCell>
+                    <TableCell>{trip.availableSpots}</TableCell>
+                    <TableCell>
+                      <Button
+                        style={{ textTransform: "none" }}
+                        variant="contained"
+                        color="primary"
+                        onClick={() => fetchRideRequests(trip.id)}
+                      >
+                        Requests
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                  {trip.showModal && (
+                    <TableRow>
+                      <TableCell colSpan={5}>
+                        <RideRequestModal
+                          trip={trip}
+                          onClose={() => handleCloseModal(trip.id)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </React.Fragment>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       </Box>
-
-      <Dialog open={showModal} onClose={handleCloseModal}>
-        <DialogTitle>Ride Requests</DialogTitle>
-        <DialogContent>
-          {rideRequests.length > 0 ? (
-            <>
-              <Typography variant="body1" gutterBottom>
-                Use this dialog to approve or deny requests made by other users.
-              </Typography>
-              <Typography variant="body2" gutterBottom>
-                y Available Spots: {availableSpots}
-              </Typography>
-              <TableContainer component={Box}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>User Name</TableCell>
-                      <TableCell>Action</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {rideRequests.map((request, index) => (
-                      <TableRow key={index}>
-                        <TableCell>{request.username}</TableCell>
-                        <TableCell>
-                          <Button
-                            style={{
-                              textTransform: "none",
-                              marginRight: "8px",
-                            }}
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleApprove(request)}
-                            disabled={
-                              availableSpots < request.spots ||
-                              request.isHandled
-                            }
-                          >
-                            Approve
-                          </Button>
-                          <Button
-                            style={{ textTransform: "none" }}
-                            variant="outlined"
-                            color="secondary"
-                            onClick={() => handleDecline(request)}
-                            disabled={request.isHandled}
-                          >
-                            Decline
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </>
-          ) : (
-            <Typography variant="body1">You have no ride requests.</Typography>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModal} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
 
       <Box mt={4}>
         <Typography variant="h4" gutterBottom>
@@ -256,7 +182,7 @@ const Trips = () => {
               {ridingTrips.map((trip, index) => (
                 <TableRow key={index}>
                   <TableCell>
-                    {new Date(trip.date).toLocaleString("en-US", {
+                    {new Date(trip.departure).toLocaleString("en-US", {
                       weekday: "short",
                       day: "numeric",
                       month: "numeric",

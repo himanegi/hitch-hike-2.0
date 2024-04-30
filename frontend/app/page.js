@@ -8,7 +8,6 @@ import { useUser } from "@clerk/clerk-react";
 
 export default function Home() {
   const [requestSent, setRequestSent] = useState(false);
-  const [clickedIndex, setClickedIndex] = useState(null);
   const [sourcePlace, setSourcePlace] = useState(null);
   const [destinationPlace, setDestinationPlace] = useState(null);
   const [sourceCoordinates, setSourceCoordinates] = useState([0, 0]);
@@ -30,7 +29,7 @@ export default function Home() {
           destinationName: destinationPlace,
         }
       );
-
+      console.log("Response:", response.data);
       if (response.data.rides && response.data.rides.length > 0) {
         setSearchResults(response.data.rides);
         console.log("Available rides:", response.data.rides);
@@ -43,14 +42,12 @@ export default function Home() {
     }
   };
 
-  const handleRideClick = (ride, index) => {
-    setClickedIndex(index);
-    setSelectedRide(ride); // Set requestSent to true after the first click
+  const handleRideClick = (ride) => {
+    setSelectedRide(ride);
   };
+
   const handleSubmit = async (ride) => {
-    console.log("Form submitted");
-    console.log("Ride: ", ride);
-    // Handle form submission here
+    setRequestSent((prevState) => ({ ...prevState, [ride._id]: true }));
     if (!requestSent) setRequestSent(true);
 
     await axios
@@ -102,7 +99,7 @@ export default function Home() {
               <div
                 key={index}
                 className="my-2 cursor-pointer bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-                onClick={() => handleRideClick(ride, index)}
+                onClick={() => handleRideClick(ride)}
               >
                 <div className="p-4">
                   <p className="font-thin">Source Name: {ride.sourceName}</p>
@@ -113,13 +110,18 @@ export default function Home() {
                   <p className="font-thin">Date: {ride.date}</p>
                   <p className="font-thin">Time: {ride.time}</p>
                   <p className="font-thin">Message: {ride.message}</p>
+                  <p className="font-thing">Distance: {ride.totalDist}</p>
                 </div>
                 <button
                   className="block mx-auto px-4 py-2 rounded-md bg-blue-500 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={() => handleSubmit(ride)}
-                  disabled={requestSent}
+                  disabled={ride.alreadyRequested || requestSent[ride._id]}
                 >
-                  {requestSent ? "Request Sent" : "Send Request"}
+                  {ride.alreadyRequested
+                    ? "Already Requested"
+                    : requestSent[ride._id]
+                    ? "Request Sent"
+                    : "Send Request"}
                 </button>
               </div>
             ))}
