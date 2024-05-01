@@ -66,7 +66,7 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
     await axios.post("http://localhost:5000/api/rideRequests/changeRequest", {
       status: "declined",
       rideId: trip.id,
-      rider: request.riderID,
+      rider: request.riderId,
     });
     if (!request.isHandled) {
       request.isHandled = true;
@@ -104,31 +104,36 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rideRequests.map((request, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{request.username}</TableCell>
-                      <TableCell>
-                        <Button
-                          style={{ textTransform: "none", marginRight: "8px" }}
-                          variant="contained"
-                          color="primary"
-                          onClick={() => handleApprove(request)}
-                          disabled={request.isHandled || noSpotsAvailable}
-                        >
-                          Approve
-                        </Button>
-                        <Button
-                          style={{ textTransform: "none" }}
-                          variant="outlined"
-                          color="secondary"
-                          onClick={() => handleDecline(request)}
-                          disabled={request.isHandled || allRequestsHandled}
-                        >
-                          Decline
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {rideRequests
+                    .filter((request) => request.status === "pending")
+                    .map((request, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{request.username}</TableCell>
+                        <TableCell>
+                          <Button
+                            style={{
+                              textTransform: "none",
+                              marginRight: "8px",
+                            }}
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleApprove(request)}
+                            disabled={request.isHandled || noSpotsAvailable}
+                          >
+                            Approve
+                          </Button>
+                          <Button
+                            style={{ textTransform: "none" }}
+                            variant="outlined"
+                            color="secondary"
+                            onClick={() => handleDecline(request)}
+                            disabled={request.isHandled || allRequestsHandled}
+                          >
+                            Decline
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </TableContainer>
