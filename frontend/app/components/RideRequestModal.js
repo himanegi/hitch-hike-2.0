@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Button,
   Dialog,
@@ -22,10 +23,11 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
   console.log("trips", trip);
 
   const handleApprove = async (request) => {
+    console.log(request)
     await axios.post("http://localhost:5000/api/rideRequests/changeRequest", {
       status: "accepted",
-      rideId: trip._id,
-      riderId: request.riderID,
+      rideId: trip.id,
+      rider: request.riderId,
     });
     if (availableSpots > 0 && !request.isHandled) {
       setAvailableSpots(availableSpots - 1);
@@ -37,6 +39,8 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
   const handleDecline = async (request) => {
     await axios.post("http://localhost:5000/api/rideRequests/changeRequest", {
       status: "declined",
+      rideId: trip.id,
+      rider: request.riderID,
     });
     if (!request.isHandled) {
       request.isHandled = true;

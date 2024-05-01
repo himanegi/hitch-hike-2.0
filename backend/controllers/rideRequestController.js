@@ -39,7 +39,8 @@ const changeRequestStatus=async(req,res)=>
 {
 const {status,rideId,rider}=req.body;
 const ride = await rideModel.findById(rideId);
-const rideRequestofThatPerson=ride.rideRequests.some((riderId)=>riderId==rider)
+const rideRequestofThatPerson = ride.rideRequests.find((riderId) => riderId.riderId == rider);
+console.log("rideRequestofThatPerson: ", rideRequestofThatPerson);
 rideRequestofThatPerson.status=status
 if(status=="accepted")
 {
@@ -48,7 +49,7 @@ if(status=="accepted")
 }
 else
 {
-  const deleteReq=ride.rideRequests.filter((rider)=>riderId!=rider)
+  const deleteReq=ride.rideRequests.filter((riderId)=>riderId!=rider)
   ride.rideRequests=deleteReq
 }
 await ride.save()
