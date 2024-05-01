@@ -4,6 +4,8 @@ const rideRequestSchema = new mongoose.Schema(
   {
     riderId: { type: String },
     username: { type: String },
+    //riderSource
+    //riderDestination
     status: {
       type: String,
       enum: ["pending", "accepted", "declined"],
