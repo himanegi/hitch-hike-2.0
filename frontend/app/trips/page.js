@@ -148,7 +148,17 @@ const Trips = () => {
                       <TableCell colSpan={5}>
                         <RideRequestModal
                           trip={trip}
+                          availableSpots={trip.availableSpots}
                           onClose={() => handleCloseModal(trip.id)}
+                          onSpotsUpdate={(updatedSpots) => {
+                            setDrivingTrips((prevTrips) =>
+                              prevTrips.map((t) =>
+                                t.id === trip.id
+                                  ? { ...t, availableSpots: updatedSpots }
+                                  : t
+                              )
+                            );
+                          }}
                         />
                       </TableCell>
                     </TableRow>
