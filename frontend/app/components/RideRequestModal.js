@@ -34,7 +34,6 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
       request.isHandled = true;
       setRideRequests([...rideRequests]);
     }
-    fetchRideRequests();
   };
 
   const handleDecline = async (request) => {
