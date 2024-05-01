@@ -7,10 +7,16 @@ const createRideRequest = async (req, res) => {
     if (ride.spotsLeft == 0) {
       res.status(201).json({ message: "sorry no spots left" });
     }
+    const alreadyRequested = ride.rideRequests.some((request) => {
+      return request.riderId == rider;
+    });
+    if (alreadyRequested) {
+      res.status(201).json({ message: "Request already sent" });
+    }
 
     ride.rideRequests.push({ riderId: rider, username: username });
     console.log("ride: ", ride.rideRequests);
-    ride.spotsLeft = ride.spotsLeft - 1;
+    
     await ride.save(); //this was the issue
     res.status(201).json({ message: "Request sent" });
   } catch (error) {
