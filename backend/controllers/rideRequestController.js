@@ -35,4 +35,24 @@ const showRideRequests = async (req, res) => {
   // }
 };
 
-export { createRideRequest, showRideRequests };
+const changeRequestStatus=async(req,res)=>
+{
+const {status,rideId,rider}=req.body;
+const ride = await rideModel.findById(rideId);
+const rideRequestofThatPerson=ride.rideRequests.some((rider)=>riderId==rider)
+rideRequestofThatPerson.status=status
+if(status=="accepted")
+{
+  ride.riders.push(rideRequestofThatPerson)
+  ride.spotsLeft=  ride.spotsLeft-1;
+}
+else
+{
+  const deleteReq=ride.rideRequests.filter((rider)=>riderId!=rider)
+  ride.rideRequests=deleteReq
+}
+await ride.save()
+res.status(201).json({ message: "Done" });
+}
+
+export { createRideRequest, showRideRequests,changeRequestStatus };
