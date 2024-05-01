@@ -39,7 +39,7 @@ const changeRequestStatus=async(req,res)=>
 {
 const {status,rideId,rider}=req.body;
 const ride = await rideModel.findById(rideId);
-const rideRequestofThatPerson=ride.rideRequests.some((rider)=>riderId==rider)
+const rideRequestofThatPerson=ride.rideRequests.some((riderId)=>riderId==rider)
 rideRequestofThatPerson.status=status
 if(status=="accepted")
 {
