@@ -22,31 +22,6 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
 
   console.log("trips", trip);
 
-  const fetchRideRequests = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/rideRequests/show",
-        {
-          rideId: trip.id,
-        }
-      );
-      console.log(response.data);
-      if (Array.isArray(response.data.rideRequests)) {
-        setRideRequests(
-          response.data.rideRequests.map((request) => ({
-            ...request,
-            isHandled: false,
-          }))
-        );
-      } else {
-        console.log("Invalid response data format:", response.data);
-        setRideRequests([]);
-      }
-    } catch (error) {
-      console.error("Error fetching ride requests:", error);
-    }
-  };
-
   const handleApprove = async (request) => {
     console.log(request);
     await axios.post("http://localhost:5000/api/rideRequests/changeRequest", {
@@ -72,7 +47,6 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
       request.isHandled = true;
       setRideRequests([...rideRequests]);
     }
-    fetchRideRequests();
   };
 
   const handleClose = async () => {

@@ -26,7 +26,7 @@ const createRideRequest = async (req, res) => {
 
 const showRideRequests = async (req, res) => {
   try {
-    const {rideId}=req.body
+    const { rideId } = req.body;
     const ride = await rideModel.findById(rideId);
     const rideRequests = ride.rideRequests;
     res.status(200).json(rideRequests);
@@ -35,21 +35,21 @@ const showRideRequests = async (req, res) => {
   }
 };
 
-const changeRequestStatus=async(req,res)=>
-{
-const {status,rideId,rider}=req.body;
-const ride = await rideModel.findById(rideId);
-const rideRequestofThatPerson = ride.rideRequests.find((riderId) => riderId.riderId == rider);
-console.log("rideRequestofThatPerson: ", rideRequestofThatPerson);
-rideRequestofThatPerson.status=status
-if(status=="accepted")
-{
-  ride.riders.push(rideRequestofThatPerson)
-  ride.spotsLeft=  ride.spotsLeft-1;
-}
+const changeRequestStatus = async (req, res) => {
+  const { status, rideId, rider } = req.body;
+  const ride = await rideModel.findById(rideId);
+  const rideRequestofThatPerson = ride.rideRequests.find(
+    (riderId) => riderId.riderId == rider
+  );
+  console.log("rideRequestofThatPerson: ", rideRequestofThatPerson);
+  rideRequestofThatPerson.status = status;
+  if (status == "accepted") {
+    ride.riders.push(rideRequestofThatPerson);
+    ride.spotsLeft = ride.spotsLeft - 1;
+  }
 
-await ride.save()
-res.status(201).json({ message: "Done",rideRequests:ride.rideRequests });
-}
+  await ride.save();
+  res.status(201).json({ message: "Done", rideRequests: ride.rideRequests });
+};
 
-export { createRideRequest, showRideRequests,changeRequestStatus };
+export { createRideRequest, showRideRequests, changeRequestStatus };
