@@ -19,9 +19,13 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
   const [availableSpots, setAvailableSpots] = useState(trip.availableSpots);
   const [rideRequests, setRideRequests] = useState(trip.rideRequests);
 
+  console.log("trips", trip);
+
   const handleApprove = async (request) => {
     await axios.post("http://localhost:5000/api/rideRequests/changeRequest", {
       status: "accepted",
+      rideId: trip._id,
+      riderId: request.riderID,
     });
     if (availableSpots > 0 && !request.isHandled) {
       setAvailableSpots(availableSpots - 1);
