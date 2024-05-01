@@ -47,13 +47,9 @@ if(status=="accepted")
   ride.riders.push(rideRequestofThatPerson)
   ride.spotsLeft=  ride.spotsLeft-1;
 }
-else
-{
-  const deleteReq=ride.rideRequests.filter((riderId)=>riderId.riderId!=rider)
-  ride.rideRequests=deleteReq
-}
+
 await ride.save()
-res.status(201).json({ message: "Done" });
+res.status(201).json({ message: "Done",rideRequests:ride.rideRequests });
 }
 
 export { createRideRequest, showRideRequests,changeRequestStatus };

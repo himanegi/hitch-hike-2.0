@@ -23,7 +23,6 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
   console.log("trips", trip);
 
   const handleApprove = async (request) => {
-    console.log(request)
     await axios.post("http://localhost:5000/api/rideRequests/changeRequest", {
       status: "accepted",
       rideId: trip.id,
@@ -40,7 +39,7 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
     await axios.post("http://localhost:5000/api/rideRequests/changeRequest", {
       status: "declined",
       rideId: trip.id,
-      rider: request.riderID,
+      rider: request.riderId,
     });
     if (!request.isHandled) {
       request.isHandled = true;
@@ -77,7 +76,8 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rideRequests.map((request, index) => (
+                  {rideRequests.filter((request) => request.status === "pending")
+                  .map((request, index) => (
                     <TableRow key={index}>
                       <TableCell>{request.username}</TableCell>
                       <TableCell>
