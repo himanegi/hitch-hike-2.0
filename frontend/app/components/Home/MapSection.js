@@ -75,7 +75,7 @@ export function MapSection({ onMapChange }) {
       <div
         className="col-span-3 border-2 border-black rounded-xl overflow-hidden"
         ref={mapContainerRef}
-        style={{ height: "600px" }}
+        style={{ height: "630px" }}
       />
     </div>
   );
