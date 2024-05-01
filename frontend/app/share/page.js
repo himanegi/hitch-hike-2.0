@@ -23,6 +23,10 @@ const ShareComponent = () => {
 
   const { user } = useUser();
 
+  const handlePageRefresh = () => {
+    window.location.reload();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted");
@@ -182,7 +186,10 @@ const ShareComponent = () => {
       </div>
       <RideSharedPopup
         isOpen={showPopup}
-        onClose={() => setShowPopup(false)}
+        onClose={() => {
+          setShowPopup(false);
+          handlePageRefresh();
+        }}
         className="transition-all duration-300"
       />
     </div>

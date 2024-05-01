@@ -116,13 +116,8 @@ export default function Home() {
                 <button
                   className="block mx-auto px-4 py-2 rounded-md bg-blue-500 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={() => handleSubmit(ride)}
-                  disabled={alreadyRequested || requestSent[ride._id]}
                 >
-                  {alreadyRequested
-                    ? "Already Requested"
-                    : requestSent[ride._id]
-                    ? "Request Sent"
-                    : "Send Request"}
+                  Send Request
                 </button>
               </div>
             ))}
@@ -131,7 +126,6 @@ export default function Home() {
         {/* Render the selected ride */}
         {selectedRide && (
           <div className="mt-4">
-            <h2 className="text-lg font-bold">Selected Ride:</h2>
             <MapboxRoute
               map={map}
               sourceCoordinates={selectedRide.source.coordinates}
