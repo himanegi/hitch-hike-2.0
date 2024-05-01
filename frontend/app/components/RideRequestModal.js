@@ -19,7 +19,10 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
   const [availableSpots, setAvailableSpots] = useState(trip.availableSpots);
   const [rideRequests, setRideRequests] = useState(trip.rideRequests);
 
-  const handleApprove = (request) => {
+  const handleApprove = async (request) => {
+    await axios.post("http://localhost:5000/api/rideRequests/changeRequest", {
+      status: "accepted",
+    });
     if (availableSpots > 0 && !request.isHandled) {
       setAvailableSpots(availableSpots - 1);
       request.isHandled = true;
@@ -27,14 +30,17 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
     }
   };
 
-  const handleDecline = (request) => {
+  const handleDecline = async (request) => {
+    await axios.post("http://localhost:5000/api/rideRequests/changeRequest", {
+      status: "declined",
+    });
     if (!request.isHandled) {
       request.isHandled = true;
       setRideRequests([...rideRequests]);
     }
   };
 
-  const handleClose = () => {
+  const handleClose = async () => {
     onSpotsUpdate(availableSpots);
     onClose();
   };
@@ -97,11 +103,7 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
         )}
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={handleClose}
-          color="primary"
-          disabled={noSpotsAvailable}
-        >
+        <Button onClick={handleClose} color="primary">
           Close
         </Button>
       </DialogActions>
