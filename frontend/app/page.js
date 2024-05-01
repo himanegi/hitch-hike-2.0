@@ -7,7 +7,8 @@ import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
 
 export default function Home() {
-  const [requestSent, setRequestSent] = useState(false);
+  const [requestSent, setRequestSent] = useState({});
+  const [alreadyRequested, setAlreadyRequested] = useState(false);
   const [sourcePlace, setSourcePlace] = useState(null);
   const [destinationPlace, setDestinationPlace] = useState(null);
   const [sourceCoordinates, setSourceCoordinates] = useState([0, 0]);
@@ -48,7 +49,6 @@ export default function Home() {
 
   const handleSubmit = async (ride) => {
     setRequestSent((prevState) => ({ ...prevState, [ride._id]: true }));
-    if (!requestSent) setRequestSent(true);
 
     await axios
       .post("http://localhost:5000/api/rideRequests/create", {
@@ -58,6 +58,7 @@ export default function Home() {
       })
       .then((res) => {
         console.log(res.data);
+        if (res.status === 201) setAlreadyRequested(true);
       })
       .catch((err) => {
         console.error(err);
@@ -115,9 +116,9 @@ export default function Home() {
                 <button
                   className="block mx-auto px-4 py-2 rounded-md bg-blue-500 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={() => handleSubmit(ride)}
-                  disabled={ride.alreadyRequested || requestSent[ride._id]}
+                  disabled={alreadyRequested || requestSent[ride._id]}
                 >
-                  {ride.alreadyRequested
+                  {alreadyRequested
                     ? "Already Requested"
                     : requestSent[ride._id]
                     ? "Request Sent"
