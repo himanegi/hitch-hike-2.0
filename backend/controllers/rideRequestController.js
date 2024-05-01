@@ -25,14 +25,14 @@ const createRideRequest = async (req, res) => {
 };
 
 const showRideRequests = async (req, res) => {
-  // try {
-  //   console.log("req.user._id: ", req.body.userId);
-  //   const {rideRequests} = await rideModel.find({ driver: req.body.userId });
-  //   console.log("rideRequests: ", rideRequests);
-  //   res.status(200).json(rideRequests);
-  // } catch (error) {
-  //   res.status(404).json({ message: error.message });
-  // }
+  try {
+    const {rideId}=req.body
+    const ride = await rideModel.findById(rideId);
+    const rideRequests = ride.rideRequests;
+    res.status(200).json(rideRequests);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 };
 
 const changeRequestStatus=async(req,res)=>
@@ -49,7 +49,7 @@ if(status=="accepted")
 }
 else
 {
-  const deleteReq=ride.rideRequests.filter((riderId)=>riderId!=rider)
+  const deleteReq=ride.rideRequests.filter((riderId)=>riderId.riderId!=rider)
   ride.rideRequests=deleteReq
 }
 await ride.save()
