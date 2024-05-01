@@ -1,7 +1,7 @@
 import {
   createRideRequest,
   showRideRequests,
-  changeRequestStatus
+  changeRequestStatus,
 } from "../controllers/rideRequestController.js";
 import express from "express";
 const router = express.Router();

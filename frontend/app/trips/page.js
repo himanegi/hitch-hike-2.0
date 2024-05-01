@@ -159,6 +159,7 @@ const Trips = () => {
                               )
                             );
                           }}
+                          refetchTrips={() => reFetchTrips()}
                         />
                       </TableCell>
                     </TableRow>

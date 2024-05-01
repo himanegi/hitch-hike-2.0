@@ -22,8 +22,33 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
 
   console.log("trips", trip);
 
+  const fetchRideRequests = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/rideRequests/show",
+        {
+          rideId: trip.id,
+        }
+      );
+      console.log(response.data);
+      if (Array.isArray(response.data.rideRequests)) {
+        setRideRequests(
+          response.data.rideRequests.map((request) => ({
+            ...request,
+            isHandled: false,
+          }))
+        );
+      } else {
+        console.log("Invalid response data format:", response.data);
+        setRideRequests([]);
+      }
+    } catch (error) {
+      console.error("Error fetching ride requests:", error);
+    }
+  };
+
   const handleApprove = async (request) => {
-    console.log(request)
+    console.log(request);
     await axios.post("http://localhost:5000/api/rideRequests/changeRequest", {
       status: "accepted",
       rideId: trip.id,
@@ -34,18 +59,20 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
       request.isHandled = true;
       setRideRequests([...rideRequests]);
     }
+    fetchRideRequests();
   };
 
   const handleDecline = async (request) => {
     await axios.post("http://localhost:5000/api/rideRequests/changeRequest", {
       status: "declined",
       rideId: trip.id,
-      rider: request.riderID,
+      rider: request.riderId,
     });
     if (!request.isHandled) {
       request.isHandled = true;
       setRideRequests([...rideRequests]);
     }
+    fetchRideRequests();
   };
 
   const handleClose = async () => {
@@ -77,31 +104,36 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rideRequests.map((request, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{request.username}</TableCell>
-                      <TableCell>
-                        <Button
-                          style={{ textTransform: "none", marginRight: "8px" }}
-                          variant="contained"
-                          color="primary"
-                          onClick={() => handleApprove(request)}
-                          disabled={request.isHandled || noSpotsAvailable}
-                        >
-                          Approve
-                        </Button>
-                        <Button
-                          style={{ textTransform: "none" }}
-                          variant="outlined"
-                          color="secondary"
-                          onClick={() => handleDecline(request)}
-                          disabled={request.isHandled || allRequestsHandled}
-                        >
-                          Decline
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {rideRequests
+                    .filter((request) => request.status === "pending")
+                    .map((request, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{request.username}</TableCell>
+                        <TableCell>
+                          <Button
+                            style={{
+                              textTransform: "none",
+                              marginRight: "8px",
+                            }}
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleApprove(request)}
+                            disabled={request.isHandled || noSpotsAvailable}
+                          >
+                            Approve
+                          </Button>
+                          <Button
+                            style={{ textTransform: "none" }}
+                            variant="outlined"
+                            color="secondary"
+                            onClick={() => handleDecline(request)}
+                            disabled={request.isHandled || allRequestsHandled}
+                          >
+                            Decline
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </TableContainer>
