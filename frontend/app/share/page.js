@@ -39,7 +39,7 @@ const ShareComponent = () => {
     );
     // Handle form submission here
     await axios
-      .post("http://localhost:5000/api/rides/create", {
+      .post("/api/rides/create", {
         source: sourceCoordinates,
         destination: destinationCoordinates,
         sourceName: sourcePlace,
