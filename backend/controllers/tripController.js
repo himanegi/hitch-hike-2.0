@@ -6,8 +6,13 @@ const showRides = async (req, res) => {
       .find({ user: req.body.userId })
       .populate("driving");
     // console.log(allRides[0].driving);
+
+    const allRidesRequests = await userTrip
+      .find({ user: req.body.userId })
+      .populate("rides");
+
     if (allRides.length > 0) {
-      res.status(200).json({ message: "All Rides", allRides });
+      res.status(200).json({ message: "All Rides", allRides,allRidesRequests });
     } else {
       res.status(200).json({ message: "No rides found" });
     }

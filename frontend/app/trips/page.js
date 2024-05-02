@@ -18,6 +18,7 @@ import RideRequestModal from "../components/RideRequestModal";
 
 const Trips = () => {
   const [drivingTrips, setDrivingTrips] = useState([]);
+  const [ridingTrips, setRidingTrips] = useState([]); 
   const { user } = useUser();
 
   useEffect(() => {
@@ -49,10 +50,34 @@ const Trips = () => {
             availableSpots: trip.spotsLeft,
           }));
           setDrivingTrips(trips);
+
           console.log("message: ", response.data.allRides);
-        } else {
+        } 
+        else {
           console.log("Invalid response data format:", response.data);
           setDrivingTrips([]);
+          
+        }
+          if (
+            Array.isArray(response.data.allRidesRequests) &&
+            response.data.allRidesRequests.length > 0 &&
+            Array.isArray(response.data.allRidesRequests[0].rides)
+          ) {
+            const trips = response.data.allRidesRequests[0].rides.map((trip) => ({
+              departure: trip.date,
+              origin: trip.sourceName,
+              destination: trip.destinationName,
+              status: trip.rideRequests.find(
+                (request) => request.riderId === user.id
+              ).status,
+              
+            }));
+          
+          setRidingTrips(trips);}
+        else {
+          console.log("Invalid response data format:", response.data);
+          setRidingTrips([]);
+          
         }
       } catch (error) {
         console.error("Error fetching trips:", error);
@@ -78,20 +103,20 @@ const Trips = () => {
     );
   };
 
-  const ridingTrips = [
-    {
-      departure: "2023-04-26T09:15:00",
-      origin: "Miami, FL",
-      destination: "Atlanta, GA",
-      requestStatus: "Pending",
-    },
-    {
-      departure: "2023-04-27T16:45:00",
-      origin: "San Francisco, CA",
-      destination: "Seattle, WA",
-      requestStatus: "Approved",
-    },
-  ];
+  // const ridingTrips = 
+  //   {
+  //     departure: "2023-04-26T09:15:00",
+  //     origin: "Miami, FL",
+  //     destination: "Atlanta, GA",
+  //     requestStatus: "Pending",
+  //   },
+  //   {
+  //     departure: "2023-04-27T16:45:00",
+  //     origin: "San Francisco, CA",
+  //     destination: "Seattle, WA",
+  //     requestStatus: "Approved",
+  //   },
+  // ];
 
   return (
     <Container maxWidth="lg">
@@ -205,7 +230,7 @@ const Trips = () => {
                   </TableCell>
                   <TableCell>{trip.origin}</TableCell>
                   <TableCell>{trip.destination}</TableCell>
-                  <TableCell>{trip.requestStatus}</TableCell>
+                  <TableCell>{trip.status}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

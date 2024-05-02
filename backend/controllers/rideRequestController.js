@@ -1,4 +1,5 @@
 import rideModel from "../models/rideModel.js";
+import userModel from "../models/userModel.js";
 
 const createRideRequest = async (req, res) => {
   try {
@@ -15,9 +16,22 @@ const createRideRequest = async (req, res) => {
     }
 
     ride.rideRequests.push({ riderId: rider, username: username });
+
     console.log("ride: ", ride.rideRequests);
 
     await ride.save(); //this was the issue
+
+    const user = await userModel.findOne({user:rider});
+    if(user)
+    {user.rides.push(rideId);
+    await user.save();}
+    else
+    {
+      const newUser=new userModel({ user: rider, rides: [rideId] });
+      await newUser.save();
+    }
+
+
     res.status(201).json({ message: "Request sent" });
   } catch (error) {
     res.status(409).json({ message: error.message });
