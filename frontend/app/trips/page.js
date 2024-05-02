@@ -17,6 +17,7 @@ import { useUser } from "@clerk/clerk-react";
 import RideRequestModal from "../components/RideRequestModal";
 
 const Trips = () => {
+  const [disabledButtons, setDisabledButtons] = useState({});
   const [drivingTrips, setDrivingTrips] = useState([]);
   const [ridingTrips, setRidingTrips] = useState([]);
   const { user } = useUser();
@@ -49,6 +50,7 @@ const Trips = () => {
             rideRequests: trip.rideRequests,
             availableSpots: trip.spotsLeft,
           }));
+
           setDrivingTrips(trips);
 
           console.log("message: ", response.data.allRides);
@@ -65,6 +67,7 @@ const Trips = () => {
             departure: trip.date,
             origin: trip.sourceName,
             destination: trip.destinationName,
+            id: trip._id,
             status: trip.rideRequests.find(
               (request) => request.riderId === user.id
             ).status,
@@ -91,12 +94,30 @@ const Trips = () => {
     );
   };
 
+  const handleDisabled = (tripId) => {
+    setDisabledButtons((prevState) => ({ ...prevState, [tripId]: true }));
+  };
+
   const fetchRideRequests = (tripId) => {
     setDrivingTrips((prevTrips) =>
       prevTrips.map((trip) =>
         trip.id === tripId ? { ...trip, showModal: true } : trip
       )
     );
+  };
+  const handleDeleteRequest = async (tripId) => {
+    try {
+      console.log("tripId", tripId);
+      console.log("user", user.id);
+      await axios.post("/api/rides/delete", {
+        rideId: tripId,
+        riderId: user.id,
+      });
+      handleDisabled(tripId);
+      console.log("sent");
+    } catch (error) {
+      console.error("Error canceling request:", error);
+    }
   };
 
   // const ridingTrips =
@@ -227,6 +248,17 @@ const Trips = () => {
                   <TableCell>{trip.origin}</TableCell>
                   <TableCell>{trip.destination}</TableCell>
                   <TableCell>{trip.status}</TableCell>
+                  <TableCell>
+                    <Button
+                      color="error"
+                      variant="outlined"
+                      style={{ textTransform: "none" }}
+                      onClick={() => handleDeleteRequest(trip.id)}
+                      disabled={disabledButtons[trip.id]}
+                    >
+                      Finish/Cancel
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

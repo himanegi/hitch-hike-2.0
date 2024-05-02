@@ -130,8 +130,12 @@ const searchRide = async (req, res) => {
       const destDistance = distanceFromPoint(destPt, line);
 
       const angle = getAngle(line, line2);
-      const thresholdDistance=ride.totalDist/10;
-      if (srcDistance < thresholdDistance && destDistance < thresholdDistance && angle < 15) {
+      const thresholdDistance = ride.totalDist / 10;
+      if (
+        srcDistance < thresholdDistance &&
+        destDistance < thresholdDistance &&
+        angle < 15
+      ) {
         return true;
       }
       return false;
@@ -151,4 +155,29 @@ const searchRide = async (req, res) => {
   }
 };
 
-export { createRide, searchRide };
+const deleteRide = async (req, res) => {
+  try {
+    const { rideId, riderId } = req.body;
+    console.log("hello ride : ", rideId, riderId);
+    const ride = await Ride.findById(rideId);
+    const newRideRequest = ride.rideRequests.filter((request) => {
+      return request.riderId != riderId;
+    });
+    ride.rideRequests = newRideRequest;
+    await ride.save();
+    const user = await UserRide.findOne({ user: riderId });
+    const newRideRequestforUser = user.rides.filter((ride) => {
+      return ride != rideId;
+    });
+    user.rides = newRideRequestforUser;
+    await user.save();
+    res.status(200).json({ message: "Ride deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ message: "An error occurred while deleting the ride" });
+  }
+};
+
+export { createRide, searchRide, deleteRide };
