@@ -2,7 +2,6 @@ import { Roboto } from "next/font/google";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { dark } from "@clerk/themes";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { light } from "@mui/material/styles/createPalette";
