@@ -42,6 +42,7 @@ const createRide = async (req, res) => {
       sourceName,
       destinationName,
       driverName,
+      spotsInCar,
     } = req.body;
 
     const sourcePoint = {
@@ -74,9 +75,10 @@ const createRide = async (req, res) => {
       driver: driverId,
       driverName,
       totalDist,
+      spotsLeft: spotsInCar,
     });
 
-    // console.log(typeof driverId);
+    console.log("new ride: ", spotsInCar, newRide.spotsLeft);
     await newRide.save();
     const newRideforUser = await UserRide.findOne({ user: driverId });
     if (newRideforUser) {
@@ -121,14 +123,17 @@ const searchRide = async (req, res) => {
     const srcPt = turf.point(source);
     const destPt = turf.point(destination);
     const All_rides = await Ride.find({});
+
     const rides = await All_rides.filter((ride) => {
       const line = ride.route;
       const srcDistance = distanceFromPoint(srcPt, line);
       const destDistance = distanceFromPoint(destPt, line);
 
       const angle = getAngle(line, line2);
-      console.log(angle);
-      return srcDistance < 50 && destDistance < 50 && angle < 15;
+      if (srcDistance < 50 && destDistance < 50 && angle < 15) {
+        return true;
+      }
+      return false;
     });
 
     if (rides.length > 0) {

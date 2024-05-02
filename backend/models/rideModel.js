@@ -1,15 +1,19 @@
 import mongoose from "mongoose";
 
-const rideRequestSchema = new mongoose.Schema({
-  riderId: { type: String },
-  username: { type: String },
-  status: {
-    type: String,
-    enum: ["pending", "accepted", "declined"],
-    default: "pending",
+const rideRequestSchema = new mongoose.Schema(
+  {
+    riderId: { type: String },
+    username: { type: String },
+    //riderSource
+    //riderDestination
+    status: {
+      type: String,
+      enum: ["pending", "accepted", "declined"],
+      default: "pending",
+    },
   },
-},{_id: false});
-
+  { _id: false }
+);
 
 const rideSchema = new mongoose.Schema({
   source: {
@@ -50,7 +54,7 @@ const rideSchema = new mongoose.Schema({
   driverName: String,
   riders: [rideRequestSchema],
   rideRequests: [rideRequestSchema],
-  spotsLeft: {type:Number, default:3},
+  spotsLeft: { type: Number },
   // Add other fields as needed
 });
 

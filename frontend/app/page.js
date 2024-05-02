@@ -7,8 +7,6 @@ import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
 
 export default function Home() {
-  const [requestSent, setRequestSent] = useState(false);
-  const [clickedIndex, setClickedIndex] = useState(null);
   const [sourcePlace, setSourcePlace] = useState(null);
   const [destinationPlace, setDestinationPlace] = useState(null);
   const [sourceCoordinates, setSourceCoordinates] = useState([0, 0]);
@@ -16,6 +14,8 @@ export default function Home() {
   const [map, setMap] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [selectedRide, setSelectedRide] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
 
   const { user } = useUser();
 
@@ -30,29 +30,21 @@ export default function Home() {
           destinationName: destinationPlace,
         }
       );
-
       if (response.data.rides && response.data.rides.length > 0) {
         setSearchResults(response.data.rides);
-        console.log("Available rides:", response.data.rides);
       } else {
         setSearchResults([]);
-        console.log("No rides found");
       }
     } catch (error) {
       console.error("Error fetching available rides:", error);
     }
   };
 
-  const handleRideClick = (ride, index) => {
-    setClickedIndex(index);
-    setSelectedRide(ride); // Set requestSent to true after the first click
+  const handleRideClick = (ride) => {
+    setSelectedRide(ride);
   };
-  const handleSubmit = async (ride) => {
-    console.log("Form submitted");
-    console.log("Ride: ", ride);
-    // Handle form submission here
-    if (!requestSent) setRequestSent(true);
 
+  const handleSubmit = async (ride) => {
     await axios
       .post("http://localhost:5000/api/rideRequests/create", {
         username: user.fullName,
@@ -60,15 +52,21 @@ export default function Home() {
         rider: user.id,
       })
       .then((res) => {
-        console.log(res.data);
+        setPopupMessage(res.data.message);
+        setShowPopup(true);
       })
       .catch((err) => {
-        console.error(err);
+        setPopupMessage("An error occurred while sending your request.");
+        setShowPopup(true);
       });
   };
 
   return (
-    <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-5">
+    <div
+      className={`p-6 grid grid-cols-1 md:grid-cols-3 gap-5 ${
+        showPopup ? "bg-gray-700 bg-opacity-50" : ""
+      }`}
+    >
       <div>
         <p className="text-[25px] font-thin">Search for Rides</p>
         <InputItem
@@ -94,7 +92,6 @@ export default function Home() {
         >
           Search
         </button>
-        {/* Render search results */}
         {searchResults.length > 0 ? (
           <div className="mt-4">
             <h2 className="text-lg font-bold">Search Results:</h2>
@@ -102,7 +99,7 @@ export default function Home() {
               <div
                 key={index}
                 className="my-2 cursor-pointer bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-                onClick={() => handleRideClick(ride, index)}
+                onClick={() => handleRideClick(ride)}
               >
                 <div className="p-4">
                   <p className="font-thin">Source Name: {ride.sourceName}</p>
@@ -113,22 +110,20 @@ export default function Home() {
                   <p className="font-thin">Date: {ride.date}</p>
                   <p className="font-thin">Time: {ride.time}</p>
                   <p className="font-thin">Message: {ride.message}</p>
+                  <p className="font-thing">Distance: {ride.totalDist}</p>
                 </div>
                 <button
                   className="block mx-auto px-4 py-2 rounded-md bg-blue-500 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={() => handleSubmit(ride)}
-                  disabled={requestSent}
                 >
-                  {requestSent ? "Request Sent" : "Send Request"}
+                  Request
                 </button>
               </div>
             ))}
           </div>
         ) : null}
-        {/* Render the selected ride */}
         {selectedRide && (
           <div className="mt-4">
-            <h2 className="text-lg font-bold">Selected Ride:</h2>
             <MapboxRoute
               map={map}
               sourceCoordinates={selectedRide.source.coordinates}
@@ -141,6 +136,19 @@ export default function Home() {
       <div className="col-span-2">
         <MapSection onMapChange={setMap} />
       </div>
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8 shadow-lg">
+            <p className="text-lg font-semibold mb-4">{popupMessage}</p>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-md"
+              onClick={() => setShowPopup(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
