@@ -5,8 +5,10 @@ import InputItem from "./components/Home/InputItem";
 import MapboxRoute from "./components/Home/MapboxRoute";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
+import RequestForm from "./components/RequestForm";
 
 export default function Home() {
+  const [showRequestForm, setShowRequestForm] = useState(false);
   const [sourcePlace, setSourcePlace] = useState(null);
   const [destinationPlace, setDestinationPlace] = useState(null);
   const [sourceCoordinates, setSourceCoordinates] = useState([0, 0]);
@@ -41,16 +43,23 @@ export default function Home() {
     setSelectedRide(ride);
   };
 
-  const handleSubmit = async (ride) => {
+  const handleButtonClick = () => {
+    setShowRequestForm(true);
+  };
+  const handleSubmit = async (e, ride, phoneNumber, message) => {
+    e.preventDefault();
     await axios
       .post("/api/rideRequests/create", {
         username: user.fullName,
         rideId: ride._id,
         rider: user.id,
+        phoneNumber: phoneNumber,
+        message: message,
       })
       .then((res) => {
         setPopupMessage(res.data.message);
         setShowPopup(true);
+        console.log("bhej diya");
       })
       .catch((err) => {
         setPopupMessage("An error occurred while sending your request.");
@@ -59,11 +68,7 @@ export default function Home() {
   };
 
   return (
-    <div
-      className={`p-6 grid grid-cols-1 md:grid-cols-3 gap-5 ${
-        showPopup ? "bg-gray-700 bg-opacity-50" : ""
-      }`}
-    >
+    <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-5">
       <div>
         <p className="text-[25px] font-thin">Search for Rides</p>
         <InputItem
@@ -111,10 +116,17 @@ export default function Home() {
                 </div>
                 <button
                   className="block mx-auto px-4 py-2 rounded-md bg-blue-500 text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                  onClick={() => handleSubmit(ride)}
+                  onClick={() => handleButtonClick()}
                 >
                   Request
                 </button>
+                {showRequestForm && (
+                  <RequestForm
+                    ride={ride}
+                    handleSubmit={handleSubmit}
+                    onClose={() => setShowRequestForm(false)}
+                  />
+                )}
               </div>
             ))}
           </div>
