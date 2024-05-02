@@ -3,7 +3,7 @@ import userModel from "../models/userModel.js";
 
 const createRideRequest = async (req, res) => {
   try {
-    const { rideId, username, rider } = req.body;
+    const { rideId, username, rider,phoneNumber,message } = req.body;
     const ride = await rideModel.findById(rideId);
     if (ride.spotsLeft == 0) {
       return res.status(201).json({ message: "sorry no spots left" });
@@ -15,7 +15,7 @@ const createRideRequest = async (req, res) => {
       return res.status(201).json({ message: "Request already sent" });
     }
 
-    ride.rideRequests.push({ riderId: rider, username: username });
+    ride.rideRequests.push({ riderId: rider, username: username,phoneNumber:phoneNumber,message:message });
 
     console.log("ride: ", ride.rideRequests);
 
