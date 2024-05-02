@@ -57,6 +57,8 @@ export default function Home() {
         rider: user.id,
         phoneNumber: phoneNumber,
         message: message,
+        riderSource: sourcePlace,
+        riderDestination: destinationPlace,
       })
       .then((res) => {
         setPopupMessage(res.data.message);

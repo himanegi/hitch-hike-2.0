@@ -11,6 +11,8 @@ const rideRequestSchema = new mongoose.Schema(
       enum: ["pending", "accepted", "declined"],
       default: "pending",
     },
+    phoneNumber: { type: String },
+    message: { type: String },
   },
   { _id: false }
 );
