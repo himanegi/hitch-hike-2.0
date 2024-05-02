@@ -48,6 +48,8 @@ export default function Home() {
   };
   const handleSubmit = async (e, ride, phoneNumber, message) => {
     e.preventDefault();
+    console.log("phone number", phoneNumber);
+    console.log("message", message);
     await axios
       .post("/api/rideRequests/create", {
         username: user.fullName,
@@ -55,6 +57,8 @@ export default function Home() {
         rider: user.id,
         phoneNumber: phoneNumber,
         message: message,
+        riderSource: sourcePlace,
+        riderDestination: destinationPlace,
       })
       .then((res) => {
         setPopupMessage(res.data.message);
