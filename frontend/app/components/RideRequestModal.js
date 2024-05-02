@@ -24,7 +24,7 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
 
   const handleApprove = async (request) => {
     console.log(request);
-    await axios.post("http://localhost:5000/api/rideRequests/changeRequest", {
+    await axios.post("/api/rideRequests/changeRequest", {
       status: "accepted",
       rideId: trip.id,
       rider: request.riderId,
@@ -37,7 +37,7 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
   };
 
   const handleDecline = async (request) => {
-    await axios.post("http://localhost:5000/api/rideRequests/changeRequest", {
+    await axios.post("/api/rideRequests/changeRequest", {
       status: "declined",
       rideId: trip.id,
       rider: request.riderId,

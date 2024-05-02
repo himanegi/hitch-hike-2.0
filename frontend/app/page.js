@@ -21,15 +21,12 @@ export default function Home() {
 
   const fetchAvailableRides = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/rides/search",
-        {
-          source: sourceCoordinates,
-          destination: destinationCoordinates,
-          sourceName: sourcePlace,
-          destinationName: destinationPlace,
-        }
-      );
+      const response = await axios.post("/api/rides/search", {
+        source: sourceCoordinates,
+        destination: destinationCoordinates,
+        sourceName: sourcePlace,
+        destinationName: destinationPlace,
+      });
       if (response.data.rides && response.data.rides.length > 0) {
         setSearchResults(response.data.rides);
       } else {
@@ -46,7 +43,7 @@ export default function Home() {
 
   const handleSubmit = async (ride) => {
     await axios
-      .post("http://localhost:5000/api/rideRequests/create", {
+      .post("/api/rideRequests/create", {
         username: user.fullName,
         rideId: ride._id,
         rider: user.id,
