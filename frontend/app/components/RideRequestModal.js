@@ -76,6 +76,8 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
                     <TableCell>Phone Number</TableCell>
                     <TableCell>Message</TableCell>
                     <TableCell>Action</TableCell>
+                    <TableCell>Source</TableCell>
+                    <TableCell>Destination</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -86,6 +88,8 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
                         <TableCell>{request.username}</TableCell>
                         <TableCell>{request.phoneNumber}</TableCell>
                         <TableCell>{request.message}</TableCell>
+                        <TableCell>{request.riderSource}</TableCell>
+                        <TableCell>{request.riderDestination}</TableCell>
                         <TableCell>
                           <Button
                             style={{
