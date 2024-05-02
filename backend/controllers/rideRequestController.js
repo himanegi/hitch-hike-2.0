@@ -21,6 +21,7 @@ const createRideRequest = async (req, res) => {
       phoneNumber: phoneNumber,
       message: message,
     });
+
     console.log("ride: ", ride.rideRequests);
 
     await ride.save(); //this was the issue
