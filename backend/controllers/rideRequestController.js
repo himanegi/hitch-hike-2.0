@@ -3,7 +3,15 @@ import userModel from "../models/userModel.js";
 
 const createRideRequest = async (req, res) => {
   try {
-    const { rideId, username, rider, phoneNumber, message } = req.body;
+    const {
+      rideId,
+      username,
+      rider,
+      phoneNumber,
+      message,
+      riderSource,
+      riderDestination,
+    } = req.body;
     const ride = await rideModel.findById(rideId);
     if (ride.spotsLeft == 0) {
       return res.status(201).json({ message: "sorry no spots left" });
@@ -20,6 +28,8 @@ const createRideRequest = async (req, res) => {
       username: username,
       phoneNumber: phoneNumber,
       message: message,
+      riderSource: riderSource,
+      riderDestination: riderDestination,
     });
 
     console.log("ride: ", ride.rideRequests);
