@@ -4,7 +4,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://hitch-hike-2-0-7.onrender.com/api/:path*",
+        destination: "http://localhost:5000/api/:path*",
       },
     ];
   },
