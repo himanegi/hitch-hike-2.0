@@ -15,11 +15,23 @@ import {
 } from "@mui/material";
 import { useUser } from "@clerk/clerk-react";
 import RideRequestModal from "../components/RideRequestModal";
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+import Rating from '@mui/material/Rating';
+
 
 const Trips = () => {
+  const [disabledButtons, setDisabledButtons] = useState({});
   const [drivingTrips, setDrivingTrips] = useState([]);
   const [ridingTrips, setRidingTrips] = useState([]);
   const { user } = useUser();
+
+  const [open, setOpen] = useState(false);
+const [rating, setRating] = useState(0);
+
 
   useEffect(() => {
     if (user) {
@@ -49,6 +61,7 @@ const Trips = () => {
             rideRequests: trip.rideRequests,
             availableSpots: trip.spotsLeft,
           }));
+
           setDrivingTrips(trips);
 
           console.log("message: ", response.data.allRides);
@@ -65,6 +78,7 @@ const Trips = () => {
             departure: trip.date,
             origin: trip.sourceName,
             destination: trip.destinationName,
+            id: trip._id,
             status: trip.rideRequests.find(
               (request) => request.riderId === user.id
             ).status,
@@ -91,6 +105,10 @@ const Trips = () => {
     );
   };
 
+  const handleDisabled = (tripId) => {
+    setDisabledButtons((prevState) => ({ ...prevState, [tripId]: true }));
+  };
+
   const fetchRideRequests = (tripId) => {
     setDrivingTrips((prevTrips) =>
       prevTrips.map((trip) =>
@@ -99,20 +117,24 @@ const Trips = () => {
     );
   };
 
-  // const ridingTrips =
-  //   {
-  //     departure: "2023-04-26T09:15:00",
-  //     origin: "Miami, FL",
-  //     destination: "Atlanta, GA",
-  //     requestStatus: "Pending",
-  //   },
-  //   {
-  //     departure: "2023-04-27T16:45:00",
-  //     origin: "San Francisco, CA",
-  //     destination: "Seattle, WA",
-  //     requestStatus: "Approved",
-  //   },
-  // ];
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleDeleteRequest = async (tripId) => {
+    try {
+      console.log("tripId", tripId);
+      console.log("user", user.id);
+      await axios.post("/api/rides/delete", {
+        rideId: tripId,
+        riderId: user.id,
+      });
+      handleDisabled(tripId);
+      console.log("sent");
+      setOpen(true); // Open the dialog
+    } catch (error) {
+      console.error("Error canceling request:", error);
+    }
+  };
 
   return (
     <Container maxWidth="lg">
@@ -209,6 +231,7 @@ const Trips = () => {
                 <TableCell>Origin</TableCell>
                 <TableCell>Destination</TableCell>
                 <TableCell>Request Status</TableCell>
+                <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -228,11 +251,45 @@ const Trips = () => {
                   <TableCell>{trip.origin}</TableCell>
                   <TableCell>{trip.destination}</TableCell>
                   <TableCell>{trip.status}</TableCell>
+                  <TableCell>
+                    <Button
+                      color="error"
+                      variant="outlined"
+                      style={{ textTransform: "none" }}
+                      onClick={() => handleDeleteRequest(trip.id)}
+                      disabled={disabledButtons[trip.id]}
+                    >
+                      Finish/Cancel
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
+        <Dialog open={open} onClose={handleClose}>
+  <DialogTitle>Rate Your Ride</DialogTitle>
+  <DialogContent>
+    <DialogContentText>
+      Please rate your ride out of 5.
+    </DialogContentText>
+    <Rating
+      name="simple-controlled"
+      value={rating}
+      onChange={(event, newValue) => {
+        setRating(newValue);
+      }}
+    />
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={handleClose} color="primary">
+      Cancel
+    </Button>
+    <Button onClick={handleClose} color="primary">
+      Submit
+    </Button>
+  </DialogActions>
+</Dialog>
       </Box>
     </Container>
   );
