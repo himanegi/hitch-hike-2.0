@@ -136,7 +136,8 @@ const Trips = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {drivingTrips.map((trip, index) => (
+              {drivingTrips
+              .map((trip, index) => (
                 <React.Fragment key={index}>
                   <TableRow>
                     <TableCell>
