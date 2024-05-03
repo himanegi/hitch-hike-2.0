@@ -72,7 +72,7 @@ const SearchComponent = () => {
   };
 
   return (
-    <div className="bg-gray-100 pt-4">
+    <div className="bg-gray-100 pt-4 pb-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-1 bg-white shadow-md rounded-lg p-6 transition-all duration-300 hover:ring-2 hover:ring-indigo-500">

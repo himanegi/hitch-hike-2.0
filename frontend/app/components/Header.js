@@ -28,7 +28,7 @@ function Header() {
   ];
 
   return (
-    <div className="pl-10 pr-10 border-b-[2px] border-black flex items-center justify-between">
+    <div className="pl-10 pr-10 flex items-center justify-between">
       <div className="flex gap-20 items-center">
         <Link href={"/"}>
           <Image src={"/carpool.svg"} height={70} width={70} alt="Logo" />
