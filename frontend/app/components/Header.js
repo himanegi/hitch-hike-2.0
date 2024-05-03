@@ -11,7 +11,7 @@ function Header() {
       id: 1,
       name: "Search",
       icon: "/magnifier.svg",
-      path: "/",
+      path: "/search",
     },
     {
       id: 2,

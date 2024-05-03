@@ -68,7 +68,7 @@ const ShareComponent = () => {
             onSubmit={handleSubmit}
             className="md:col-span-1 bg-white shadow-md rounded-lg p-6 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
           >
-            <h1 className="text-2xl font-semibold mb-6 text-gray-800">
+            <h1 className="text-[25px] font-thin text-gray-800">
               Input Trip Details
             </h1>
             <div className="mb-6">
@@ -173,7 +173,7 @@ const ShareComponent = () => {
             <div>
               <button
                 type="submit"
-                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
+                className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
               >
                 Share
               </button>
