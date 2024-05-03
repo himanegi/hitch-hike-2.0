@@ -26,6 +26,10 @@ export default function RootLayout({ children }) {
       <html lang="en">
         <head>
           <link rel="icon" href="/carpool.ico" />
+          <script
+            async
+            src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"
+          ></script>
         </head>
         <body className={roboto.className}>
           <div className="flex flex-col min-h-screen">
