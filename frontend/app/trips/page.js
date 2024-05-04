@@ -21,7 +21,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Rating from '@mui/material/Rating';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
 const Trips = () => {
   const [disabledButtons, setDisabledButtons] = useState({});
@@ -33,7 +33,7 @@ const Trips = () => {
 const [rating, setRating] = useState(0);
 
 const [openChat, setOpenChat] = useState(false);
-const socket = io('http://localhost:3000');
+// const socket = io('http://localhost:3000');
 
   useEffect(() => {
     if (user) {
@@ -143,31 +143,120 @@ const socket = io('http://localhost:3000');
   };
 
   return (
-    <Container maxWidth="lg">
-      <Box mt={4}>
-        <Typography variant="h4" gutterBottom>
-          Driving
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          This section displays the trips you are driving. You can manage rider
-          requests and update trip details here.
-        </Typography>
-        <TableContainer component={Box}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Departure</TableCell>
-                <TableCell>Origin</TableCell>
-                <TableCell>Destination</TableCell>
-                <TableCell>Available Spots</TableCell>
-                <TableCell>Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {drivingTrips
-              .map((trip, index) => (
-                <React.Fragment key={index}>
-                  <TableRow>
+    <div className="bg-gray-100 pt-4 pb-4">
+      <Container maxWidth="lg" className="bg-gray-100">
+        <Box mt={4}>
+          <Typography
+            variant="h3"
+            gutterBottom
+            className="text-[25px] font-thin text-gray-800"
+          >
+            Driving
+          </Typography>
+          <Typography variant="body1" gutterBottom className="mb-4">
+            This section displays the trips you are driving. You can manage
+            rider requests and update trip details here.
+          </Typography>
+          <TableContainer
+            component={Box}
+            className="bg-white shadow-md rounded-lg p-6 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
+          >
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Departure</TableCell>
+                  <TableCell>Origin</TableCell>
+                  <TableCell>Destination</TableCell>
+                  <TableCell>Available Spots</TableCell>
+                  <TableCell>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {drivingTrips.map((trip, index) => (
+                  <React.Fragment key={index}>
+                    <TableRow>
+                      <TableCell>
+                        {new Date(trip.departure).toLocaleString("en-US", {
+                          weekday: "short",
+                          day: "numeric",
+                          month: "numeric",
+                          year: "numeric",
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
+                        })}
+                      </TableCell>
+                      <TableCell>{trip.origin}</TableCell>
+                      <TableCell>{trip.destination}</TableCell>
+                      <TableCell>{trip.availableSpots}</TableCell>
+                      <TableCell>
+                        <Button
+                          style={{ textTransform: "none" }}
+                          variant="outlined"
+                          color="primary"
+                          onClick={() => fetchRideRequests(trip.id)}
+                        >
+                          Requests
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                    {trip.showModal && (
+                      <TableRow>
+                        <TableCell colSpan={5}>
+                          <RideRequestModal
+                            trip={trip}
+                            availableSpots={trip.availableSpots}
+                            onClose={() => handleCloseModal(trip.id)}
+                            onSpotsUpdate={(updatedSpots) => {
+                              setDrivingTrips((prevTrips) =>
+                                prevTrips.map((t) =>
+                                  t.id === trip.id
+                                    ? { ...t, availableSpots: updatedSpots }
+                                    : t
+                                )
+                              );
+                            }}
+                            refetchTrips={() => reFetchTrips()}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </React.Fragment>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+
+        <Box mt={4}>
+          <Typography
+            variant="h3"
+            gutterBottom
+            className="text-[25px] font-thin text-gray-800"
+          >
+            Riding
+          </Typography>
+          <Typography variant="body1" gutterBottom className="mb-4">
+            This section shows the trips you have requested to ride with others.
+            You can track the status of your requests here.
+          </Typography>
+          <TableContainer
+            component={Box}
+            className="bg-white shadow-md rounded-lg p-6 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
+          >
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Departure</TableCell>
+                  <TableCell>Origin</TableCell>
+                  <TableCell>Destination</TableCell>
+                  <TableCell>Request Status</TableCell>
+                  <TableCell>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {ridingTrips.map((trip, index) => (
+                  <TableRow key={index}>
                     <TableCell>
                       {new Date(trip.departure).toLocaleString("en-US", {
                         weekday: "short",
@@ -181,139 +270,57 @@ const socket = io('http://localhost:3000');
                     </TableCell>
                     <TableCell>{trip.origin}</TableCell>
                     <TableCell>{trip.destination}</TableCell>
-                    <TableCell>{trip.availableSpots}</TableCell>
+                    <TableCell>
+                      <span
+                        className={`p-2 rounded-md ${
+                          trip.status === "accepted"
+                            ? "text-green-500 bg-green-100"
+                            : trip.status === "pending"
+                            ? "text-yellow-500 bg-yellow-100"
+                            : trip.status === "declined"
+                            ? "text-red-500 bg-red-100"
+                            : ""
+                        }`}
+                      >
+                        {trip.status.toUpperCase()}
+                      </span>
+                    </TableCell>
                     <TableCell>
                       <Button
+                        color="error"
+                        variant="outlined"
                         style={{ textTransform: "none" }}
-                        variant="contained"
-                        color="primary"
-                        onClick={() => fetchRideRequests(trip.id)}
+                        onClick={() => handleDeleteRequest(trip.id)}
+                        disabled={disabledButtons[trip.id]}
                       >
-                        Requests
+                        Finish/Cancel
                       </Button>
                     </TableCell>
-                  </TableRow>
-                  {trip.showModal && (
-                    <TableRow>
-                      <TableCell colSpan={5}>
-                        <RideRequestModal
-                          trip={trip}
-                          availableSpots={trip.availableSpots}
-                          onClose={() => handleCloseModal(trip.id)}
-                          onSpotsUpdate={(updatedSpots) => {
-                            setDrivingTrips((prevTrips) =>
-                              prevTrips.map((t) =>
-                                t.id === trip.id
-                                  ? { ...t, availableSpots: updatedSpots }
-                                  : t
-                              )
-                            );
-                          }}
-                          refetchTrips={() => reFetchTrips()}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </React.Fragment>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
-
-      <Box mt={4}>
-        <Typography variant="h4" gutterBottom>
-          Riding
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          This section shows the trips you have requested to ride with others.
-          You can track the status of your requests here.
-        </Typography>
-        <TableContainer component={Box}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Departure</TableCell>
-                <TableCell>Origin</TableCell>
-                <TableCell>Destination</TableCell>
-                <TableCell>Request Status</TableCell>
-                <TableCell>Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {ridingTrips.map((trip, index) => (
-                <TableRow key={index}>
-                  <TableCell>
-                    {new Date(trip.departure).toLocaleString("en-US", {
-                      weekday: "short",
-                      day: "numeric",
-                      month: "numeric",
-                      year: "numeric",
-                      hour: "numeric",
-                      minute: "numeric",
-                      hour12: true,
-                    })}
-                  </TableCell>
-                  <TableCell>{trip.origin}</TableCell>
-                  <TableCell>{trip.destination}</TableCell>
-                  <TableCell>{trip.status}</TableCell>
-                  <TableCell>
+                    <TableCell>
                     <Button
-                      color="error"
+                      color="primary"
                       variant="outlined"
-                      style={{ textTransform: "none" }}
-                      onClick={() => handleDeleteRequest(trip.id)}
-                      disabled={disabledButtons[trip.id]}
+                      style={{ textTransform: "none", marginLeft: "10px" }}
+                      onClick={handleConnectClick}
                     >
-                      Finish/Cancel
+                      Connect
                     </Button>
-                  </TableCell>
-                  <TableCell>
-                  <Button
-                    color="primary"
-                    variant="outlined"
-                    style={{ textTransform: "none", marginLeft: "10px" }}
-                    onClick={handleConnectClick}
-                  >
-                    Connect
-                  </Button>
-                  </TableCell>
-                  {openChat && (
-                      <ChatBox
-                        socket={socket}
-                        onClose={() => setOpenChat(false)}
-                      />
-                    )}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Dialog open={open} onClose={handleClose}>
-  <DialogTitle>Rate Your Ride</DialogTitle>
-  <DialogContent>
-    <DialogContentText>
-      Please rate your ride out of 5.
-    </DialogContentText>
-    <Rating
-      name="simple-controlled"
-      value={rating}
-      onChange={(event, newValue) => {
-        setRating(newValue);
-      }}
-    />
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={handleClose} color="primary">
-      Cancel
-    </Button>
-    <Button onClick={handleClose} color="primary">
-      Submit
-    </Button>
-  </DialogActions>
-</Dialog>
-      </Box>
-    </Container>
+                    </TableCell>
+
+                  </TableRow>
+                ))}
+                {openChat && (
+                  <ChatBox
+                    socket={socket}
+                    onClose={() => setOpenChat(false)}
+                  />
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      </Container>
+    </div>
   );
 };
 

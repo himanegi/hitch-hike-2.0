@@ -80,7 +80,8 @@ export default function SearchBox(props) {
         />
         <button
           onClick={handleSearch}
-          className=" mr-1 flex items-center justify-center bg-indigo-600 text-white rounded-md p-2 hover:bg-indigo-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          data-ripple-light="true"
+          className=" mr-1 flex items-center justify-center bg-indigo-600 text-white rounded-md p-2 "
         >
           <MdSearch size={15} />
         </button>

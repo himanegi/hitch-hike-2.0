@@ -61,7 +61,7 @@ const ShareComponent = () => {
   };
 
   return (
-    <div className="bg-gray-100 pt-4">
+    <div className="bg-gray-100 pt-4 pb-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <form
@@ -173,7 +173,8 @@ const ShareComponent = () => {
             <div>
               <button
                 type="submit"
-                className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
+                data-ripple-light="true"
+                className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
               >
                 Share
               </button>
