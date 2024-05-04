@@ -1,15 +1,10 @@
-import { Roboto, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { light } from "@mui/material/styles/createPalette";
-
-const roboto = Roboto({
-  weight: ["400", "500", "700", "900"],
-  subsets: ["latin"],
-});
 
 const inter = Inter({
   weight: ["400", "500", "600", "700"],
@@ -31,10 +26,6 @@ export default function RootLayout({ children }) {
       <html lang="en">
         <head>
           <link rel="icon" href="/carpool.ico" />
-          <script
-            async
-            src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"
-          ></script>
         </head>
         <body className={inter.className}>
           <div className="flex flex-col min-h-screen">

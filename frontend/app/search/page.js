@@ -97,13 +97,11 @@ const SearchComponent = () => {
               destinationCoordinates={destinationCoordinates}
             />
             <button
-              class="inline-flex w-full justify-center mt-10 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
-              data-ripple-light="true"
+              className="ripple-bg-indigo-300 inline-flex w-full justify-center mt-10 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
               onClick={fetchAvailableRides}
             >
               Search
             </button>
-
             {searchResults.length > 0 ? (
               <div className="mt-4">
                 <h2 className="text-lg font-bold">Search Results:</h2>
