@@ -82,12 +82,14 @@ const SearchComponent = () => {
             <InputItem
               type="source"
               map={map}
+              namespace="Pickup"
               onCoordinatesChange={setSourceCoordinates}
               onPlaceChange={setSourcePlace}
             />
             <InputItem
               type="destination"
               map={map}
+              namespace="Drop"
               onCoordinatesChange={setDestinationCoordinates}
               onPlaceChange={setDestinationPlace}
             />

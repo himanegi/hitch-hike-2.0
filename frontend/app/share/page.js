@@ -78,13 +78,14 @@ const ShareComponent = () => {
             <div className="mb-6">
               <InputItem
                 type="source"
-                namespace="source"
+                namespace="Source"
                 map={map}
                 onCoordinatesChange={setSourceCoordinates}
                 onPlaceChange={setSourcePlace}
               />
               <InputItem
                 type="destination"
+                namespace="Destination"
                 map={map}
                 onCoordinatesChange={setDestinationCoordinates}
                 onPlaceChange={setDestinationPlace}
