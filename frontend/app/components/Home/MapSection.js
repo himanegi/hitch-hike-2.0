@@ -73,7 +73,7 @@ export function MapSection({ onMapChange }) {
   return (
     <div>
       <div
-        className="col-span-3 border-2 border-black rounded-xl overflow-hidden"
+        className="col-span-3 shadow-md rounded-lg p-6 transition-all duration-300 hover:ring-2 hover:ring-indigo-500 overflow-hidden"
         ref={mapContainerRef}
         style={{ height: "630px" }}
       />
