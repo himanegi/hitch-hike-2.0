@@ -21,7 +21,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Rating from '@mui/material/Rating';
-
+import io from 'socket.io-client';
 
 const Trips = () => {
   const [disabledButtons, setDisabledButtons] = useState({});
@@ -32,6 +32,8 @@ const Trips = () => {
   const [open, setOpen] = useState(false);
 const [rating, setRating] = useState(0);
 
+const [openChat, setOpenChat] = useState(false);
+const socket = io('http://localhost:3000');
 
   useEffect(() => {
     if (user) {
@@ -96,6 +98,10 @@ const [rating, setRating] = useState(0);
 
     fetchTrips();
   }, [user]);
+
+  const handleConnectClick = () => {
+    setOpenChat(true);
+  };
 
   const handleCloseModal = (tripId) => {
     setDrivingTrips((prevTrips) =>
@@ -262,6 +268,22 @@ const [rating, setRating] = useState(0);
                       Finish/Cancel
                     </Button>
                   </TableCell>
+                  <TableCell>
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    style={{ textTransform: "none", marginLeft: "10px" }}
+                    onClick={handleConnectClick}
+                  >
+                    Connect
+                  </Button>
+                  </TableCell>
+                  {openChat && (
+                      <ChatBox
+                        socket={socket}
+                        onClose={() => setOpenChat(false)}
+                      />
+                    )}
                 </TableRow>
               ))}
             </TableBody>
