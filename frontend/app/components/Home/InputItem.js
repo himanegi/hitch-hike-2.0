@@ -3,7 +3,7 @@ import SearchBox from "../../searchbox/page";
 import React, { useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 
-function InputItem({ type, map, onCoordinatesChange, onPlaceChange }) {
+function InputItem({ type, map, onCoordinatesChange, onPlaceChange,namespace }) {
   const [value, setValue] = useState(null);
   const [placeholder, setPlaceholder] = useState(null);
   const [marker, setMarker] = useState(null); // State to store the marker reference
@@ -49,6 +49,7 @@ function InputItem({ type, map, onCoordinatesChange, onPlaceChange }) {
     <div className=" p-1 mt-3 gap-3 border-black">
       <SearchBox
         type={type}
+        namespace={namespace}
         selectPosition={value}
         setSelectPosition={(newValue) => {
           setValue(newValue);

@@ -39,15 +39,15 @@ const rideSchema = new mongoose.Schema({
 
   date: Date,
   time: String,
-  route: {
+  route: [{
     type: {
       type: String,
-      enum: ["LineString"],
+      enum: ["Point"],
     },
     coordinates: {
       type: [[Number]],
-    },
-  },
+    }
+  }],
   sourceName: String,
   destinationName: String,
   totalDist: Number,

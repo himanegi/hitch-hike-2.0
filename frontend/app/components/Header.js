@@ -1,8 +1,8 @@
 "use client";
 import { UserButton } from "@clerk/nextjs";
 import Image from "next/image";
-import React from "react";
 import Link from "next/link";
+import React from "react";
 import styles from "../Header.module.css";
 
 function Header() {
@@ -31,13 +31,13 @@ function Header() {
     <div className="pl-10 pr-10 flex items-center justify-between">
       <div className="flex gap-20 items-center">
         <Link href={"/"}>
-          <Image src={"/carpool.svg"} height={70} width={70} alt="Logo" />
+          <Image src={"/map.svg"} height={70} width={70} alt="Logo" />
         </Link>
         <div className="flex gap-10 items-center">
           {headerMenu.map((item) => (
             <Link href={item.path} key={item.id}>
               <div className={styles.headerItem}>
-                <Image src={item.icon} height={20} width={20} alt={item.name} />
+                <Image src={item.icon} height={30} width={30} alt={item.name} />
                 <h2 className="text-[15px] font-medium ml-1">{item.name}</h2>
               </div>
             </Link>

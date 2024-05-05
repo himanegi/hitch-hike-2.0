@@ -1,7 +1,6 @@
 import Ride from "../models/rideModel.js";
 import UserRide from "../models/userModel.js";
 import * as turf from "@turf/turf";
-
 //Implementing the HaverSine distance calculation function
 
 const toRadians = (deg) => {
@@ -41,10 +40,12 @@ const createRide = async (req, res) => {
       driverId,
       sourceName,
       destinationName,
+      ridePath,
       driverName,
       spotsInCar,
+      distance,
     } = req.body;
-
+console.log("this",req.body);
     const sourcePoint = {
       type: "Point",
       coordinates: source,
@@ -55,12 +56,12 @@ const createRide = async (req, res) => {
       coordinates: destination,
     };
 
-    const routeLine = {
-      type: "LineString",
-      coordinates: [source, destination],
-    };
+    // const routeLine = dijkstra(sourcePoint,destinationPoint);
+    // console.log(routeLine);
+    const routeLine = ridePath;
 
-    const totalDist = haversineDistance(source, destination);
+    // const totalDist = haversineDistance(source, destination);
+    const totalDist=distance
     console.log(totalDist);
 
     const newRide = new Ride({
@@ -74,7 +75,7 @@ const createRide = async (req, res) => {
       message,
       driver: driverId,
       driverName,
-      totalDist,
+      totalDist: distance,
       spotsLeft: spotsInCar,
     });
 
@@ -116,27 +117,59 @@ const getAngle = (l1, l2) => {
 const searchRide = async (req, res) => {
   try {
     const { source, destination } = req.body;
-    const line2 = {
-      type: "LineString",
-      coordinates: [source, destination],
-    };
-    const srcPt = turf.point(source);
-    const destPt = turf.point(destination);
+    // const line2 = {
+    //   type: "LineString",
+    //   coordinates: [source, destination],
+    // };
+    // const srcPt = turf.point(source);
+    // const destPt = turf.point(destination);
+    // const All_rides = await Ride.find({});
+
+    // const rides = await All_rides.filter((ride) => {
+    //   const thresholdDistance = ride.totalDist / 10;
+    //   let srcClosest = null;
+    //   let destClosest = null;
+
+    //   for (let i = 0; i < ride.route.length - 1; i++) {
+    //     const line = [ride.route[i], ride.route[i + 1]];
+
+    //     const srcDistance = distanceFromPoint(srcPt, line);
+    //     if (srcDistance < thresholdDistance) {
+    //       srcClosest = ride.route[i];
+    //     }
+
+    //     const destDistance = distanceFromPoint(destPt, line);
+    //     if (destDistance < thresholdDistance) {
+    //       destClosest = ride.route[i];
+    //     }
+    //   }
+
+    //   if (srcClosest && destClosest) {
+    //     const rideDirection = [srcClosest, destClosest];
+    //     const srcDestDirection = [source, destination];
+    //     const angle = getAngle(rideDirection, srcDestDirection);
+
+    //     if (angle < 15) {
+    //       return true;
+    //     }
+    //   }
+    //   return false;
+    // });
+
     const All_rides = await Ride.find({});
 
     const rides = await All_rides.filter((ride) => {
-      const line = ride.route;
-      const srcDistance = distanceFromPoint(srcPt, line);
-      const destDistance = distanceFromPoint(destPt, line);
-
-      const angle = getAngle(line, line2);
-      const thresholdDistance = ride.totalDist / 10;
-      if (
-        srcDistance < thresholdDistance &&
-        destDistance < thresholdDistance &&
-        angle < 15
-      ) {
-        return true;
+      for (let i = 0; i < ride.route.length; i++) {
+        if (ride.route[i][0] === source[0] && ride.route[i][1] === source[1]) {
+          for (let j = i; j < ride.route.length; j++) {
+            if (
+              ride.route[j][0] === destination[0] &&
+              ride.route[j][1] === destination[1]
+            ) {
+              return true;
+            }
+          }
+        }
       }
       return false;
     });

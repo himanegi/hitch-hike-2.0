@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 -4 20.003 20.003" xmlns="http://www.w3.org/2000/svg">
+  <g id="sport-car-2" transform="translate(-2 -6)">
+    <path id="secondary" fill="#2ca9bc" d="M20.32,10.77,18,10,15.8,8.35A6.54,6.54,0,0,0,11.75,7H10.61A6.77,6.77,0,0,0,5,10l-1.45.72a1,1,0,0,0-.55.9V14a1,1,0,0,0,1,1H5a2,2,0,0,1,4,0h6a2,2,0,0,1,4,0h1a1,1,0,0,0,1-1V11.72A1,1,0,0,0,20.32,10.77Z"/>
+    <path id="primary" d="M4.9,15H4a1,1,0,0,1-1-1V11.62a1,1,0,0,1,.55-.9L5,10a6.77,6.77,0,0,1,5.61-3h1.14A6.54,6.54,0,0,1,15.8,8.35L18,10l2.32.77a1,1,0,0,1,.68,1V14a1,1,0,0,1-1,1h-.91" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    <path id="primary-2" data-name="primary" d="M14.89,15H9.1M9,15a2,2,0,1,1-2-2A2,2,0,0,1,9,15Zm10,0a2,2,0,1,1-2-2A2,2,0,0,1,19,15Z" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  </g>
+</svg>
