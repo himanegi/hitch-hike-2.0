@@ -1,7 +1,4 @@
-import adjacencyList from "../models/citiesData.js";
-
-
-function dijkstra(startNode, endNode) {
+function dijkstra(adjacencyList, startNode, endNode) {
   const distances = {};
   const previous = {};
   const queue = new PriorityQueue();

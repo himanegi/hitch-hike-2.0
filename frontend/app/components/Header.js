@@ -1,8 +1,8 @@
 "use client";
 import { UserButton } from "@clerk/nextjs";
 import Image from "next/image";
-import React from "react";
 import Link from "next/link";
+import React from "react";
 import styles from "../Header.module.css";
 
 function Header() {
@@ -24,6 +24,12 @@ function Header() {
       name: "Trips",
       icon: "/ride.svg",
       path: "/trips",
+    },
+    {
+      id: 4,
+      name: "Dijkstra",
+      icon: "/dijkstra.svg",
+      path: "/mapsection",
     },
   ];
 
