@@ -45,7 +45,7 @@ const createRide = async (req, res) => {
       spotsInCar,
       distance,
     } = req.body;
-
+console.log("this",req.body);
     const sourcePoint = {
       type: "Point",
       coordinates: source,
@@ -58,9 +58,10 @@ const createRide = async (req, res) => {
 
     // const routeLine = dijkstra(sourcePoint,destinationPoint);
     // console.log(routeLine);
-    routeLine = ridePath;
+    const routeLine = ridePath;
 
     // const totalDist = haversineDistance(source, destination);
+    const totalDist=distance
     console.log(totalDist);
 
     const newRide = new Ride({
