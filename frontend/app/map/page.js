@@ -3,9 +3,12 @@ import React, { useEffect, useRef, useState } from "react";
 // import dijkstra from "../utils/dijkstra.js";
 
 const Map = ({ myPoints, allPaths }) => {
+  if (!Array.isArray(allPaths) || allPaths.length === 0) {
+    return;
+  }
   const [, setRender] = useState(0); // State to trigger re-render
   const locations = {
-    Uptron: { lat: 25.495888259522516, lon: 81.86993608590821 },
+    "Uptron": { lat: 25.495888259522516, lon: 81.86993608590821 },
     "Teliyarganj Chauraha": { lat: 25.49861488542562, lon: 81.86312708481141 },
     "Yamuna Gate": { lat: 25.494318289237118, lon: 81.86126713666609 },
     "APS Old Cantt": { lat: 25.492486990625462, lon: 81.85701173913526 },
