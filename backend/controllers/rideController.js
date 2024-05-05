@@ -41,8 +41,10 @@ const createRide = async (req, res) => {
       driverId,
       sourceName,
       destinationName,
+      ridePath,
       driverName,
       spotsInCar,
+      distance
     } = req.body;
 
     const sourcePoint = {
@@ -55,10 +57,11 @@ const createRide = async (req, res) => {
       coordinates: destination,
     };
 
-    const routeLine = dijkstra(sourcePoint,destinationPoint);
-    console.log(routeLine);
+    // const routeLine = dijkstra(sourcePoint,destinationPoint);
+    // console.log(routeLine);
+    routeLine = ridePath;
 
-    const totalDist = haversineDistance(source, destination);
+    // const totalDist = haversineDistance(source, destination);
     console.log(totalDist);
 
     const newRide = new Ride({
@@ -72,7 +75,7 @@ const createRide = async (req, res) => {
       message,
       driver: driverId,
       driverName,
-      totalDist,
+      totalDist:distance,
       spotsLeft: spotsInCar,
     });
 
@@ -114,44 +117,60 @@ const getAngle = (l1, l2) => {
 const searchRide = async (req, res) => {
   try {
     const { source, destination } = req.body;
-    const line2 = {
-      type: "LineString",
-      coordinates: [source, destination],
-    };
-    const srcPt = turf.point(source);
-    const destPt = turf.point(destination);
-    const All_rides = await Ride.find({});
+    // const line2 = {
+    //   type: "LineString",
+    //   coordinates: [source, destination],
+    // };
+    // const srcPt = turf.point(source);
+    // const destPt = turf.point(destination);
+    // const All_rides = await Ride.find({});
+
+    // const rides = await All_rides.filter((ride) => {
+    //   const thresholdDistance = ride.totalDist / 10;
+    //   let srcClosest = null;
+    //   let destClosest = null;
+    
+    //   for (let i = 0; i < ride.route.length - 1; i++) {
+    //     const line = [ride.route[i], ride.route[i + 1]];
+    
+    //     const srcDistance = distanceFromPoint(srcPt, line);
+    //     if (srcDistance < thresholdDistance) {
+    //       srcClosest = ride.route[i];
+    //     }
+    
+    //     const destDistance = distanceFromPoint(destPt, line);
+    //     if (destDistance < thresholdDistance) {
+    //       destClosest = ride.route[i];
+    //     }
+    //   }
+    
+    //   if (srcClosest && destClosest) {
+    //     const rideDirection = [srcClosest, destClosest];
+    //     const srcDestDirection = [source, destination];
+    //     const angle = getAngle(rideDirection, srcDestDirection);
+    
+    //     if (angle < 15) {
+    //       return true;
+    //     }
+    //   }
+    //   return false;
+    // });
+
+        const All_rides = await Ride.find({});
 
     const rides = await All_rides.filter((ride) => {
-      const thresholdDistance = ride.totalDist / 10;
-      let srcClosest = null;
-      let destClosest = null;
-    
-      for (let i = 0; i < ride.route.length - 1; i++) {
-        const line = [ride.route[i], ride.route[i + 1]];
-    
-        const srcDistance = distanceFromPoint(srcPt, line);
-        if (srcDistance < thresholdDistance) {
-          srcClosest = ride.route[i];
+       
+        for (let i = 0; i < ride.route.length; i++) {
+          if(ride.route[i][0] === source[0] && ride.route[i][1] === source[1]){
+            for (let j = i; j < ride.route.length; j++) {
+              if(ride.route[j][0] === destination[0] && ride.route[j][1] === destination[1]){
+                return true;
+              }
+            }
+          }
         }
-    
-        const destDistance = distanceFromPoint(destPt, line);
-        if (destDistance < thresholdDistance) {
-          destClosest = ride.route[i];
-        }
-      }
-    
-      if (srcClosest && destClosest) {
-        const rideDirection = [srcClosest, destClosest];
-        const srcDestDirection = [source, destination];
-        const angle = getAngle(rideDirection, srcDestDirection);
-    
-        if (angle < 15) {
-          return true;
-        }
-      }
-      return false;
-    });
+        return false;
+      });
 
     if (rides.length > 0) {
       res.status(200).json({ message: "Search Result", rides });
