@@ -1,7 +1,7 @@
 import Ride from "../models/rideModel.js";
 import UserRide from "../models/userModel.js";
 import * as turf from "@turf/turf";
-
+import dijkstra from "../utils/dijkstra.js";
 //Implementing the HaverSine distance calculation function
 
 const toRadians = (deg) => {
@@ -55,10 +55,8 @@ const createRide = async (req, res) => {
       coordinates: destination,
     };
 
-    const routeLine = {
-      type: "LineString",
-      coordinates: [source, destination],
-    };
+    const routeLine = dijkstra(sourcePoint,destinationPoint);
+    console.log(routeLine);
 
     const totalDist = haversineDistance(source, destination);
     console.log(totalDist);
@@ -125,18 +123,32 @@ const searchRide = async (req, res) => {
     const All_rides = await Ride.find({});
 
     const rides = await All_rides.filter((ride) => {
-      const line = ride.route;
-      const srcDistance = distanceFromPoint(srcPt, line);
-      const destDistance = distanceFromPoint(destPt, line);
-
-      const angle = getAngle(line, line2);
       const thresholdDistance = ride.totalDist / 10;
-      if (
-        srcDistance < thresholdDistance &&
-        destDistance < thresholdDistance &&
-        angle < 15
-      ) {
-        return true;
+      let srcClosest = null;
+      let destClosest = null;
+    
+      for (let i = 0; i < ride.route.length - 1; i++) {
+        const line = [ride.route[i], ride.route[i + 1]];
+    
+        const srcDistance = distanceFromPoint(srcPt, line);
+        if (srcDistance < thresholdDistance) {
+          srcClosest = ride.route[i];
+        }
+    
+        const destDistance = distanceFromPoint(destPt, line);
+        if (destDistance < thresholdDistance) {
+          destClosest = ride.route[i];
+        }
+      }
+    
+      if (srcClosest && destClosest) {
+        const rideDirection = [srcClosest, destClosest];
+        const srcDestDirection = [source, destination];
+        const angle = getAngle(rideDirection, srcDestDirection);
+    
+        if (angle < 15) {
+          return true;
+        }
       }
       return false;
     });

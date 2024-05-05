@@ -301,7 +301,7 @@ const [openChat, setOpenChat] = useState(false);
                       color="primary"
                       variant="outlined"
                       style={{ textTransform: "none", marginLeft: "10px" }}
-                      onClick={handleConnectClick}
+                      // onClick={handleConnectClick}
                     >
                       Connect
                     </Button>
