@@ -153,7 +153,12 @@ const ShareComponent = () => {
                 onCoordinatesChange={setDestinationCoordinates}
                 onPlaceChange={setDestinationPlace}
               />
-              <button onClick={handleClick}>Get Route</button>
+              <button
+                className="mt-4 w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
+                onClick={handleClick}
+              >
+                Get Route
+              </button>
               {/* <InputItem
                 type="source"
                 namespace="Source"
@@ -257,7 +262,6 @@ const ShareComponent = () => {
             <div>
               <button
                 type="submit"
-                data-ripple-light="true"
                 className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
               >
                 Share

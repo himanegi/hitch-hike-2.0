@@ -158,7 +158,7 @@ const Map = ({ myPoints, allPaths }) => {
   return (
     <canvas
       ref={canvasRef}
-      className="h-[630px] bg-white shadow-md rounded-lg transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
+      className="h-[700px] bg-white shadow-md rounded-lg transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
     />
   );
 };
