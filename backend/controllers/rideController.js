@@ -30,8 +30,10 @@ const haversineDistance = (pt1, pt2) => {
 };
 
 const createRide = async (req, res) => {
+  console.log("aagaya")
   try {
     const {
+      
       source,
       destination,
       date,
@@ -71,7 +73,10 @@ console.log("this",req.body);
       destinationName,
       date,
       time,
-      route: routeLine,
+      ridePath: {
+        type: "LineString",
+        coordinates: ridePath
+      },
       message,
       driver: driverId,
       driverName,
@@ -79,7 +84,7 @@ console.log("this",req.body);
       spotsLeft: spotsInCar,
     });
 
-    console.log("new ride: ", spotsInCar, newRide.spotsLeft);
+    // console.log("new ride: ", spotsInCar, newRide.spotsLeft);
     await newRide.save();
     const newRideforUser = await UserRide.findOne({ user: driverId });
     if (newRideforUser) {
@@ -115,6 +120,7 @@ const getAngle = (l1, l2) => {
 };
 
 const searchRide = async (req, res) => {
+  console.log("req.body", req.body);
   try {
     const { source, destination } = req.body;
     // const line2 = {
@@ -158,13 +164,15 @@ const searchRide = async (req, res) => {
 
     const All_rides = await Ride.find({});
 
-    const rides = await All_rides.filter((ride) => {
-      for (let i = 0; i < ride.route.length; i++) {
-        if (ride.route[i][0] === source[0] && ride.route[i][1] === source[1]) {
-          for (let j = i; j < ride.route.length; j++) {
+    const rides = await All_rides.filter((ride) => { 
+      for (let i = 0; i < ride.ridePath.coordinates.length; i++) {
+       
+        if (ride.ridePath.coordinates[i][0] === source[0] && ride.ridePath.coordinates[i][1] === source[1]) {
+        
+          for (let j = i; j < ride.ridePath.coordinates.length; j++) {
             if (
-              ride.route[j][0] === destination[0] &&
-              ride.route[j][1] === destination[1]
+              ride.ridePath.coordinates[j][0] === destination[0] &&
+              ride.ridePath.coordinates[j][1] === destination[1]
             ) {
               return true;
             }
