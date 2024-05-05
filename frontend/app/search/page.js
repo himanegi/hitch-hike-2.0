@@ -152,7 +152,7 @@ const SearchComponent = () => {
     <div className="bg-gray-100 pt-3 pb-3">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-8">
-          <div className="overflow-y-scroll h-[630px] md:col-span-2 bg-white shadow-md rounded-lg p-6 transition-all duration-300 hover:ring-2 hover:ring-indigo-500">
+          <div className="overflow-y-scroll-hidden h-[700px] md:col-span-2 bg-white shadow-md rounded-lg p-6 transition-all duration-300 hover:ring-2 hover:ring-indigo-500">
             <style jsx>{`
               /* Customize the scrollbar */
               ::-webkit-scrollbar {
@@ -190,7 +190,6 @@ const SearchComponent = () => {
               onCoordinatesChange={setDestinationCoordinates}
               onPlaceChange={setDestinationPlace}
             />
-            <button onClick={handleClick}>Get Route</button>
             {/* <InputItem
               type="source"
               map={map}
@@ -211,8 +210,11 @@ const SearchComponent = () => {
               destinationCoordinates={destinationCoordinates}
             /> */}
             <button
-              className="ripple-bg-indigo-300 inline-flex w-full justify-center mt-10 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
-              onClick={fetchAvailableRides}
+              className="inline-flex w-full justify-center mt-4 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
+              onClick={() => {
+                fetchAvailableRides();
+                handleClick();
+              }}
             >
               Search
             </button>

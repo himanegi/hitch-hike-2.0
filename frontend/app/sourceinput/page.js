@@ -21,9 +21,17 @@ const InputSource = ({
 
   return (
     <div>
-      <label htmlFor="locationSelect">{label}</label>
-      <br />
-      <select id="locationSelect" onChange={handleLocationChange}>
+      <label
+        htmlFor="locationSelect"
+        className="block text-sm font-medium text-gray-700 mt-2"
+      >
+        {label}
+      </label>
+      <select
+        className="mt-1 block w-full outline-none rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 transition-all duration-300 focus:outline-none focus:ring-2 hover:ring-2 hover:ring-indigo-500"
+        id="locationSelect"
+        onChange={handleLocationChange}
+      >
         <option value="" disabled selected>
           Select a location
         </option>
