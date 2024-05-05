@@ -1,7 +1,7 @@
 "use client";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RideSharedPopup from "../components/RideSharedPopup";
 import Map from "../map/page";
 import InputItem from "../sourceinput/page";
@@ -10,6 +10,8 @@ import InputItem from "../sourceinput/page";
 // import MapboxRoute from "../components/Home/MapboxRoute";
 import createAdjacencyList from "../utils/adjacencyList";
 import dijkstra from "../utils/dijkstra";
+import { distance } from "turf";
+import HaversineDistance from "../utils/haversine";
 
 const ShareComponent = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -66,7 +68,7 @@ const ShareComponent = () => {
     [25.449623175857198, 81.85125369815248], //RamnathPur
   ];
   const locations = {
-    Uptron: { lat: 25.495888259522516, lon: 81.86993608590821 },
+    "Uptron": { lat: 25.495888259522516, lon: 81.86993608590821 },
     "Teliyarganj Chauraha": { lat: 25.49861488542562, lon: 81.86312708481141 },
     "Yamuna Gate": { lat: 25.494318289237118, lon: 81.86126713666609 },
     "APS Old Cantt": { lat: 25.492486990625462, lon: 81.85701173913526 },
@@ -76,11 +78,11 @@ const ShareComponent = () => {
     "Belly Gaon": { lat: 25.474033767581517, lon: 81.8477323741156 },
     "Allahabad Uni": { lat: 25.470262035007487, lon: 81.86253387178975 },
     "Tagore Town": { lat: 25.456736707332805, lon: 81.8593706484965 },
-    Katra: { lat: 25.464765870097402, lon: 81.85191021620103 },
+    "Katra": { lat: 25.464765870097402, lon: 81.85191021620103 },
     "Police Line": { lat: 25.46158660125893, lon: 81.84427073353051 },
-    Chungi: { lat: 25.442679868982705, lon: 81.86735496207731 },
+    "Chungi": { lat: 25.442679868982705, lon: 81.86735496207731 },
     "CMP Degree College": { lat: 25.445581209458688, lon: 81.85746077782231 },
-    RamnathPur: { lat: 25.449623175857198, lon: 81.85125369815248 },
+    "RamnathPur": { lat: 25.449623175857198, lon: 81.85125369815248 },
     "CA Park": { lat: 25.458088766131926, lon: 81.85187816003692 },
     "Allahabad High Court": { lat: 25.4544052785852, lon: 81.82523194476462 },
     "Civil Lines": { lat: 25.45295982867542, lon: 81.83494025578001 },
@@ -107,10 +109,11 @@ const ShareComponent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle form submission here
+    const distance = HaversineDistance(sourceCoordinates, destinationCoordinates);
     await axios
       .post("/api/rides/create", {
-        source: sourceCoordinates,
-        destination: destinationCoordinates,
+        source: [sourceCoordinates.lat, sourceCoordinates.lon],
+        destination: [destinationCoordinates.lat, destinationCoordinates.lon],
         sourceName: sourcePlace,
         destinationName: destinationPlace,
         driverId: user.id,
@@ -119,6 +122,8 @@ const ShareComponent = () => {
         message: message,
         time: departureTime,
         spotsInCar: spotsInCar,
+        ridePath: allPaths,
+        distance,
       })
       .then((res) => {
         console.log(res.data);

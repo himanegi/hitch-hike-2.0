@@ -30,8 +30,10 @@ const haversineDistance = (pt1, pt2) => {
 };
 
 const createRide = async (req, res) => {
+  console.log("aagaya")
   try {
     const {
+      
       source,
       destination,
       date,
@@ -115,6 +117,7 @@ const getAngle = (l1, l2) => {
 };
 
 const searchRide = async (req, res) => {
+  console.log("req.body", req.body);
   try {
     const { source, destination } = req.body;
     // const line2 = {
@@ -159,12 +162,13 @@ const searchRide = async (req, res) => {
     const All_rides = await Ride.find({});
 
     const rides = await All_rides.filter((ride) => {
-      for (let i = 0; i < ride.route.length; i++) {
-        if (ride.route[i][0] === source[0] && ride.route[i][1] === source[1]) {
-          for (let j = i; j < ride.route.length; j++) {
+      for (let i = 0; i < ride.route.coordinates.length; i++) {
+        if (ride.route.coordinates[i][0] === source.lat && ride.route.coordinates[i][1] === source.lon) {
+         console.log("ye lellelelee",ride.route.coordinates);
+          for (let j = i; j < ride.route.coordinates.length; j++) {
             if (
-              ride.route[j][0] === destination[0] &&
-              ride.route[j][1] === destination[1]
+              ride.route.coordinates[j][0] === destination[0] &&
+              ride.route.coordinates[j][1] === destination[1]
             ) {
               return true;
             }

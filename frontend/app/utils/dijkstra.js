@@ -1,4 +1,5 @@
 function dijkstra(adjacencyList, startNode, endNode) {
+  if(startNode==""||endNode==""){return [];}
   const distances = {};
   const previous = {};
   const queue = new PriorityQueue();

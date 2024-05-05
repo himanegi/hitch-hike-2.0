@@ -88,8 +88,8 @@ const SearchComponent = () => {
   const fetchAvailableRides = async () => {
     try {
       const response = await axios.post("/api/rides/search", {
-        source: sourceCoordinates,
-        destination: destinationCoordinates,
+        source: [sourceCoordinates.lat, sourceCoordinates.lon],
+        destination: [destinationCoordinates.lat, destinationCoordinates.lon],
         sourceName: sourcePlace,
         destinationName: destinationPlace,
       });
