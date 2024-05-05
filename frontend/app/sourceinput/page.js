@@ -24,7 +24,9 @@ const InputSource = ({
       <label htmlFor="locationSelect">{label}</label>
       <br />
       <select id="locationSelect" onChange={handleLocationChange}>
-        <option value="">Select a location</option>
+        <option value="" disabled selected>
+          Select a location
+        </option>
         {Object.entries(locations).map(([name]) => (
           <option key={name} value={name}>
             {name}

@@ -39,7 +39,7 @@ const rideSchema = new mongoose.Schema({
 
   date: Date,
   time: String,
-  route: [{
+  ridePath: [{
     type: {
       type: String,
       enum: ["Point"],

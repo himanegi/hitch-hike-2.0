@@ -3,30 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 // import dijkstra from "../utils/dijkstra.js";
 
 const Map = ({ myPoints, allPaths }) => {
-  if (!Array.isArray(allPaths) || allPaths.length === 0) {
-    return;
-  }
   const [, setRender] = useState(0); // State to trigger re-render
-  const locations = {
-    "Uptron": { lat: 25.495888259522516, lon: 81.86993608590821 },
-    "Teliyarganj Chauraha": { lat: 25.49861488542562, lon: 81.86312708481141 },
-    "Yamuna Gate": { lat: 25.494318289237118, lon: 81.86126713666609 },
-    "APS Old Cantt": { lat: 25.492486990625462, lon: 81.85701173913526 },
-    "Ganga Gate": { lat: 25.492657811815377, lon: 81.8610579644117 },
-    "Army Canteen": { lat: 25.480122171991997, lon: 81.8624741883314 },
-    "Old Katra": { lat: 25.47257897045846, lon: 81.85668489287013 },
-    "Belly Gaon": { lat: 25.474033767581517, lon: 81.8477323741156 },
-    "Allahabad Uni": { lat: 25.470262035007487, lon: 81.86253387178975 },
-    "Tagore Town": { lat: 25.456736707332805, lon: 81.8593706484965 },
-    Katra: { lat: 25.464765870097402, lon: 81.85191021620103 },
-    "Police Line": { lat: 25.46158660125893, lon: 81.84427073353051 },
-    Chungi: { lat: 25.442679868982705, lon: 81.86735496207731 },
-    "CMP Degree College": { lat: 25.445581209458688, lon: 81.85746077782231 },
-    RamnathPur: { lat: 25.449623175857198, lon: 81.85125369815248 },
-    "CA Park": { lat: 25.458088766131926, lon: 81.85187816003692 },
-    "Allahabad High Court": { lat: 25.4544052785852, lon: 81.82523194476462 },
-    "Civil Lines": { lat: 25.45295982867542, lon: 81.83494025578001 },
-  };
 
   const pointsWithNames = {
     Uptron: [25.495888259522516, 81.86993608590821],
@@ -122,40 +99,42 @@ const Map = ({ myPoints, allPaths }) => {
     }
 
     // Draw the allPaths on top
-    ctx.lineWidth = 2; // Make the path line thicker
-    ctx.strokeStyle = "red"; // Change the color to red
-    ctx.beginPath();
-    ctx.moveTo(
-      (allPaths[0][0] - mapCenterX) * scale + canvas.width / 2,
-      (allPaths[0][1] - mapCenterY) * scale + canvas.height / 2
-    );
-    allPaths.forEach((p) => {
-      ctx.lineTo(
-        (p[0] - mapCenterX) * scale + canvas.width / 2,
-        (p[1] - mapCenterY) * scale + canvas.height / 2
+    if (allPaths.length > 0) {
+      ctx.lineWidth = 2; // Make the path line thicker
+      ctx.strokeStyle = "red"; // Change the color to red
+      ctx.beginPath();
+      ctx.moveTo(
+        (allPaths[0][0] - mapCenterX) * scale + canvas.width / 2,
+        (allPaths[0][1] - mapCenterY) * scale + canvas.height / 2
       );
-    });
-    ctx.stroke();
+      allPaths.forEach((p) => {
+        ctx.lineTo(
+          (p[0] - mapCenterX) * scale + canvas.width / 2,
+          (p[1] - mapCenterY) * scale + canvas.height / 2
+        );
+      });
+      ctx.stroke();
 
-    // Draw the source marker
-    const sourceX = (allPaths[0][0] - mapCenterX) * scale + canvas.width / 2;
-    const sourceY = (allPaths[0][1] - mapCenterY) * scale + canvas.height / 2;
-    ctx.fillStyle = "green";
-    ctx.beginPath();
-    ctx.arc(sourceX, sourceY, 8, 0, 2 * Math.PI);
-    ctx.fill();
+      // Draw the source marker
+      const sourceX = (allPaths[0][0] - mapCenterX) * scale + canvas.width / 2;
+      const sourceY = (allPaths[0][1] - mapCenterY) * scale + canvas.height / 2;
+      ctx.fillStyle = "green";
+      ctx.beginPath();
+      ctx.arc(sourceX, sourceY, 8, 0, 2 * Math.PI);
+      ctx.fill();
 
-    // Draw the destination marker
-    const destX =
-      (allPaths[allPaths.length - 1][0] - mapCenterX) * scale +
-      canvas.width / 2;
-    const destY =
-      (allPaths[allPaths.length - 1][1] - mapCenterY) * scale +
-      canvas.height / 2;
-    ctx.fillStyle = "red";
-    ctx.beginPath();
-    ctx.arc(destX, destY, 8, 0, 2 * Math.PI);
-    ctx.fill();
+      // Draw the destination marker
+      const destX =
+        (allPaths[allPaths.length - 1][0] - mapCenterX) * scale +
+        canvas.width / 2;
+      const destY =
+        (allPaths[allPaths.length - 1][1] - mapCenterY) * scale +
+        canvas.height / 2;
+      ctx.fillStyle = "red";
+      ctx.beginPath();
+      ctx.arc(destX, destY, 8, 0, 2 * Math.PI);
+      ctx.fill();
+    }
   };
   useEffect(() => {
     const canvas = canvasRef.current;

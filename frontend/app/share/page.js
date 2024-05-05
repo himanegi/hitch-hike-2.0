@@ -10,11 +10,13 @@ import InputItem from "../sourceinput/page";
 // import MapboxRoute from "../components/Home/MapboxRoute";
 import createAdjacencyList from "../utils/adjacencyList";
 import dijkstra from "../utils/dijkstra";
+import { distance } from "turf";
+import HaversineDistance from "../utils/haversine";
 
 const ShareComponent = () => {
   const [showPopup, setShowPopup] = useState(false);
-  const [sourcePlace, setSourcePlace] = useState('Uptron');
-  const [destinationPlace, setDestinationPlace] = useState("Uptron");
+  const [sourcePlace, setSourcePlace] = useState("");
+  const [destinationPlace, setDestinationPlace] = useState("");
   const [sourceCoordinates, setSourceCoordinates] = useState([0, 0]);
   const [destinationCoordinates, setDestinationCoordinates] = useState([0, 0]);
   // const [map, setMap] = useState(null);
@@ -24,6 +26,8 @@ const ShareComponent = () => {
   const [spotsInCar, setSpotsInCar] = useState(1);
   const [message, setMessage] = useState("");
   const [carNumber, setCarNumber] = useState("");
+  const [isSearchClicked, setIsSearchClicked] = useState(false);
+  const [allPaths, setAllPaths] = useState([]);
 
   const { user } = useUser();
 
@@ -86,85 +90,30 @@ const ShareComponent = () => {
 
   const adjacencyList = createAdjacencyList(locations);
 
-  console.log("source place: ", sourcePlace);
-  console.log("destination place: ", destinationPlace);
- 
-
-   
-  const path = dijkstra(adjacencyList, sourcePlace, destinationPlace);
-
-  let allPaths = [];
-  path.forEach((name) => {
-    allPaths.push([locations[name].lat, locations[name].lon]);
-  });
-
   const handlePageRefresh = () => {
     window.location.reload();
   };
 
   const handleClick = () => {
+    console.log("chal gaya!");
+    const path = dijkstra(adjacencyList, sourcePlace, destinationPlace);
+    const paths = path.map((name) => [
+      locations[name].lat,
+      locations[name].lon,
+    ]);
+    setAllPaths(paths);
+    setIsSearchClicked(true);
     console.log("Source:", sourceCoordinates);
     console.log("Destination:", destinationCoordinates);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const regex = new RegExp(
-    //   "^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$"
-    // );
-    // const stateCodes = [
-    //   "AP",
-    //   "AR",
-    //   "AS",
-    //   "BR",
-    //   "CG",
-    //   "DL",
-    //   "GA",
-    //   "GJ",
-    //   "HR",
-    //   "HP",
-    //   "JK",
-    //   "JH",
-    //   "KA",
-    //   "KL",
-    //   "LD",
-    //   "MP",
-    //   "MH",
-    //   "MN",
-    //   "ML",
-    //   "MZ",
-    //   "NL",
-    //   "OD",
-    //   "PY",
-    //   "PB",
-    //   "RJ",
-    //   "SK",
-    //   "TN",
-    //   "TS",
-    //   "TR",
-    //   "UP",
-    //   "UK",
-    //   "WB",
-    //   "AN",
-    //   "CH",
-    //   "DN",
-    //   "DD",
-    //   "LA",
-    // ];
-
-    // if (!regex.test(carNumber)) {
-    //   alert("Invalid car number format.");
-    //   return;
-    // }
-
-    // if (!stateCodes.includes(carNumber.slice(0, 2))) {
-    //   alert("Invalid state code in car number.");
-    //   return;
-    // }
     // Handle form submission here
+    const distance = HaversineDistance(sourceCoordinates, destinationCoordinates);
     await axios
       .post("/api/rides/create", {
-        source: sourceCoordinates,
-        destination: destinationCoordinates,
+        source: [sourceCoordinates.lat, sourceCoordinates.lon],
+        destination: [destinationCoordinates.lat, destinationCoordinates.lon],
         sourceName: sourcePlace,
         destinationName: destinationPlace,
         driverId: user.id,
@@ -173,6 +122,8 @@ const ShareComponent = () => {
         message: message,
         time: departureTime,
         spotsInCar: spotsInCar,
+        ridePath: allPaths,
+        distance,
       })
       .then((res) => {
         console.log(res.data);
@@ -319,7 +270,10 @@ const ShareComponent = () => {
             </div>
           </form>
           <div className="md:col-span-2 transition-all duration-300">
-          {allPaths.length > 0 && <Map myPoints={myPoints} allPaths={allPaths} />}
+            <Map
+              myPoints={myPoints}
+              allPaths={isSearchClicked ? allPaths : []}
+            />
           </div>
         </div>
       </div>

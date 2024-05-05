@@ -7,18 +7,23 @@ import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import RequestForm from "../components/RequestForm";
 import Map from "../map/page";
+import InputItem from "../sourceinput/page";
+import createAdjacencyList from "../utils/adjacencyList";
+import dijkstra from "../utils/dijkstra";
 
 const SearchComponent = () => {
   const [showRequestForm, setShowRequestForm] = useState(false);
-  const [sourcePlace, setSourcePlace] = useState(null);
-  const [destinationPlace, setDestinationPlace] = useState(null);
+  const [sourcePlace, setSourcePlace] = useState("");
+  const [destinationPlace, setDestinationPlace] = useState("");
   const [sourceCoordinates, setSourceCoordinates] = useState([0, 0]);
   const [destinationCoordinates, setDestinationCoordinates] = useState([0, 0]);
-  const [map, setMap] = useState(null);
+  // const [map, setMap] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [selectedRide, setSelectedRide] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
+  const [isSearchClicked, setIsSearchClicked] = useState(false);
+  const [allPaths, setAllPaths] = useState([]);
 
   const { user } = useUser();
 
@@ -59,11 +64,32 @@ const SearchComponent = () => {
     [25.449623175857198, 81.85125369815248], //RamnathPur
   ];
 
+  const locations = {
+    Uptron: { lat: 25.495888259522516, lon: 81.86993608590821 },
+    "Teliyarganj Chauraha": { lat: 25.49861488542562, lon: 81.86312708481141 },
+    "Yamuna Gate": { lat: 25.494318289237118, lon: 81.86126713666609 },
+    "APS Old Cantt": { lat: 25.492486990625462, lon: 81.85701173913526 },
+    "Ganga Gate": { lat: 25.492657811815377, lon: 81.8610579644117 },
+    "Army Canteen": { lat: 25.480122171991997, lon: 81.8624741883314 },
+    "Old Katra": { lat: 25.47257897045846, lon: 81.85668489287013 },
+    "Belly Gaon": { lat: 25.474033767581517, lon: 81.8477323741156 },
+    "Allahabad Uni": { lat: 25.470262035007487, lon: 81.86253387178975 },
+    "Tagore Town": { lat: 25.456736707332805, lon: 81.8593706484965 },
+    Katra: { lat: 25.464765870097402, lon: 81.85191021620103 },
+    "Police Line": { lat: 25.46158660125893, lon: 81.84427073353051 },
+    Chungi: { lat: 25.442679868982705, lon: 81.86735496207731 },
+    "CMP Degree College": { lat: 25.445581209458688, lon: 81.85746077782231 },
+    RamnathPur: { lat: 25.449623175857198, lon: 81.85125369815248 },
+    "CA Park": { lat: 25.458088766131926, lon: 81.85187816003692 },
+    "Allahabad High Court": { lat: 25.4544052785852, lon: 81.82523194476462 },
+    "Civil Lines": { lat: 25.45295982867542, lon: 81.83494025578001 },
+  };
+
   const fetchAvailableRides = async () => {
     try {
       const response = await axios.post("/api/rides/search", {
-        source: sourceCoordinates,
-        destination: destinationCoordinates,
+        source: [sourceCoordinates.lat, sourceCoordinates.lon],
+        destination: [destinationCoordinates.lat, destinationCoordinates.lon],
         sourceName: sourcePlace,
         destinationName: destinationPlace,
       });
@@ -77,6 +103,19 @@ const SearchComponent = () => {
     }
   };
 
+  const adjacencyList = createAdjacencyList(locations);
+  const handleClick = () => {
+    console.log("chal gaya!");
+    const path = dijkstra(adjacencyList, sourcePlace, destinationPlace);
+    const paths = path.map((name) => [
+      locations[name].lat,
+      locations[name].lon,
+    ]);
+    setAllPaths(paths);
+    setIsSearchClicked(true);
+    console.log("Source:", sourceCoordinates);
+    console.log("Destination:", destinationCoordinates);
+  };
   const handleRideClick = (ride) => {
     setSelectedRide(ride);
   };
@@ -139,6 +178,19 @@ const SearchComponent = () => {
             <p className="text-[25px] font-thin text-gray-800">
               Search for Rides
             </p>
+            <InputItem
+              type="source"
+              locations={locations}
+              onCoordinatesChange={setSourceCoordinates}
+              onPlaceChange={setSourcePlace}
+            />
+            <InputItem
+              type="destination"
+              locations={locations}
+              onCoordinatesChange={setDestinationCoordinates}
+              onPlaceChange={setDestinationPlace}
+            />
+            <button onClick={handleClick}>Get Route</button>
             {/* <InputItem
               type="source"
               map={map}
@@ -218,7 +270,10 @@ const SearchComponent = () => {
           </div>
           <div className="col-span-2">
             {/* <MapSection onMapChange={setMap} /> */}
-            <Map myPoints={myPoints} />
+            <Map
+              myPoints={myPoints}
+              allPaths={isSearchClicked ? allPaths : []}
+            />
           </div>
           {showPopup && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
