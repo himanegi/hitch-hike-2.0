@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import createAdjacencyList from "../utils/adjacencyList.js";
-import dijkstra from "../utils/dijkstra.js";
+// import createAdjacencyList from "../utils/adjacencyList.js";
+// import dijkstra from "../utils/dijkstra.js";
 
-const Map = ({ myPoints }) => {
+const Map = ({ myPoints, allPaths }) => {
   const [, setRender] = useState(0); // State to trigger re-render
   const locations = {
     Uptron: { lat: 25.495888259522516, lon: 81.86993608590821 },
@@ -46,15 +46,7 @@ const Map = ({ myPoints }) => {
     "Civil Lines": [25.45295982867542, 81.83494025578001],
   };
 
-  const adjacencyList = createAdjacencyList(locations);
-
-  const path = dijkstra(adjacencyList, "Katra", "Uptron");
-
-  let allPaths = [];
-  path.forEach((name) => {
-    allPaths.push([locations[name].lat, locations[name].lon]);
-  });
-  console.log("type:", typeof allPaths);
+  console.log("all paths: ", allPaths);
 
   const canvasRef = useRef(null);
   const drawMap = () => {
@@ -184,7 +176,7 @@ const Map = ({ myPoints }) => {
   return (
     <canvas
       ref={canvasRef}
-      className="bg-white shadow-md rounded-lg transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
+      className="h-[630px] bg-white shadow-md rounded-lg transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
     />
   );
 };

@@ -38,5 +38,10 @@ export default function Home() {
     [25.45295982867542, 81.83494025578001], //Civil Lines
     [25.449623175857198, 81.85125369815248], //RamnathPur
   ];
-  return <Map myPoints={myPoints} />;
+
+  return (
+    <div>
+      <Map locations={locations} />
+    </div>
+  );
 }
