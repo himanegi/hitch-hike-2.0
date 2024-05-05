@@ -5,7 +5,7 @@ import { MdSearch } from "react-icons/md";
 const NOMINATIM_BASE_URL = "https://nominatim.openstreetmap.org/search?";
 
 export default function SearchBox(props) {
-  const { selectPosition, setSelectPosition } = props;
+  const { selectPosition, setSelectPosition,namespace } = props;
   const [searchText, setSearchText] = useState("");
   const [listPlace, setListPlace] = useState([]);
   const [showResults, setShowResults] = useState(false);
@@ -73,7 +73,7 @@ export default function SearchBox(props) {
       >
         <input
           required={true}
-          placeholder="Search"
+          placeholder={namespace}
           className="flex-1 text-[15px] outline-none bg-transparent py-2 px-3 placeholder-gray-400 text-gray-800 transition-colors duration-300 focus:placeholder-gray-600"
           value={searchText}
           onChange={(event) => setSearchText(event.target.value)}

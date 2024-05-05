@@ -9,6 +9,7 @@ import reqRide from "./routes/reqRides.js";
 
 const app = express();
 app.use(express.json());
+app.use(cors({ origin: "http://localhost:3000" }));
 
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -19,7 +20,7 @@ app.use("/api/rides", rideRoutes);
 app.use("/api/rideRequests", reqRide);
 app.use("/api/trips", userTripRoutes);
 
-app;
+app
 
 const PORT = process.env.PORT;
 
