@@ -32,15 +32,15 @@ const ShareComponent = () => {
     const regex = new RegExp("^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$");
   const stateCodes = ['AP', 'AR', 'AS', 'BR', 'CG', 'DL', 'GA', 'GJ', 'HR', 'HP', 'JK', 'JH', 'KA', 'KL', 'LD', 'MP', 'MH', 'MN', 'ML', 'MZ', 'NL', 'OD', 'PY', 'PB', 'RJ', 'SK', 'TN', 'TS', 'TR', 'UP', 'UK', 'WB', 'AN', 'CH', 'DN', 'DD', 'LA'];
 
-  if (!regex.test(carNumber)) {
-    alert('Invalid car number format.');
-    return;
-  }
+  // if (!regex.test(carNumber)) {
+  //   alert('Invalid car number format.');
+  //   return;
+  // }
 
-  if (!stateCodes.includes(carNumber.slice(0, 2))) {
-    alert('Invalid state code in car number.');
-    return;
-  }
+  // if (!stateCodes.includes(carNumber.slice(0, 2))) {
+  //   alert('Invalid state code in car number.');
+  //   return;
+  // }
     // Handle form submission here
     await axios
       .post("/api/rides/create", {
