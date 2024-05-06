@@ -340,6 +340,13 @@ export default function createAdjacencyList(locations) {
           locations["Civil Lines"]
         ),
       },
+      {
+        name: "Prayagraj Bus Stand",
+        distance: HaversineDistance(
+          locations["RamnathPur"],
+          locations["Prayagraj Bus Stand"]
+        ),
+      },
     ],
     "CA Park": [
       {
@@ -370,6 +377,13 @@ export default function createAdjacencyList(locations) {
         distance: HaversineDistance(
           locations["Allahabad High Court"],
           locations["Police Line"]
+        ),
+      },
+      {
+        name: "All Saints Cathedral",
+        distance: HaversineDistance(
+          locations["Allahabad High Court"],
+          locations["All Saints Cathedral"]
         ),
       },
     ],
