@@ -26,7 +26,6 @@ const Map = ({ myPoints, allPaths }) => {
     "Civil Lines": [25.45295982867542, 81.83494025578001],
   };
 
-
   const canvasRef = useRef(null);
   const drawMap = () => {
     const canvas = canvasRef.current;
