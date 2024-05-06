@@ -75,56 +75,6 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
             <Typography variant="body2" gutterBottom>
               Available Spots: {availableSpots}
             </Typography>
-            {/* <TableContainer component={Box}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>User Name</TableCell>
-                    <TableCell>Phone Number</TableCell>
-                    <TableCell>Message</TableCell>
-                    <TableCell>Action</TableCell>
-                    <TableCell>Source</TableCell>
-                    <TableCell>Destination</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rideRequests
-                    .filter((request) => request.status === "pending")
-                    .map((request, index) => (
-                      <TableRow key={index}>
-                        <TableCell>{request.username}</TableCell>
-                        <TableCell>{request.phoneNumber}</TableCell>
-                        <TableCell>{request.message}</TableCell>
-                        <TableCell>{request.riderSource}</TableCell>
-                        <TableCell>{request.riderDestination}</TableCell>
-                        <TableCell>
-                          <Button
-                            style={{
-                              textTransform: "none",
-                              marginRight: "8px",
-                            }}
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleApprove(request)}
-                            disabled={request.isHandled || noSpotsAvailable}
-                          >
-                            Approve
-                          </Button>
-                          <Button
-                            style={{ textTransform: "none" }}
-                            variant="outlined"
-                            color="secondary"
-                            onClick={() => handleDecline(request)}
-                            disabled={request.isHandled || allRequestsHandled}
-                          >
-                            Decline
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer> */}
             <TableContainer component={Box}>
               <Table>
                 <TableHead>
@@ -167,8 +117,9 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
                               style={{
                                 textTransform: "none",
                                 marginRight: "8px",
+                                marginBottom: "10px",
                               }}
-                              variant="contained"
+                              variant="outlined"
                               color="primary"
                               onClick={() => handleApprove(request)}
                               disabled={request.isHandled || noSpotsAvailable}
