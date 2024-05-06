@@ -24,6 +24,10 @@ const Map = ({ myPoints, allPaths }) => {
     "CA Park": [25.458088766131926, 81.85187816003692],
     "Allahabad High Court": [25.4544052785852, 81.82523194476462],
     "Civil Lines": [25.45295982867542, 81.83494025578001],
+    SSB: [25.447973754027352, 81.8127614673697],
+    "Prayagraj Junction": [25.446761524396102, 81.82585061029825],
+    "Prayagraj Bus Stand": [25.449626148001222, 81.83879382823923],
+    "All Saints Cathedral": [25.45098058434759, 81.82614712705708],
   };
 
   const canvasRef = useRef(null);
@@ -65,7 +69,7 @@ const Map = ({ myPoints, allPaths }) => {
     var scale = Math.min(canvas.width / mapWidth, canvas.height / mapHeight);
 
     // Draw the map routes
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 6;
     ctx.strokeStyle = "#b4b4b4";
     ctx.lineJoin = "round";
     ctx.beginPath();
@@ -77,7 +81,7 @@ const Map = ({ myPoints, allPaths }) => {
     });
     ctx.stroke();
 
-    ctx.font = "bold 15px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+    ctx.font = "bold 25px sans-serif";
     ctx.fillStyle = "black";
     for (const [name, [x, y]] of Object.entries(pointsWithNames)) {
       const scaledX = (x - mapCenterX) * scale + canvas.width / 2;
@@ -136,8 +140,8 @@ const Map = ({ myPoints, allPaths }) => {
   };
   useEffect(() => {
     const canvas = canvasRef.current;
-    canvas.width = 1000;
-    canvas.height = 1200;
+    canvas.width = 1500;
+    canvas.height = 1400;
 
     drawMap();
   }, [myPoints, allPaths]);
