@@ -24,72 +24,34 @@ const haversineDistance = (pt1, pt2) => {
       Math.pow(Math.sin(lonDif / 2), 2);
 
   const c = 2 * Math.asin(Math.sqrt(a)); //arctangent is used to get angle from tangent
-
-  const dist = earthRadius * c;
-
-  return dist;
+  const dist = earthRadius * c;return dist;
 };
 
 const createRide = async (req, res) => {
   try {
     const {
-      source,
-      destination,
-      date,
-      time,
-      message,
-      driverId,
-      sourceName,
-      destinationName,
-      driverName,
-      spotsInCar,
+      source,destination,date,time,message,driverId,sourceName,destinationName,
+      driverName,spotsInCar,
     } = req.body;
-
     const sourcePoint = {
-      type: "Point",
-      coordinates: source,
-    };
-
-    const destinationPoint = {
-      type: "Point",
-      coordinates: destination,
-    };
-
-    const routeLine = {
-      type: "LineString",
-      coordinates: [source, destination],
-    };
-
-    const totalDist = haversineDistance(source, destination);
+      type: "Point",coordinates: source,
+    };const destinationPoint = {
+      type: "Point",coordinates: destination,
+    };const routeLine = {
+      type: "LineString",coordinates: [source, destination],
+    };const totalDist = haversineDistance(source, destination);
     console.log(totalDist);
-
     const newRide = new Ride({
-      source: sourcePoint,
-      destination: destinationPoint,
-      sourceName,
-      destinationName,
-      date,
-      time,
-      route: routeLine,
-      message,
-      driver: driverId,
-      driverName,
-      totalDist,
-      spotsLeft: spotsInCar,
+      source: sourcePoint,destination: destinationPoint,sourceName,destinationName,
+      date,time,route: routeLine,message,driver: driverId,driverName,totalDist,spotsLeft: spotsInCar,
     });
-
     console.log("new ride: ", spotsInCar, newRide.spotsLeft);
-    await newRide.save();
-    const newRideforUser = await UserRide.findOne({ user: driverId });
+    await newRide.save();const newRideforUser = await UserRide.findOne({ user: driverId });
     if (newRideforUser) {
-      newRideforUser.driving.push(newRide._id);
-      await newRideforUser.save();
+      newRideforUser.driving.push(newRide._id);await newRideforUser.save();
     } else {
-      const newUserRide = new UserRide({
-        user: driverId,
-        driving: [newRide._id],
-      });
-      await newUserRide.save();
+      const newUserRide = new UserRide({user: driverId,driving: [newRide._id],
+      });await newUserRide.save();
     }
 
     res.status(200).json({ message: "Ride created successfully" });
