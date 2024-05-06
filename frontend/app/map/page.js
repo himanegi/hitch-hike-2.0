@@ -69,7 +69,7 @@ const Map = ({ myPoints, allPaths }) => {
     var scale = Math.min(canvas.width / mapWidth, canvas.height / mapHeight);
 
     // Draw the map routes
-    ctx.lineWidth = 6;
+    ctx.lineWidth = 8;
     ctx.strokeStyle = "#b4b4b4";
     ctx.lineJoin = "round";
     ctx.beginPath();
@@ -95,14 +95,14 @@ const Map = ({ myPoints, allPaths }) => {
       ctx.rotate(Math.PI / 2);
 
       // Draw the text at the origin, since we've translated to the correct position
-      ctx.fillText(name, -20, -5);
+      ctx.fillText(name, -50, 10);
 
       ctx.restore();
     }
 
     // Draw the allPaths on top
     if (allPaths.length > 0) {
-      ctx.lineWidth = 2; // Make the path line thicker
+      ctx.lineWidth = 10; // Make the path line thicker
       ctx.strokeStyle = "red"; // Change the color to red
       ctx.beginPath();
       ctx.moveTo(
@@ -122,7 +122,7 @@ const Map = ({ myPoints, allPaths }) => {
       const sourceY = (allPaths[0][1] - mapCenterY) * scale + canvas.height / 2;
       ctx.fillStyle = "green";
       ctx.beginPath();
-      ctx.arc(sourceX, sourceY, 8, 0, 2 * Math.PI);
+      ctx.arc(sourceX, sourceY, 15, 0, 2 * Math.PI);
       ctx.fill();
 
       // Draw the destination marker
@@ -134,13 +134,13 @@ const Map = ({ myPoints, allPaths }) => {
         canvas.height / 2;
       ctx.fillStyle = "red";
       ctx.beginPath();
-      ctx.arc(destX, destY, 8, 0, 2 * Math.PI);
+      ctx.arc(destX, destY, 15, 0, 2 * Math.PI);
       ctx.fill();
     }
   };
   useEffect(() => {
     const canvas = canvasRef.current;
-    canvas.width = 1500;
+    canvas.width = 1600;
     canvas.height = 1400;
 
     drawMap();
