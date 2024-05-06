@@ -24,6 +24,10 @@ const Map = ({ myPoints, allPaths }) => {
     "CA Park": [25.458088766131926, 81.85187816003692],
     "Allahabad High Court": [25.4544052785852, 81.82523194476462],
     "Civil Lines": [25.45295982867542, 81.83494025578001],
+    SSB: [25.447973754027352, 81.8127614673697],
+    "Prayagraj Junction": [25.446761524396102, 81.82585061029825],
+    "Prayagraj Bus Stand": [25.449626148001222, 81.83879382823923],
+    "All Saints Cathedral": [25.45098058434759, 81.82614712705708],
   };
 
   const canvasRef = useRef(null);
@@ -65,7 +69,7 @@ const Map = ({ myPoints, allPaths }) => {
     var scale = Math.min(canvas.width / mapWidth, canvas.height / mapHeight);
 
     // Draw the map routes
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 8;
     ctx.strokeStyle = "#b4b4b4";
     ctx.lineJoin = "round";
     ctx.beginPath();
@@ -77,7 +81,7 @@ const Map = ({ myPoints, allPaths }) => {
     });
     ctx.stroke();
 
-    ctx.font = "bold 15px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+    ctx.font = "bold 25px sans-serif";
     ctx.fillStyle = "black";
     for (const [name, [x, y]] of Object.entries(pointsWithNames)) {
       const scaledX = (x - mapCenterX) * scale + canvas.width / 2;
@@ -91,14 +95,14 @@ const Map = ({ myPoints, allPaths }) => {
       ctx.rotate(Math.PI / 2);
 
       // Draw the text at the origin, since we've translated to the correct position
-      ctx.fillText(name, -20, -5);
+      ctx.fillText(name, -50, 10);
 
       ctx.restore();
     }
 
     // Draw the allPaths on top
     if (allPaths.length > 0) {
-      ctx.lineWidth = 2; // Make the path line thicker
+      ctx.lineWidth = 10; // Make the path line thicker
       ctx.strokeStyle = "red"; // Change the color to red
       ctx.beginPath();
       ctx.moveTo(
@@ -118,7 +122,7 @@ const Map = ({ myPoints, allPaths }) => {
       const sourceY = (allPaths[0][1] - mapCenterY) * scale + canvas.height / 2;
       ctx.fillStyle = "green";
       ctx.beginPath();
-      ctx.arc(sourceX, sourceY, 8, 0, 2 * Math.PI);
+      ctx.arc(sourceX, sourceY, 15, 0, 2 * Math.PI);
       ctx.fill();
 
       // Draw the destination marker
@@ -130,14 +134,14 @@ const Map = ({ myPoints, allPaths }) => {
         canvas.height / 2;
       ctx.fillStyle = "red";
       ctx.beginPath();
-      ctx.arc(destX, destY, 8, 0, 2 * Math.PI);
+      ctx.arc(destX, destY, 15, 0, 2 * Math.PI);
       ctx.fill();
     }
   };
   useEffect(() => {
     const canvas = canvasRef.current;
-    canvas.width = 1000;
-    canvas.height = 1200;
+    canvas.width = 1600;
+    canvas.height = 1400;
 
     drawMap();
   }, [myPoints, allPaths]);

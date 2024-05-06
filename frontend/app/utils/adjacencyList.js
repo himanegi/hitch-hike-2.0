@@ -340,6 +340,13 @@ export default function createAdjacencyList(locations) {
           locations["Civil Lines"]
         ),
       },
+      {
+        name: "Prayagraj Bus Stand",
+        distance: HaversineDistance(
+          locations["RamnathPur"],
+          locations["Prayagraj Bus Stand"]
+        ),
+      },
     ],
     "CA Park": [
       {
@@ -372,6 +379,13 @@ export default function createAdjacencyList(locations) {
           locations["Police Line"]
         ),
       },
+      {
+        name: "All Saints Cathedral",
+        distance: HaversineDistance(
+          locations["Allahabad High Court"],
+          locations["All Saints Cathedral"]
+        ),
+      },
     ],
     "Civil Lines": [
       {
@@ -386,6 +400,77 @@ export default function createAdjacencyList(locations) {
         distance: HaversineDistance(
           locations["Civil Lines"],
           locations["RamnathPur"]
+        ),
+      },
+    ],
+    SSB: [
+      {
+        name: "Allahabad High Court",
+        distance: HaversineDistance(
+          locations["SSB"],
+          locations["Allahabad High Court"]
+        ),
+      },
+      {
+        name: "Prayagraj Junction",
+        distance: HaversineDistance(
+          locations["SSB"],
+          locations["Prayagraj Junction"]
+        ),
+      },
+    ],
+    "Prayagraj Junction": [
+      {
+        name: "SSB",
+        distance: HaversineDistance(
+          locations["Prayagraj Junction"],
+          locations["SSB"]
+        ),
+      },
+      {
+        name: "Prayagraj Bus Stand",
+        distance: HaversineDistance(
+          locations["Prayagraj Junction"],
+          locations["Prayagraj Bus Stand"]
+        ),
+      },
+    ],
+    "Prayagraj Bus Stand": [
+      {
+        name: "Prayagraj Junction",
+        distance: HaversineDistance(
+          locations["Prayagraj Bus Stand"],
+          locations["Prayagraj Junction"]
+        ),
+      },
+      {
+        name: "RamnathPur",
+        distance: HaversineDistance(
+          locations["Prayagraj Bus Stand"],
+          locations["RamnathPur"]
+        ),
+      },
+      {
+        name: "All Saints Cathedral",
+        distance: HaversineDistance(
+          locations["Prayagraj Bus Stand"],
+          locations["All Saints Cathedral"]
+        ),
+      },
+    ],
+    "All Saints Cathedral": [
+      {
+        name: "Prayagraj Bus Stand",
+        distance: HaversineDistance(
+          locations["All Saints Cathedral"],
+          locations["Prayagraj Bus Stand"]
+        ),
+      },
+      {
+        name: "Allahabad High Court",
+        distance: HaversineDistance(
+          locations["All Saints Cathedral"],
+          locations["Allahabad High Court"]
         ),
       },
     ],

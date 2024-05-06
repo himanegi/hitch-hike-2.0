@@ -15,12 +15,6 @@ import {
 } from "@mui/material";
 import { useUser } from "@clerk/clerk-react";
 import RideRequestModal from "../components/RideRequestModal";
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogActions from '@mui/material/DialogActions';
-import Rating from '@mui/material/Rating';
 // import io from 'socket.io-client';
 
 const Trips = () => {
@@ -30,10 +24,10 @@ const Trips = () => {
   const { user } = useUser();
 
   const [open, setOpen] = useState(false);
-const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(0);
 
-const [openChat, setOpenChat] = useState(false);
-// const socket = io('http://localhost:3000');
+  const [openChat, setOpenChat] = useState(false);
+  // const socket = io('http://localhost:3000');
 
   useEffect(() => {
     if (user) {
@@ -297,23 +291,19 @@ const [openChat, setOpenChat] = useState(false);
                       </Button>
                     </TableCell>
                     <TableCell>
-                    <Button
-                      color="primary"
-                      variant="outlined"
-                      style={{ textTransform: "none", marginLeft: "10px" }}
-                      // onClick={handleConnectClick}
-                    >
-                      Connect
-                    </Button>
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        style={{ textTransform: "none", marginLeft: "10px" }}
+                        // onClick={handleConnectClick}
+                      >
+                        Connect
+                      </Button>
                     </TableCell>
-
                   </TableRow>
                 ))}
                 {openChat && (
-                  <ChatBox
-                    socket={socket}
-                    onClose={() => setOpenChat(false)}
-                  />
+                  <ChatBox socket={socket} onClose={() => setOpenChat(false)} />
                 )}
               </TableBody>
             </Table>
