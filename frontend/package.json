@@ -26,7 +26,8 @@
     "react-map-gl": "^7.1.7",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
-    "styled-components": "^6.1.8"
+    "styled-components": "^6.1.8",
+    "turf": "^3.0.14"
   },
   "devDependencies": {
     "@types/react": "18.2.78",

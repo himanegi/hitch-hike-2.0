@@ -1,11 +1,16 @@
-import React, { useState } from "react";
-import axios from "axios";
 import {
+  ExpandLess as ExpandLessIcon,
+  ExpandMore as ExpandMoreIcon,
+} from "@mui/icons-material";
+import {
+  Box,
   Button,
+  Collapse,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -13,12 +18,14 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Box,
 } from "@mui/material";
+import axios from "axios";
+import React, { useState } from "react";
 
 const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
   const [availableSpots, setAvailableSpots] = useState(trip.availableSpots);
   const [rideRequests, setRideRequests] = useState(trip.rideRequests);
+  const [openId, setOpenId] = useState(null);
 
   console.log("trips", trip);
 
@@ -72,48 +79,103 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
               <Table>
                 <TableHead>
                   <TableRow>
+                    <TableCell />
                     <TableCell>User Name</TableCell>
-                    <TableCell>Phone Number</TableCell>
-                    <TableCell>Message</TableCell>
-                    <TableCell>Action</TableCell>
+                    {/* <TableCell>Phone Number</TableCell>
+                    <TableCell>Message</TableCell> */}
                     <TableCell>Source</TableCell>
                     <TableCell>Destination</TableCell>
+                    <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {rideRequests
                     .filter((request) => request.status === "pending")
                     .map((request, index) => (
-                      <TableRow key={index}>
-                        <TableCell>{request.username}</TableCell>
-                        <TableCell>{request.phoneNumber}</TableCell>
-                        <TableCell>{request.message}</TableCell>
-                        <TableCell>{request.riderSource}</TableCell>
-                        <TableCell>{request.riderDestination}</TableCell>
-                        <TableCell>
-                          <Button
-                            style={{
-                              textTransform: "none",
-                              marginRight: "8px",
-                            }}
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleApprove(request)}
-                            disabled={request.isHandled || noSpotsAvailable}
+                      <React.Fragment key={index}>
+                        <TableRow>
+                          <TableCell>
+                            <IconButton
+                              onClick={() =>
+                                setOpenId(openId === index ? null : index)
+                              }
+                            >
+                              {openId === index ? (
+                                <ExpandLessIcon />
+                              ) : (
+                                <ExpandMoreIcon />
+                              )}
+                            </IconButton>
+                          </TableCell>
+                          <TableCell>{request.username}</TableCell>
+                          {/* <TableCell>{request.phoneNumber}</TableCell>
+                        <TableCell>{request.message}</TableCell> */}
+                          <TableCell>{request.riderSource}</TableCell>
+                          <TableCell>{request.riderDestination}</TableCell>
+                          <TableCell>
+                            <Button
+                              style={{
+                                textTransform: "none",
+                                marginRight: "8px",
+                                marginBottom: "10px",
+                              }}
+                              variant="outlined"
+                              color="primary"
+                              onClick={() => handleApprove(request)}
+                              disabled={request.isHandled || noSpotsAvailable}
+                            >
+                              Approve
+                            </Button>
+                            <Button
+                              style={{ textTransform: "none" }}
+                              variant="outlined"
+                              color="secondary"
+                              onClick={() => handleDecline(request)}
+                              disabled={request.isHandled || allRequestsHandled}
+                            >
+                              Decline
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell
+                            style={{ paddingBottom: 0, paddingTop: 0 }}
+                            colSpan={7}
                           >
-                            Approve
-                          </Button>
-                          <Button
-                            style={{ textTransform: "none" }}
-                            variant="outlined"
-                            color="secondary"
-                            onClick={() => handleDecline(request)}
-                            disabled={request.isHandled || allRequestsHandled}
-                          >
-                            Decline
-                          </Button>
-                        </TableCell>
-                      </TableRow>
+                            <Collapse
+                              in={openId === index}
+                              timeout="auto"
+                              unmountOnExit
+                            >
+                              <Box margin={1}>
+                                <Typography
+                                  variant="h6"
+                                  gutterBottom
+                                  component="div"
+                                >
+                                  More Information
+                                </Typography>
+                                <Table size="small">
+                                  <TableHead>
+                                    <TableRow>
+                                      <TableCell>Message</TableCell>
+                                      <TableCell>Phone Number</TableCell>
+                                    </TableRow>
+                                  </TableHead>
+                                  <TableBody>
+                                    <TableRow>
+                                      <TableCell>{request.message}</TableCell>
+                                      <TableCell>
+                                        {request.phoneNumber}
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                </Table>
+                              </Box>
+                            </Collapse>
+                          </TableCell>
+                        </TableRow>
+                      </React.Fragment>
                     ))}
                 </TableBody>
               </Table>
