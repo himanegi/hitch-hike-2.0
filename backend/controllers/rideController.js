@@ -30,7 +30,6 @@ const haversineDistance = (pt1, pt2) => {
 };
 
 const createRide = async (req, res) => {
-  console.log("aagaya")
   try {
     const {
       
@@ -47,7 +46,6 @@ const createRide = async (req, res) => {
       spotsInCar,
       distance,
     } = req.body;
-console.log("this",req.body);
     const sourcePoint = {
       type: "Point",
       coordinates: source,
@@ -184,7 +182,6 @@ const searchRide = async (req, res) => {
 
     if (rides.length > 0) {
       res.status(200).json({ message: "Search Result", rides });
-      console.log(rides);
     } else {
       res.status(200).json({ message: "No rides found" });
     }
@@ -199,7 +196,6 @@ const searchRide = async (req, res) => {
 const deleteRide = async (req, res) => {
   try {
     const { rideId, riderId } = req.body;
-    console.log("hello ride : ", rideId, riderId);
     const ride = await Ride.findById(rideId);
     const newRideRequest = ride.rideRequests.filter((request) => {
       return request.riderId != riderId;

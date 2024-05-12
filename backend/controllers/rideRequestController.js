@@ -1,6 +1,5 @@
 import rideModel from "../models/rideModel.js";
 import userModel from "../models/userModel.js";
-
 const createRideRequest = async (req, res) => {
   try {
     const {
@@ -32,7 +31,6 @@ const createRideRequest = async (req, res) => {
       riderDestination: riderDestination,
     });
 
-    console.log("ride: ", ride.rideRequests);
 
     await ride.save(); //this was the issue
 
@@ -68,7 +66,6 @@ const changeRequestStatus = async (req, res) => {
   const rideRequestofThatPerson = ride.rideRequests.find(
     (riderId) => riderId.riderId == rider
   );
-  console.log("rideRequestofThatPerson: ", rideRequestofThatPerson);
   rideRequestofThatPerson.status = status;
   if (status == "accepted") {
     ride.riders.push(rideRequestofThatPerson);
