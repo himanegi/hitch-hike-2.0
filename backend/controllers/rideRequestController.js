@@ -1,5 +1,6 @@
 import rideModel from "../models/rideModel.js";
 import userModel from "../models/userModel.js";
+import { calculateCost } from './costCalculator';
 
 const createRideRequest = async (req, res) => {
   try {
@@ -11,7 +12,10 @@ const createRideRequest = async (req, res) => {
       message,
       riderSource,
       riderDestination,
+      distance
     } = req.body;
+    
+const cost = calculateCost(distance);
     const ride = await rideModel.findById(rideId);
     if (ride.spotsLeft == 0) {
       return res.status(201).json({ message: "sorry no spots left" });
@@ -23,6 +27,9 @@ const createRideRequest = async (req, res) => {
       return res.status(201).json({ message: "Request already sent" });
     }
 
+
+console.log(`The cost for ${distance} km is ${cost}`);
+
     ride.rideRequests.push({
       riderId: rider,
       username: username,
@@ -32,7 +39,6 @@ const createRideRequest = async (req, res) => {
       riderDestination: riderDestination,
     });
 
-    console.log("ride: ", ride.rideRequests);
 
     await ride.save(); //this was the issue
 
@@ -68,7 +74,6 @@ const changeRequestStatus = async (req, res) => {
   const rideRequestofThatPerson = ride.rideRequests.find(
     (riderId) => riderId.riderId == rider
   );
-  console.log("rideRequestofThatPerson: ", rideRequestofThatPerson);
   rideRequestofThatPerson.status = status;
   if (status == "accepted") {
     ride.riders.push(rideRequestofThatPerson);
