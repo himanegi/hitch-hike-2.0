@@ -1,5 +1,7 @@
 import rideModel from "../models/rideModel.js";
 import userModel from "../models/userModel.js";
+import { calculateCost } from './costCalculator';
+
 const createRideRequest = async (req, res) => {
   try {
     const {
@@ -10,7 +12,10 @@ const createRideRequest = async (req, res) => {
       message,
       riderSource,
       riderDestination,
+      distance
     } = req.body;
+    
+const cost = calculateCost(distance);
     const ride = await rideModel.findById(rideId);
     if (ride.spotsLeft == 0) {
       return res.status(201).json({ message: "sorry no spots left" });
@@ -21,6 +26,9 @@ const createRideRequest = async (req, res) => {
     if (alreadyRequested) {
       return res.status(201).json({ message: "Request already sent" });
     }
+
+
+console.log(`The cost for ${distance} km is ${cost}`);
 
     ride.rideRequests.push({
       riderId: rider,
