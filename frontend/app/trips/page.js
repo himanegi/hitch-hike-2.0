@@ -15,12 +15,25 @@ import {
 } from "@mui/material";
 import { useUser } from "@clerk/clerk-react";
 import RideRequestModal from "../components/RideRequestModal";
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+import Rating from '@mui/material/Rating';
+// import io from 'socket.io-client';
 
 const Trips = () => {
   const [disabledButtons, setDisabledButtons] = useState({});
   const [drivingTrips, setDrivingTrips] = useState([]);
   const [ridingTrips, setRidingTrips] = useState([]);
   const { user } = useUser();
+
+  const [open, setOpen] = useState(false);
+const [rating, setRating] = useState(0);
+
+const [openChat, setOpenChat] = useState(false);
+// const socket = io('http://localhost:3000');
 
   useEffect(() => {
     if (user) {
@@ -86,6 +99,10 @@ const Trips = () => {
     fetchTrips();
   }, [user]);
 
+  const handleConnectClick = () => {
+    setOpenChat(true);
+  };
+
   const handleCloseModal = (tripId) => {
     setDrivingTrips((prevTrips) =>
       prevTrips.map((trip) =>
@@ -105,6 +122,10 @@ const Trips = () => {
       )
     );
   };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleDeleteRequest = async (tripId) => {
     try {
       console.log("tripId", tripId);
@@ -115,51 +136,127 @@ const Trips = () => {
       });
       handleDisabled(tripId);
       console.log("sent");
+      setOpen(true); // Open the dialog
     } catch (error) {
       console.error("Error canceling request:", error);
     }
   };
 
-  // const ridingTrips =
-  //   {
-  //     departure: "2023-04-26T09:15:00",
-  //     origin: "Miami, FL",
-  //     destination: "Atlanta, GA",
-  //     requestStatus: "Pending",
-  //   },
-  //   {
-  //     departure: "2023-04-27T16:45:00",
-  //     origin: "San Francisco, CA",
-  //     destination: "Seattle, WA",
-  //     requestStatus: "Approved",
-  //   },
-  // ];
-
   return (
-    <Container maxWidth="lg">
-      <Box mt={4}>
-        <Typography variant="h4" gutterBottom>
-          Driving
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          This section displays the trips you are driving. You can manage rider
-          requests and update trip details here.
-        </Typography>
-        <TableContainer component={Box}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Departure</TableCell>
-                <TableCell>Origin</TableCell>
-                <TableCell>Destination</TableCell>
-                <TableCell>Available Spots</TableCell>
-                <TableCell>Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {drivingTrips.map((trip, index) => (
-                <React.Fragment key={index}>
-                  <TableRow>
+    <div className="bg-gray-100 pt-4 pb-4">
+      <Container maxWidth="lg" className="bg-gray-100">
+        <Box mt={4}>
+          <Typography
+            variant="h3"
+            gutterBottom
+            className="text-[25px] font-thin text-gray-800"
+          >
+            Driving
+          </Typography>
+          <Typography variant="body1" gutterBottom className="mb-4">
+            This section displays the trips you are driving. You can manage
+            rider requests and update trip details here.
+          </Typography>
+          <TableContainer
+            component={Box}
+            className="bg-white shadow-md rounded-lg p-6 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
+          >
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Departure</TableCell>
+                  <TableCell>Origin</TableCell>
+                  <TableCell>Destination</TableCell>
+                  <TableCell>Available Spots</TableCell>
+                  <TableCell>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {drivingTrips.map((trip, index) => (
+                  <React.Fragment key={index}>
+                    <TableRow>
+                      <TableCell>
+                        {new Date(trip.departure).toLocaleString("en-US", {
+                          weekday: "short",
+                          day: "numeric",
+                          month: "numeric",
+                          year: "numeric",
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
+                        })}
+                      </TableCell>
+                      <TableCell>{trip.origin}</TableCell>
+                      <TableCell>{trip.destination}</TableCell>
+                      <TableCell>{trip.availableSpots}</TableCell>
+                      <TableCell>
+                        <Button
+                          style={{ textTransform: "none" }}
+                          variant="outlined"
+                          color="primary"
+                          onClick={() => fetchRideRequests(trip.id)}
+                        >
+                          Requests
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                    {trip.showModal && (
+                      <TableRow>
+                        <TableCell colSpan={5}>
+                          <RideRequestModal
+                            trip={trip}
+                            availableSpots={trip.availableSpots}
+                            onClose={() => handleCloseModal(trip.id)}
+                            onSpotsUpdate={(updatedSpots) => {
+                              setDrivingTrips((prevTrips) =>
+                                prevTrips.map((t) =>
+                                  t.id === trip.id
+                                    ? { ...t, availableSpots: updatedSpots }
+                                    : t
+                                )
+                              );
+                            }}
+                            refetchTrips={() => reFetchTrips()}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </React.Fragment>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+
+        <Box mt={4}>
+          <Typography
+            variant="h3"
+            gutterBottom
+            className="text-[25px] font-thin text-gray-800"
+          >
+            Riding
+          </Typography>
+          <Typography variant="body1" gutterBottom className="mb-4">
+            This section shows the trips you have requested to ride with others.
+            You can track the status of your requests here.
+          </Typography>
+          <TableContainer
+            component={Box}
+            className="bg-white shadow-md rounded-lg p-6 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
+          >
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Departure</TableCell>
+                  <TableCell>Origin</TableCell>
+                  <TableCell>Destination</TableCell>
+                  <TableCell>Request Status</TableCell>
+                  <TableCell>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {ridingTrips.map((trip, index) => (
+                  <TableRow key={index}>
                     <TableCell>
                       {new Date(trip.departure).toLocaleString("en-US", {
                         weekday: "short",
@@ -173,99 +270,57 @@ const Trips = () => {
                     </TableCell>
                     <TableCell>{trip.origin}</TableCell>
                     <TableCell>{trip.destination}</TableCell>
-                    <TableCell>{trip.availableSpots}</TableCell>
+                    <TableCell>
+                      <span
+                        className={`p-2 rounded-md ${
+                          trip.status === "accepted"
+                            ? "text-green-500 bg-green-100"
+                            : trip.status === "pending"
+                            ? "text-yellow-500 bg-yellow-100"
+                            : trip.status === "declined"
+                            ? "text-red-500 bg-red-100"
+                            : ""
+                        }`}
+                      >
+                        {trip.status.toUpperCase()}
+                      </span>
+                    </TableCell>
                     <TableCell>
                       <Button
+                        color="error"
+                        variant="outlined"
                         style={{ textTransform: "none" }}
-                        variant="contained"
-                        color="primary"
-                        onClick={() => fetchRideRequests(trip.id)}
+                        onClick={() => handleDeleteRequest(trip.id)}
+                        disabled={disabledButtons[trip.id]}
                       >
-                        Requests
+                        Finish/Cancel
                       </Button>
                     </TableCell>
-                  </TableRow>
-                  {trip.showModal && (
-                    <TableRow>
-                      <TableCell colSpan={5}>
-                        <RideRequestModal
-                          trip={trip}
-                          availableSpots={trip.availableSpots}
-                          onClose={() => handleCloseModal(trip.id)}
-                          onSpotsUpdate={(updatedSpots) => {
-                            setDrivingTrips((prevTrips) =>
-                              prevTrips.map((t) =>
-                                t.id === trip.id
-                                  ? { ...t, availableSpots: updatedSpots }
-                                  : t
-                              )
-                            );
-                          }}
-                          refetchTrips={() => reFetchTrips()}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </React.Fragment>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
-
-      <Box mt={4}>
-        <Typography variant="h4" gutterBottom>
-          Riding
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          This section shows the trips you have requested to ride with others.
-          You can track the status of your requests here.
-        </Typography>
-        <TableContainer component={Box}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Departure</TableCell>
-                <TableCell>Origin</TableCell>
-                <TableCell>Destination</TableCell>
-                <TableCell>Request Status</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {ridingTrips.map((trip, index) => (
-                <TableRow key={index}>
-                  <TableCell>
-                    {new Date(trip.departure).toLocaleString("en-US", {
-                      weekday: "short",
-                      day: "numeric",
-                      month: "numeric",
-                      year: "numeric",
-                      hour: "numeric",
-                      minute: "numeric",
-                      hour12: true,
-                    })}
-                  </TableCell>
-                  <TableCell>{trip.origin}</TableCell>
-                  <TableCell>{trip.destination}</TableCell>
-                  <TableCell>{trip.status}</TableCell>
-                  <TableCell>
+                    <TableCell>
                     <Button
-                      color="error"
+                      color="primary"
                       variant="outlined"
-                      style={{ textTransform: "none" }}
-                      onClick={() => handleDeleteRequest(trip.id)}
-                      disabled={disabledButtons[trip.id]}
+                      style={{ textTransform: "none", marginLeft: "10px" }}
+                      // onClick={handleConnectClick}
                     >
-                      Finish/Cancel
+                      Connect
                     </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
-    </Container>
+                    </TableCell>
+
+                  </TableRow>
+                ))}
+                {openChat && (
+                  <ChatBox
+                    socket={socket}
+                    onClose={() => setOpenChat(false)}
+                  />
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      </Container>
+    </div>
   );
 };
 

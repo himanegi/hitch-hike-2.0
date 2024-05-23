@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.11.5",
     "@mapbox/mapbox-gl-directions": "^4.3.1",
     "@mapbox/search-js-react": "^1.0.0-beta.19",
+    "@material-tailwind/html": "^2.2.2",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
     "axios": "^1.6.8",
@@ -23,6 +24,8 @@
     "react-dom": "^18",
     "react-icons": "^5.1.0",
     "react-map-gl": "^7.1.7",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.8"
   },
   "devDependencies": {
