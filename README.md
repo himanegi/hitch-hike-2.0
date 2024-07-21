@@ -8,35 +8,35 @@
 - Share Rides: Drivers can share their travel details, including the route they're taking, date, time, and a message for passengers. This allows passengers to join the ride if it fits their schedule and route.
 - Manage Trips: Users can manage their trips, categorizing them into "Riding" and "Driving". The "Riding" section lists rides they've joined, while the "Driving" section includes rides they've created and any requests they've received from other users.
 
-## Built with
+## Built With
 
 ### Frontend Technologies
 
-- Next.js (React Framework for Server-Side Rendering)
-- Tailwind CSS (Utility-first CSS Framework)
+- [Next.js](https://nextjs.org/) - React framework for server-side rendering
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
 
 ### Backend Technologies
 
-- Node.js (JavaScript Runtime)
-- Express.js (Web Application Framework for Node.js)
+- [Node.js](https://nodejs.org/) - JavaScript runtime
+- [Express.js](https://expressjs.com/) - Web application framework for Node.js
 
 ### Database
 
-- MongoDB (NoSQL Database)
+- [MongoDB](https://www.mongodb.com/) - NoSQL database
 
 ### Mapping and Location Services
 
-- Mapbox (Maps and Location Data Platform)
-- Nominatim (Open-Source Geocoding and Address Search)
+- [Mapbox](https://www.mapbox.com/) - Maps and location data platform
+- [Nominatim](https://nominatim.org/) - Open-source geocoding and address search
 
 ### Spatial Analysis
 
-- Turf.js (JavaScript Library for Spatial Operations)
+- [Turf.js](https://turfjs.org/) - JavaScript library for spatial operations
 
 ### Tools
 
-- VS Code
-- Git and Github
+- [VS Code](https://code.visualstudio.com/) - Code editor
+- [Git](https://git-scm.com/) and [GitHub](https://github.com/) - Version control
 
 <!-- Getting Started -->
 ## Getting Started
