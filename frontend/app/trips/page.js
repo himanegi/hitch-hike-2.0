@@ -79,6 +79,7 @@ const Trips = () => {
             departure: trip.date,
             origin: trip.sourceName,
             destination: trip.destinationName,
+            time: trip.time,
             id: trip._id,
             status: trip.rideRequests.find(
               (request) => request.riderId === user.id
@@ -175,7 +176,13 @@ const Trips = () => {
                   <React.Fragment key={index}>
                     <TableRow>
                       <TableCell>
-                        {new Date(trip.departure).toLocaleDateString("en-US")}{" "}
+                        {new Date(trip.departure).toLocaleString("en-US", {
+                          weekday: "short",
+                          day: "numeric",
+                          month: "numeric",
+                          year: "numeric",
+                          hour12: true,
+                        })}{" "}
                         {trip.time}
                       </TableCell>
                       <TableCell>{trip.origin}</TableCell>
@@ -255,10 +262,9 @@ const Trips = () => {
                         day: "numeric",
                         month: "numeric",
                         year: "numeric",
-                        hour: "numeric",
-                        minute: "numeric",
                         hour12: true,
-                      })}
+                      })}{" "}
+                      {trip.time}
                     </TableCell>
                     <TableCell>{trip.origin}</TableCell>
                     <TableCell>{trip.destination}</TableCell>
