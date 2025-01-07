@@ -1,6 +1,6 @@
+import * as turf from "@turf/turf";
 import Ride from "../models/rideModel.js";
 import UserRide from "../models/userModel.js";
-import * as turf from "@turf/turf";
 //Implementing the HaverSine distance calculation function
 
 const toRadians = (deg) => {
@@ -32,7 +32,6 @@ const haversineDistance = (pt1, pt2) => {
 const createRide = async (req, res) => {
   try {
     const {
-      
       source,
       destination,
       date,
@@ -61,7 +60,7 @@ const createRide = async (req, res) => {
     const routeLine = ridePath;
 
     // const totalDist = haversineDistance(source, destination);
-    const totalDist=distance
+    const totalDist = distance;
     console.log(totalDist);
 
     const newRide = new Ride({
@@ -73,7 +72,7 @@ const createRide = async (req, res) => {
       time,
       ridePath: {
         type: "LineString",
-        coordinates: ridePath
+        coordinates: ridePath,
       },
       message,
       driver: driverId,
@@ -162,11 +161,12 @@ const searchRide = async (req, res) => {
 
     const All_rides = await Ride.find({});
 
-    const rides = await All_rides.filter((ride) => { 
+    const rides = await All_rides.filter((ride) => {
       for (let i = 0; i < ride.ridePath.coordinates.length; i++) {
-       
-        if (ride.ridePath.coordinates[i][0] === source[0] && ride.ridePath.coordinates[i][1] === source[1]) {
-        
+        if (
+          ride.ridePath.coordinates[i][0] === source[0] &&
+          ride.ridePath.coordinates[i][1] === source[1]
+        ) {
           for (let j = i; j < ride.ridePath.coordinates.length; j++) {
             if (
               ride.ridePath.coordinates[j][0] === destination[0] &&
@@ -217,4 +217,4 @@ const deleteRide = async (req, res) => {
   }
 };
 
-export { createRide, searchRide, deleteRide };
+export { createRide, deleteRide, searchRide };

@@ -1,7 +1,7 @@
 // routes/trips.js
 import express from "express";
 const router = express.Router();
-import {showRides} from "../controllers/tripController.js"
+import { showRides } from "../controllers/tripController.js";
 router.post("/create", async (req, res) => {
   // Implement trip creation logic
 });
@@ -9,5 +9,3 @@ router.post("/create", async (req, res) => {
 router.post("/", showRides);
 
 export default router;
-
-

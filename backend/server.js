@@ -1,11 +1,11 @@
-import express from "express";
-import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-dotenv.config();
+import express from "express";
+import mongoose from "mongoose";
+import reqRide from "./routes/reqRides.js";
 import rideRoutes from "./routes/rides.js";
 import userTripRoutes from "./routes/userTrips.js";
-import reqRide from "./routes/reqRides.js";
+dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -19,8 +19,6 @@ mongoose
 app.use("/api/rides", rideRoutes);
 app.use("/api/rideRequests", reqRide);
 app.use("/api/trips", userTripRoutes);
-
-app
 
 const PORT = process.env.PORT;
 

@@ -1,6 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { useUser } from "@clerk/clerk-react";
 import {
   Box,
   Button,
@@ -13,7 +12,8 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { useUser } from "@clerk/clerk-react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import RideRequestModal from "../components/RideRequestModal";
 // import io from 'socket.io-client';
 
@@ -48,8 +48,13 @@ const Trips = () => {
           response.data.allRides.length > 0 &&
           Array.isArray(response.data.allRides[0].driving)
         ) {
+          console.log(
+            "response.data.allRides.driving",
+            response.data.allRides[0].driving
+          );
           const trips = response.data.allRides[0].driving.map((trip) => ({
             departure: trip.date,
+            time: trip.time,
             origin: trip.sourceName,
             destination: trip.destinationName,
             riders: trip.riders.length,
@@ -170,15 +175,8 @@ const Trips = () => {
                   <React.Fragment key={index}>
                     <TableRow>
                       <TableCell>
-                        {new Date(trip.departure).toLocaleString("en-US", {
-                          weekday: "short",
-                          day: "numeric",
-                          month: "numeric",
-                          year: "numeric",
-                          hour: "numeric",
-                          minute: "numeric",
-                          hour12: true,
-                        })}
+                        {new Date(trip.departure).toLocaleDateString("en-US")}{" "}
+                        {trip.time}
                       </TableCell>
                       <TableCell>{trip.origin}</TableCell>
                       <TableCell>{trip.destination}</TableCell>
