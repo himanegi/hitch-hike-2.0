@@ -5,6 +5,7 @@ const InputSource = ({
   locations,
   onCoordinatesChange,
   onPlaceChange,
+  required = false,
 }) => {
   const handleLocationChange = (event) => {
     const selectedLocation = event.target.value;
@@ -31,6 +32,7 @@ const InputSource = ({
         className="mt-1 block w-full outline-none rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 transition-all duration-300 focus:outline-none focus:ring-2 hover:ring-2 hover:ring-indigo-500"
         id="locationSelect"
         onChange={handleLocationChange}
+        required={required}
       >
         <option value="" disabled selected>
           Select a location

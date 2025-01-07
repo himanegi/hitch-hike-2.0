@@ -119,6 +119,7 @@ const ShareComponent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle form submission here
+
     const distance = HaversineDistance(
       sourceCoordinates,
       destinationCoordinates
@@ -164,12 +165,14 @@ const ShareComponent = () => {
                 locations={locations}
                 onCoordinatesChange={setSourceCoordinates}
                 onPlaceChange={setSourcePlace}
+                required={true}
               />
               <InputItem
                 type="destination"
                 locations={locations}
                 onCoordinatesChange={setDestinationCoordinates}
                 onPlaceChange={setDestinationPlace}
+                required={true}
               />
               <button
                 type="button" //bug fix for auto submit
@@ -212,6 +215,7 @@ const ShareComponent = () => {
                   value={departureDate}
                   min={currentDate}
                   max="2025-12-31"
+                  required
                   onChange={(e) => setDepartureDate(e.target.value)}
                   className="mt-1 block w-full outline-none rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 transition-all duration-300 focus:outline-none focus:ring-2 hover:ring-2 hover:ring-indigo-500"
                 />
@@ -227,6 +231,7 @@ const ShareComponent = () => {
                   id="departureTime"
                   type="time"
                   value={departureTime}
+                  required
                   onChange={(e) => setDepartureTime(e.target.value)}
                   className="mt-1 block w-full outline-none rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 transition-all duration-300 focus:outline-none focus:ring-2 hover:ring-2 hover:ring-indigo-500"
                 />
@@ -244,6 +249,7 @@ const ShareComponent = () => {
                 type="number"
                 min="1"
                 value={spotsInCar}
+                required
                 onChange={(e) => setSpotsInCar(e.target.value)}
                 className="mt-1 block w-full outline-none rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 transition-all duration-300 focus:outline-none focus:ring-2 hover:ring-2 hover:ring-indigo-500"
               />
@@ -259,6 +265,7 @@ const ShareComponent = () => {
                 id="carNumber"
                 type="text"
                 value={carNumber}
+                required
                 onChange={(e) => setCarNumber(e.target.value)}
                 className="mt-1 block w-full outline-none rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 transition-all duration-300 focus:outline-none focus:ring-2 hover:ring-2 hover:ring-indigo-500"
               />

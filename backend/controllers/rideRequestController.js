@@ -1,6 +1,6 @@
 import rideModel from "../models/rideModel.js";
 import userModel from "../models/userModel.js";
-import { calculateCost } from './costCalculator';
+import { calculateCost } from "./costCalculator.js";
 
 const createRideRequest = async (req, res) => {
   try {
@@ -12,10 +12,10 @@ const createRideRequest = async (req, res) => {
       message,
       riderSource,
       riderDestination,
-      distance
+      distance,
     } = req.body;
-    
-const cost = calculateCost(distance);
+
+    const cost = calculateCost(distance);
     const ride = await rideModel.findById(rideId);
     if (ride.spotsLeft == 0) {
       return res.status(201).json({ message: "sorry no spots left" });
@@ -27,8 +27,7 @@ const cost = calculateCost(distance);
       return res.status(201).json({ message: "Request already sent" });
     }
 
-
-console.log(`The cost for ${distance} km is ${cost}`);
+    console.log(`The cost for ${distance} km is ${cost}`);
 
     ride.rideRequests.push({
       riderId: rider,
@@ -38,7 +37,6 @@ console.log(`The cost for ${distance} km is ${cost}`);
       riderSource: riderSource,
       riderDestination: riderDestination,
     });
-
 
     await ride.save(); //this was the issue
 
@@ -85,7 +83,7 @@ const changeRequestStatus = async (req, res) => {
     //   await rideModel.findByIdAndDelete(ride.id);
     // }
   }
-    
+
   await ride.save();
   res.status(201).json({ message: "Done", rideRequests: ride.rideRequests });
 };
