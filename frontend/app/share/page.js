@@ -211,7 +211,7 @@ const ShareComponent = () => {
                   type="date"
                   value={departureDate}
                   min={currentDate}
-                  max="2024-12-31"
+                  max="2025-12-31"
                   onChange={(e) => setDepartureDate(e.target.value)}
                   className="mt-1 block w-full outline-none rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 transition-all duration-300 focus:outline-none focus:ring-2 hover:ring-2 hover:ring-indigo-500"
                 />
