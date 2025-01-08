@@ -6,7 +6,7 @@ const RequestForm = ({ ride, handleSubmit, onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-8">
+      <div className="bg-white rounded-lg p-6 shadow-lg max-w-md mx-auto">
         <h2 className="text-lg font-bold mb-4">Request Ride</h2>
         <form
           onSubmit={(e) => {
@@ -23,7 +23,7 @@ const RequestForm = ({ ride, handleSubmit, onClose }) => {
               id="phoneNumber"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md"
+              className="mt-1 block w-full outline-none rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 transition-all duration-300 focus:outline-none focus:ring-2 hover:ring-2 hover:ring-indigo-500"
             />
           </div>
           <div className="mb-4">
@@ -34,7 +34,7 @@ const RequestForm = ({ ride, handleSubmit, onClose }) => {
               id="message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md"
+              className="mt-1 block w-full outline-none rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2 transition-all duration-300 focus:outline-none focus:ring-2 hover:ring-2 hover:ring-indigo-500"
             ></textarea>
           </div>
           <div className="flex justify-end">
@@ -47,7 +47,7 @@ const RequestForm = ({ ride, handleSubmit, onClose }) => {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 rounded-md bg-blue-500 text-white"
+              className="px-4 py-2 rounded-md bg-indigo-600 text-white"
             >
               Submit
             </button>
