@@ -287,7 +287,7 @@ const Trips = () => {
                         onClick={() => handleDeleteRequest(trip.id)}
                         disabled={disabledButtons[trip.id]}
                       >
-                        Finish/Cancel
+                        Finish
                       </Button>
                     </TableCell>
                     <TableCell>
