@@ -31,72 +31,68 @@ const Trips = () => {
 
   useEffect(() => {
     if (user) {
-      const fullName = user.fullName;
-      console.log(fullName);
+      const fetchTrips = async () => {
+        try {
+          const response = await axios.post("/api/trips/", {
+            userId: user?.id || null,
+          });
+          console.log(response.data);
+          if (
+            Array.isArray(response.data.allRides) &&
+            response.data.allRides.length > 0 &&
+            Array.isArray(response.data.allRides[0].driving)
+          ) {
+            console.log(
+              "response.data.allRides.driving",
+              response.data.allRides[0].driving
+            );
+            const trips = response.data.allRides[0].driving.map((trip) => ({
+              departure: trip.date,
+              time: trip.time,
+              origin: trip.sourceName,
+              destination: trip.destinationName,
+              riders: trip.riders.length,
+              id: trip._id,
+              rideRequests: trip.rideRequests,
+              availableSpots: trip.spotsLeft,
+            }));
+
+            setDrivingTrips(trips);
+
+            console.log("message: ", response.data.allRides);
+          } else {
+            console.log("Invalid response data format:", response.data);
+            setDrivingTrips([]);
+          }
+          if (
+            Array.isArray(response.data.allRidesRequests) &&
+            response.data.allRidesRequests.length > 0 &&
+            Array.isArray(response.data.allRidesRequests[0].rides)
+          ) {
+            const trips = response.data.allRidesRequests[0].rides.map(
+              (trip) => ({
+                departure: trip.date,
+                origin: trip.sourceName,
+                destination: trip.destinationName,
+                time: trip.time,
+                id: trip._id,
+                status: trip.rideRequests.find(
+                  (request) => request.riderId === user.id
+                ).status,
+              })
+            );
+
+            setRidingTrips(trips);
+          } else {
+            console.log("Invalid response data format:", response.data);
+            setRidingTrips([]);
+          }
+        } catch (error) {
+          console.error("Error fetching trips:", error);
+        }
+      };
+      fetchTrips();
     }
-  }, [user]);
-
-  useEffect(() => {
-    const fetchTrips = async () => {
-      try {
-        const response = await axios.post("/api/trips/", {
-          userId: user?.id || null,
-        });
-        console.log(response.data);
-        if (
-          Array.isArray(response.data.allRides) &&
-          response.data.allRides.length > 0 &&
-          Array.isArray(response.data.allRides[0].driving)
-        ) {
-          console.log(
-            "response.data.allRides.driving",
-            response.data.allRides[0].driving
-          );
-          const trips = response.data.allRides[0].driving.map((trip) => ({
-            departure: trip.date,
-            time: trip.time,
-            origin: trip.sourceName,
-            destination: trip.destinationName,
-            riders: trip.riders.length,
-            id: trip._id,
-            rideRequests: trip.rideRequests,
-            availableSpots: trip.spotsLeft,
-          }));
-
-          setDrivingTrips(trips);
-
-          console.log("message: ", response.data.allRides);
-        } else {
-          console.log("Invalid response data format:", response.data);
-          setDrivingTrips([]);
-        }
-        if (
-          Array.isArray(response.data.allRidesRequests) &&
-          response.data.allRidesRequests.length > 0 &&
-          Array.isArray(response.data.allRidesRequests[0].rides)
-        ) {
-          const trips = response.data.allRidesRequests[0].rides.map((trip) => ({
-            departure: trip.date,
-            origin: trip.sourceName,
-            destination: trip.destinationName,
-            time: trip.time,
-            id: trip._id,
-            status: trip.rideRequests.find(
-              (request) => request.riderId === user.id
-            ).status,
-          }));
-
-          setRidingTrips(trips);
-        } else {
-          console.log("Invalid response data format:", response.data);
-          setRidingTrips([]);
-        }
-      } catch (error) {
-        console.error("Error fetching trips:", error);
-      }
-    };
-
-    fetchTrips();
   }, [user]);
 
   const handleConnectClick = () => {
