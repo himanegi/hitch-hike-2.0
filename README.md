@@ -16,6 +16,9 @@ _Login Page_
 ![Ride Sharing](/frontend/public/ss2.png)
 _Ride Sharing_
 
+![Dashboard](/frontend/public/ss3.png)
+_Dashboard_
+
 ## Built With
 
 ### Frontend Technologies
