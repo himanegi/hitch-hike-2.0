@@ -36,7 +36,7 @@ _Ride Sharing_
 
 - [Mapbox](https://www.mapbox.com/) - Maps and location data platform
 - [Nominatim](https://nominatim.org/) - Open-source geocoding and address search
-- [OpenStreetMap](www.openstreetmap.org/) - for providing map data
+- [OpenStreetMap](https://www.openstreetmap.org/) - for providing map data
 
 ### Spatial Analysis
 
