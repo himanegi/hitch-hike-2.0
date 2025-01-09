@@ -17,14 +17,14 @@ const createRideRequest = async (req, res) => {
 
     const cost = calculateCost(distance);
     const ride = await rideModel.findById(rideId);
-    if (ride.spotsLeft == 0) {
-      return res.status(201).json({ message: "sorry no spots left" });
-    }
     const alreadyRequested = ride.rideRequests.some((request) => {
       return request.riderId == rider;
     });
     if (alreadyRequested) {
-      return res.status(201).json({ message: "Request already sent" });
+      return res.status(201).json({ message: "Request already sent." });
+    }
+    if (ride.spotsLeft == 0) {
+      return res.status(201).json({ message: "Sorry! No spots left." });
     }
 
     console.log(`The cost for ${distance} km is ${cost}`);
@@ -82,4 +82,4 @@ const changeRequestStatus = async (req, res) => {
   res.status(201).json({ message: "Done", rideRequests: ride.rideRequests });
 };
 
-export { createRideRequest, showRideRequests, changeRequestStatus };
+export { changeRequestStatus, createRideRequest, showRideRequests };
