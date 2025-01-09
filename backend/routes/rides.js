@@ -1,7 +1,10 @@
-// routes/rides.js
 import express from "express";
 
-import { createRide, searchRide,deleteRide } from "../controllers/rideController.js";
+import {
+  createRide,
+  searchRide,
+  deleteRide,
+} from "../controllers/rideController.js";
 
 const router = express.Router();
 

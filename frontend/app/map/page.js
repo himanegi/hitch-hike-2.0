@@ -1,7 +1,5 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-// import createAdjacencyList from "../utils/adjacencyList.js";
-// import dijkstra from "../utils/dijkstra.js";
 
 const Map = ({ myPoints, allPaths }) => {
   const [, setRender] = useState(0); // State to trigger re-render
@@ -36,20 +34,13 @@ const Map = ({ myPoints, allPaths }) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Translate to the center of the canvas
     ctx.translate(canvas.width / 2, canvas.height / 2);
-
-    // Rotate the context by 90 degrees
     ctx.rotate((3 * Math.PI) / 2);
-
-    // Translate back
     ctx.translate(-canvas.width / 2, -canvas.height / 2);
 
     var minX, minY, maxX, maxY;
     myPoints.forEach((p, i) => {
       if (i === 0) {
-        // if first point
         minX = maxX = p[0];
         minY = maxY = p[1];
       } else {
@@ -60,16 +51,13 @@ const Map = ({ myPoints, allPaths }) => {
       }
     });
 
-    // now get the map width and height in its local coords
     var mapWidth = maxX - minX;
     var mapHeight = maxY - minY;
     var mapCenterX = (maxX + minX) / 2;
     var mapCenterY = (maxY + minY) / 2;
 
-    // to find the scale that will fit the canvas get the min scale to fit height or width
     var scale = Math.min(canvas.width / mapWidth, canvas.height / mapHeight);
 
-    // Draw the map routes
     ctx.lineWidth = 8;
     ctx.strokeStyle = "#b4b4b4";
     ctx.lineJoin = "round";
@@ -87,24 +75,17 @@ const Map = ({ myPoints, allPaths }) => {
     for (const [name, [x, y]] of Object.entries(pointsWithNames)) {
       const scaledX = (x - mapCenterX) * scale + canvas.width / 2;
       const scaledY = (y - mapCenterY) * scale + canvas.height / 2;
-      ctx.save(); // Save the current state
+      ctx.save();
 
-      // Translate to the position of the text
       ctx.translate(scaledX, scaledY);
-
-      // Rotate the context by 90 degrees
       ctx.rotate(Math.PI / 2);
-
-      // Draw the text at the origin, since we've translated to the correct position
       ctx.fillText(name, -50, 10);
-
       ctx.restore();
     }
 
-    // Draw the allPaths on top
     if (allPaths.length > 0) {
-      ctx.lineWidth = 10; // Make the path line thicker
-      ctx.strokeStyle = "red"; // Change the color to red
+      ctx.lineWidth = 10;
+      ctx.strokeStyle = "red";
       ctx.beginPath();
       ctx.moveTo(
         (allPaths[0][0] - mapCenterX) * scale + canvas.width / 2,
@@ -118,7 +99,7 @@ const Map = ({ myPoints, allPaths }) => {
       });
       ctx.stroke();
 
-      // Draw the source marker
+      //Source Marker
       const sourceX = (allPaths[0][0] - mapCenterX) * scale + canvas.width / 2;
       const sourceY = (allPaths[0][1] - mapCenterY) * scale + canvas.height / 2;
       ctx.fillStyle = "green";
@@ -126,7 +107,7 @@ const Map = ({ myPoints, allPaths }) => {
       ctx.arc(sourceX, sourceY, 15, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Draw the destination marker
+      //Destination Marker
       const destX =
         (allPaths[allPaths.length - 1][0] - mapCenterX) * scale +
         canvas.width / 2;
@@ -149,11 +130,9 @@ const Map = ({ myPoints, allPaths }) => {
 
   useEffect(() => {
     const handleResize = () => {
-      setRender((prevRender) => prevRender + 1); // Trigger re-render
+      setRender((prevRender) => prevRender + 1);
     };
-
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };

@@ -1,14 +1,10 @@
 "use client";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import RideSharedPopup from "../components/RideSharedPopup";
 import Map from "../map/page";
 import InputItem from "../sourceinput/page";
-// import MapSection from "../components/Home/MapSection";
-// import InputItem from "../components/Home/InputItem";
-// import MapboxRoute from "../components/Home/MapboxRoute";
-import { distance } from "turf";
 import createAdjacencyList from "../utils/adjacencyList";
 import dijkstra from "../utils/dijkstra";
 import HaversineDistance from "../utils/haversine";
@@ -19,7 +15,6 @@ const ShareComponent = () => {
   const [destinationPlace, setDestinationPlace] = useState("");
   const [sourceCoordinates, setSourceCoordinates] = useState([0, 0]);
   const [destinationCoordinates, setDestinationCoordinates] = useState([0, 0]);
-  // const [map, setMap] = useState(null);
   const currentDate = new Date().toISOString().split("T")[0];
   const [departureDate, setDepartureDate] = useState(currentDate);
   const [departureTime, setDepartureTime] = useState("");
@@ -118,7 +113,6 @@ const ShareComponent = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission here
 
     const distance = HaversineDistance(
       sourceCoordinates,
@@ -181,25 +175,6 @@ const ShareComponent = () => {
               >
                 Get Route
               </button>
-              {/* <InputItem
-                type="source"
-                namespace="Source"
-                map={map}
-                onCoordinatesChange={setSourceCoordinates}
-                onPlaceChange={setSourcePlace}
-              />
-              <InputItem
-                type="destination"
-                namespace="Destination"
-                map={map}
-                onCoordinatesChange={setDestinationCoordinates}
-                onPlaceChange={setDestinationPlace}
-              />
-              <MapboxRoute
-                map={map}
-                sourceCoordinates={sourceCoordinates}
-                destinationCoordinates={destinationCoordinates}
-              /> */}
             </div>
             <div className="mb-6 flex justify-between">
               <div className="w-1/2 mr-2">

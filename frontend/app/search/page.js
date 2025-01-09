@@ -1,8 +1,5 @@
 "use client";
-// import MapSection from "../components/Home/MapSection";
 import { useState } from "react";
-// import InputItem from "../components/Home/InputItem";
-// import MapboxRoute from "../components/Home/MapboxRoute";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import RequestForm from "../components/RequestForm";
@@ -17,7 +14,6 @@ const SearchComponent = () => {
   const [destinationPlace, setDestinationPlace] = useState("");
   const [sourceCoordinates, setSourceCoordinates] = useState([0, 0]);
   const [destinationCoordinates, setDestinationCoordinates] = useState([0, 0]);
-  // const [map, setMap] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [selectedRide, setSelectedRide] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -200,25 +196,6 @@ const SearchComponent = () => {
               onCoordinatesChange={setDestinationCoordinates}
               onPlaceChange={setDestinationPlace}
             />
-            {/* <InputItem
-              type="source"
-              map={map}
-              namespace="Pickup"
-              onCoordinatesChange={setSourceCoordinates}
-              onPlaceChange={setSourcePlace}
-            />
-            <InputItem
-              type="destination"
-              map={map}
-              namespace="Drop"
-              onCoordinatesChange={setDestinationCoordinates}
-              onPlaceChange={setDestinationPlace}
-            /> */}
-            {/* <MapboxRoute
-              map={map}
-              sourceCoordinates={sourceCoordinates}
-              destinationCoordinates={destinationCoordinates}
-            /> */}
             <button
               className="inline-flex w-full justify-center mt-4 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 hover:ring-2 hover:ring-indigo-500"
               onClick={() => {
@@ -276,19 +253,9 @@ const SearchComponent = () => {
             ) : isSearchClicked ? (
               <div className="mt-4 text-lg">No rides found</div>
             ) : null}
-            {selectedRide && (
-              <div className="mt-4">
-                {/* <MapboxRoute
-                  map={map}
-                  sourceCoordinates={selectedRide.source.coordinates}
-                  destinationCoordinates={selectedRide.destination.coordinates}
-                  routeId="selected-route"
-                /> */}
-              </div>
-            )}
+            {selectedRide && <div className="mt-4"></div>}
           </div>
           <div className="col-span-2">
-            {/* <MapSection onMapChange={setMap} /> */}
             <Map
               myPoints={myPoints}
               allPaths={isSearchClicked ? allPaths : []}

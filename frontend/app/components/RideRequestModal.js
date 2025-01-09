@@ -81,8 +81,6 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
                   <TableRow>
                     <TableCell />
                     <TableCell>User Name</TableCell>
-                    {/* <TableCell>Phone Number</TableCell>
-                    <TableCell>Message</TableCell> */}
                     <TableCell>Source</TableCell>
                     <TableCell>Destination</TableCell>
                     <TableCell>Action</TableCell>
@@ -108,8 +106,6 @@ const RideRequestModal = ({ trip, onClose, onSpotsUpdate }) => {
                             </IconButton>
                           </TableCell>
                           <TableCell>{request.username}</TableCell>
-                          {/* <TableCell>{request.phoneNumber}</TableCell>
-                        <TableCell>{request.message}</TableCell> */}
                           <TableCell>{request.riderSource}</TableCell>
                           <TableCell>{request.riderDestination}</TableCell>
                           <TableCell>

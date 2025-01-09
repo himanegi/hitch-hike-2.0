@@ -43,12 +43,12 @@ const rideSchema = new mongoose.Schema({
     type: {
       type: String,
       enum: ["LineString"],
-      default: "LineString"
+      default: "LineString",
     },
     coordinates: {
-      type: [[Number]], // array of [lon, lat] pairs
-      default: []
-    }
+      type: [[Number]],
+      default: [],
+    },
   },
   sourceName: String,
   destinationName: String,
@@ -59,7 +59,6 @@ const rideSchema = new mongoose.Schema({
   riders: [rideRequestSchema],
   rideRequests: [rideRequestSchema],
   spotsLeft: { type: Number },
-  // Add other fields as needed
 });
 
 export default mongoose.model("Ride", rideSchema);

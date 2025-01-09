@@ -1,8 +1,8 @@
-const ratePerKm = 5; // Change this to your rate
+const ratePerKm = 5;
 
 export const calculateCost = (distance) => {
   if (distance < 0) {
-    throw new Error('Distance cannot be negative');
+    throw new Error("Distance cannot be negative");
   }
   return ratePerKm * distance;
 };

@@ -1,5 +1,4 @@
-// chatConnection.js
-import socketIo from 'socket.io';
+import socketIo from "socket.io";
 
 let io;
 
@@ -10,7 +9,7 @@ export const init = (httpServer) => {
 
 export const getIO = () => {
   if (!io) {
-    throw new Error('Socket.io not initialized!');
+    throw new Error("Socket.io not initialized!");
   }
   return io;
 };

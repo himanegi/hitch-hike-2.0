@@ -76,12 +76,6 @@ const changeRequestStatus = async (req, res) => {
   if (status == "accepted") {
     ride.riders.push(rideRequestofThatPerson);
     ride.spotsLeft = ride.spotsLeft - 1;
-    // if(ride.spotsLeft==0)
-    // {
-    //   // Delete the ride
-    //   console.log(ride.id)
-    //   await rideModel.findByIdAndDelete(ride.id);
-    // }
   }
 
   await ride.save();

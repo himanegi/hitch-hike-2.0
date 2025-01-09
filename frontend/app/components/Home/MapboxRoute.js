@@ -8,7 +8,7 @@ function MapboxRoute({
   destinationCoordinates,
   routeId,
 }) {
-  const [error, setError] = useState(null); // Initialize error state
+  const [error, setError] = useState(null);
   const sourceIdRef = useRef(
     `route-${routeId}-${sourceCoordinates.join(
       "-"
@@ -23,7 +23,6 @@ function MapboxRoute({
   useEffect(() => {
     if (map && sourceCoordinates && destinationCoordinates) {
       const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${sourceCoordinates[0]},${sourceCoordinates[1]};${destinationCoordinates[0]},${destinationCoordinates[1]}?geometries=geojson&overview=full&access_token=${process.env.NEXT_PUBLIC_MAPBOX_API_KEY}`;
-      // console.log("coordinates :", sourceCoordinates, destinationCoordinates);
       const fetchRoute = async () => {
         try {
           const response = await fetch(url);
@@ -33,7 +32,6 @@ function MapboxRoute({
             const route = data.routes[0];
             const routeGeoJson = route.geometry;
 
-            // Check if the source already exists, if not, add it
             if (!map.getSource(sourceIdRef.current)) {
               map.addSource(sourceIdRef.current, {
                 type: "geojson",
@@ -41,7 +39,6 @@ function MapboxRoute({
               });
             }
 
-            // Check if the layer already exists, if not, add it
             if (!map.getLayer(layerIdRef.current)) {
               map.addLayer({
                 id: layerIdRef.current,
@@ -56,17 +53,14 @@ function MapboxRoute({
                   "line-width": 4,
                 },
               });
-              // Calculate bounds to include both source and destination
               const bounds = new mapboxgl.LngLatBounds();
               bounds.extend(sourceCoordinates);
               bounds.extend(destinationCoordinates);
 
-              // Adjust map view to fit bounds
               map.fitBounds(bounds, {
-                padding: 80, // Add some padding around the bounds
+                padding: 80,
               });
 
-              // Reset the error state if a route is successfully fetched
               setError(null);
             }
           }
